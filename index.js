@@ -11,9 +11,6 @@ exports.handler = async (event) => {
     response = await getUsers(userId);
   } else if (httpMethod === "POST" && path === "/users") {
     response = await postUser(event.body);
-  } else {
-    response = await notFound();
   }
-
   return response;
 };
