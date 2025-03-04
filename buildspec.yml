@@ -27,7 +27,7 @@ phases:
       - echo $TargetVersion
       - LC_ALL=C.UTF-8 aws lambda update-alias --function-name MaToolAPI --name dev --function-version $TargetVersion
       # - aws lambda delete-function --function-name MaToolAPI --qualifier $CurrentVersion
-      - |
-        if [ "$CurrentVersion" != "$TargetVersion" ]; then
-          aws lambda delete-function --function-name MaToolAPI --qualifier $CurrentVersion
-        fi
+      # - |
+      #   if [ "$CurrentVersion" != "$TargetVersion" ]; then
+      #     aws lambda delete-function --function-name MaToolAPI --qualifier $CurrentVersion
+      #   fi
