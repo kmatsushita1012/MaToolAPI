@@ -15,6 +15,8 @@ phases:
       - echo "Replacing placeholders in appspec.yml..."
       - sed -i "s/{{CurrentVersion}}/$CurrentVersion/g" appspec.yml
       - sed -i "s/{{TargetVersion}}/$TargetVersion/g" appspec.yml
+      - echo "Updating Lambda alias to new version..."
+      - aws lambda update-alias --function-name MaToolAPI --name dev --function-version $TargetVersion
       - echo "Final appspec.yml contents:"
       - cat appspec.yml
 
