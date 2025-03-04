@@ -12,11 +12,9 @@ phases:
       - echo "Publishing New Lambda Version..."
       - TargetVersion=$(aws lambda publish-version --function-name MaToolAPI --query 'Version' --output text)
       - echo "TargetVersion: $TargetVersion"
-
       - echo "Replacing placeholders in appspec.yml..."
       - sed -i "s/{{CurrentVersion}}/$CurrentVersion/g" appspec.yml
       - sed -i "s/{{TargetVersion}}/$TargetVersion/g" appspec.yml
-
       - echo "Final appspec.yml contents:"
       - cat appspec.yml
 
