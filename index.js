@@ -1,6 +1,5 @@
-const getUsers = require("./routes/getUsers");
-const postUser = require("./routes/postUser");
-const notFound = require("./routes/notFound");
+const getUsers = require("./route/getRoute");
+const postUser = require("./route/postRoute");
 
 exports.handler = async (event) => {
   const httpMethod = event.httpMethod;
