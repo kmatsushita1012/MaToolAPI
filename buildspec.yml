@@ -14,8 +14,8 @@ phases:
     commands:
       - echo Build started on `date`
       - CurrentVersion=$(aws lambda get-alias --function-name MaToolAPI --name dev --query 'FunctionVersion' --output text)
-      - zip -r lambda.zip ./*
-      - aws lambda update-function-code --function-name MaToolAPI --zip-file fileb://lambda.zip
+      - zip -q -r lambda.zip ./
+      - aws lambda update-function-code --function-name MaToolAPI --zip-file fileb://lambda.zip --debug
       - sleep 10
   post_build: #新バージョンを発行し、エイリアスに紐づいているバージョンを新バージョンに変更
     commands:
@@ -26,8 +26,4 @@ phases:
       - echo $CurrentVersion
       - echo $TargetVersion
       - LC_ALL=C.UTF-8 aws lambda update-alias --function-name MaToolAPI --name dev --function-version $TargetVersion
-      # - aws lambda delete-function --function-name MaToolAPI --qualifier $CurrentVersion
-      # - |
-      #   if [ "$CurrentVersion" != "$TargetVersion" ]; then
-      #     aws lambda delete-function --function-name MaToolAPI --qualifier $CurrentVersion
-      #   fi
+      - aws lambda delete-function --function-name MaToolAPI --qualifier $CurrentVersion
