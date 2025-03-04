@@ -13,8 +13,8 @@ phases:
   build: #更新前のバージョンを取得した上で、関数の更新を実行
     commands:
       - echo Build started on `date`
-      # - CurrentVersion=$(echo $(aws lambda get-alias --function-name MaToolAPI --name prod | grep FunctionVersion | tail -1 |tr -cd 0-9))
-      - CurrentVersion=$(aws lambda get-alias --function-name MaToolAPI --name prod --query 'FunctionVersion' --output text)
+      # - CurrentVersion=$(echo $(aws lambda get-alias --function-name MaToolAPI --name dev | grep FunctionVersion | tail -1 |tr -cd 0-9))
+      - CurrentVersion=$(aws lambda get-alias --function-name MaToolAPI --name dev --query 'FunctionVersion' --output text)
       - zip -r lambda.zip ./index.js
       - aws lambda update-function-code --function-name MaToolAPI --zip-file fileb://lambda.zip
       - sleep 10
