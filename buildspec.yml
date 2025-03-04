@@ -5,13 +5,13 @@ phases:
     commands:
       - echo "Fetching Current Lambda Version..."
       - CurrentVersion=$(aws lambda get-alias --function-name MaToolAPI --name dev --query 'FunctionVersion' --output text)
-      - echo "CurrentVersion: $CurrentVersion"
+      - "echo CurrentVersion: $CurrentVersion"
 
   post_build:
     commands:
       - echo "Publishing New Lambda Version..."
       - TargetVersion=$(aws lambda publish-version --function-name MaToolAPI --query 'Version' --output text)
-      - echo "TargetVersion: $TargetVersion"
+      - "echo TargetVersion: $TargetVersion"
       - echo "Replacing placeholders in appspec.yml..."
       - sed -i "s/{{CurrentVersion}}/$CurrentVersion/g" appspec.yml
       - sed -i "s/{{TargetVersion}}/$TargetVersion/g" appspec.yml
