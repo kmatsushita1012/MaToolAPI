@@ -1,5 +1,5 @@
-const getUsers = require("./route/getRoute");
-const postUser = require("./route/postRoute");
+const getRoute = require("./route/getRoute");
+const postRoute = require("./route/postRoute");
 
 exports.handler = async (event) => {
   const httpMethod = event.httpMethod;
@@ -12,5 +12,11 @@ exports.handler = async (event) => {
   } else if (httpMethod === "POST" && path === "/users") {
     response = await postUser(event.body);
   }
-  return response;
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: "Success",
+      result: result,
+    }),
+  };
 };
