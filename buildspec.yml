@@ -1,25 +1,46 @@
 version: 0.2
-
+  
 phases:
   build:
     commands:
-      - echo "Fetching Current Lambda Version..."
-      - CurrentVersion=$(aws lambda get-alias --function-name MaToolAPI --name dev --query 'FunctionVersion' --output text)
-      - "echo CurrentVersion: $CurrentVersion"
-
+      - CurrentVersion=$(echo $(aws lambda get-alias --function-name MaToolAPI --name dev | grep FunctionVersion | tail -1 |tr -cd "[0-9]"))
   post_build:
     commands:
-      - echo "Publishing New Lambda Version..."
-      - TargetVersion=$(aws lambda publish-version --function-name MaToolAPI --query 'Version' --output text)
-      - "echo TargetVersion: $TargetVersion"
-      - echo "Replacing placeholders in appspec.yml..."
-      - sed -i "s/{{CurrentVersion}}/$CurrentVersion/g" appspec.yml
-      - sed -i "s/{{TargetVersion}}/$TargetVersion/g" appspec.yml
-      - echo "Updating Lambda alias to new version..."
-      - aws lambda update-alias --function-name MaToolAPI --name dev --function-version $TargetVersion
-      - echo "Final appspec.yml contents:"
-      - cat appspec.yml
+      - ls
+      - aws lambda publish-version --function-name MaToolAPI
+      - TargetVersion=$(echo $(aws lambda list-versions-by-function --function-name MaToolAPI | grep Version | tail -1 | tr -cd "[0-9]"))
+      - echo $CurrentVersion
+      - echo $TargetVersion
+      - sed -i -e "s/{{CurrentVersion}}/$CurrentVersion/g" appspec.yml
+      - sed -i -e "s/{{TargetVersion}}/$TargetVersion/g" appspec.yml
 
 artifacts:
   files:
     - "**/*"
+
+
+# version: 0.2
+
+# phases:
+#   build:
+#     commands:
+#       - echo "Fetching Current Lambda Version..."
+#       - CurrentVersion=$(aws lambda get-alias --function-name MaToolAPI --name dev --query 'FunctionVersion' --output text)
+#       - "echo CurrentVersion: $CurrentVersion"
+
+#   post_build:
+#     commands:
+#       - echo "Publishing New Lambda Version..."
+#       - TargetVersion=$(aws lambda publish-version --function-name MaToolAPI --query 'Version' --output text)
+#       - "echo TargetVersion: $TargetVersion"
+#       - echo "Replacing placeholders in appspec.yml..."
+#       - sed -i "s/{{CurrentVersion}}/$CurrentVersion/g" appspec.yml
+#       - sed -i "s/{{TargetVersion}}/$TargetVersion/g" appspec.yml
+#       - echo "Updating Lambda alias to new version..."
+#       - aws lambda update-alias --function-name MaToolAPI --name dev --function-version $TargetVersion
+#       - echo "Final appspec.yml contents:"
+#       - cat appspec.yml
+
+# artifacts:
+#   files:
+#     - "**/*"
