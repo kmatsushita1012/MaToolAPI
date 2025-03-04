@@ -1,46 +1,28 @@
 version: 0.2
-  
 phases:
-  build:
+  install:
+    commands: //AWS CLIをインストール
+      - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      - unzip awscliv2.zip
+      - ls -l /root/.pyenv/shims/aws
+      - ./aws/install --bin-dir /root/.pyenv/shims --install-dir /usr/local/aws-cli --update
+  pre_build:
     commands:
-      - CurrentVersion=$(echo $(aws lambda get-alias --function-name MaToolAPI --name dev | grep FunctionVersion | tail -1 |tr -cd "[0-9]"))
-  post_build:
+      - echo No Pre Build phase
+  build: #更新前のバージョンを取得した上で、関数の更新を実行
     commands:
+      - echo Build started on `date`
+      - CurrentVersion=$(echo $(aws lambda get-alias --function-name MaToolAPI --name prod | grep FunctionVersion | tail -1 |tr -cd 0-9))
+      - zip -r lambda.zip ./lambda_function.py
+      - aws lambda update-function-code --function-name MaToolAPI --zip-file fileb://lambda.zip
+      - sleep 10
+  post_build: #新バージョンを発行し、エイリアスに紐づいているバージョンを新バージョンに変更
+    commands:
+      - echo Build completed on `date`
       - ls
-      - aws lambda publish-version --function-name MaToolAPI
-      - TargetVersion=$(echo $(aws lambda list-versions-by-function --function-name MaToolAPI | grep Version | tail -1 | tr -cd "[0-9]"))
+      - aws lambda publish-version --function-name MaToolAPI --description "update version"
+      - TargetVersion=$(echo $(aws lambda list-versions-by-function --function-name MaToolAPI | grep Version | tail -1 | tr -cd 0-9))
       - echo $CurrentVersion
       - echo $TargetVersion
-      - sed -i -e "s/{{CurrentVersion}}/$CurrentVersion/g" appspec.yml
-      - sed -i -e "s/{{TargetVersion}}/$TargetVersion/g" appspec.yml
-
-artifacts:
-  files:
-    - "**/*"
-
-
-# version: 0.2
-
-# phases:
-#   build:
-#     commands:
-#       - echo "Fetching Current Lambda Version..."
-#       - CurrentVersion=$(aws lambda get-alias --function-name MaToolAPI --name dev --query 'FunctionVersion' --output text)
-#       - "echo CurrentVersion: $CurrentVersion"
-
-#   post_build:
-#     commands:
-#       - echo "Publishing New Lambda Version..."
-#       - TargetVersion=$(aws lambda publish-version --function-name MaToolAPI --query 'Version' --output text)
-#       - "echo TargetVersion: $TargetVersion"
-#       - echo "Replacing placeholders in appspec.yml..."
-#       - sed -i "s/{{CurrentVersion}}/$CurrentVersion/g" appspec.yml
-#       - sed -i "s/{{TargetVersion}}/$TargetVersion/g" appspec.yml
-#       - echo "Updating Lambda alias to new version..."
-#       - aws lambda update-alias --function-name MaToolAPI --name dev --function-version $TargetVersion
-#       - echo "Final appspec.yml contents:"
-#       - cat appspec.yml
-
-# artifacts:
-#   files:
-#     - "**/*"
+      - aws lambda update-alias --function-name MaToolAPI --name prod --function-version $TargetVersion
+      - aws lambda delete-function --function-name MaToolAPI --qualifier $CurrentVersion
