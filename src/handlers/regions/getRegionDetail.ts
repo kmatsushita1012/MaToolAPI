@@ -27,7 +27,7 @@ const getRegionDetail = async (
     }
     return {
       statusCode: 200,
-      body: JSON.stringify(!data.Item),
+      body: JSON.stringify(data.Item),
     };
   } catch (err) {
     console.log(`ERROR : ${err}`);
