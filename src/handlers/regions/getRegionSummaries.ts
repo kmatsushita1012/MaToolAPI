@@ -22,6 +22,7 @@ const getRegionSummaries = async (
       body: JSON.stringify(data.Items),
     };
   } catch (err) {
+    console.log(`ERROR : ${err}`);
     return internalServerErrorResponse();
   }
 };

@@ -12,6 +12,7 @@ const getRegionDetail = async (
 ): Promise<APIGatewayProxyResult> => {
   try {
     const id = event.queryStringParameters?.id;
+    
     if (!id) {
       return badRequestResponse();
     }
@@ -29,6 +30,7 @@ const getRegionDetail = async (
       body: JSON.stringify(!data.Item),
     };
   } catch (err) {
+    console.log(`ERROR : ${err}`);
     return internalServerErrorResponse();
   }
 };
