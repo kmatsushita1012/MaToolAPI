@@ -15,13 +15,13 @@ export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   const { httpMethod, path } = event;
-
+  console.log(`PATH:${path}`);
   try {
-    if (path.startsWith("/regions")) {
+    if (path && path.startsWith("/regions")) {
       return await handleRegions(event, ddbDocClient);
-    } else if (path.startsWith("/districts")) {
+    } else if (path && path.startsWith("/districts")) {
       return await handleDistricts(event, ddbDocClient);
-    } else if (path.startsWith("/routes")) {
+    } else if (path && path.startsWith("/routes")) {
       return await handleRoutes(event, ddbDocClient);
     } else {
       return notFoundResponse();

@@ -12,19 +12,19 @@ const handleDistricts = async (
   const path = event.path;
   const httpMethod = event.httpMethod;
 
-  if (path.startsWith("districts/summaries")) {
+  if (path && path.startsWith("districts/summaries")) {
     if (httpMethod == "GET") {
       return await getDistrictSummaries(event, ddbDocClient);
     } else {
       return methodNotAllowedResponse();
     }
-  } else if (path.startsWith("districts/detail")) {
+  } else if (path && path.startsWith("districts/detail")) {
     if (httpMethod == "GET") {
       return await getDistrictDetail(event, ddbDocClient);
     } else {
       return methodNotAllowedResponse();
     }
-  } else if (path.startsWith("districts")) {
+  } else if (path && path.startsWith("districts")) {
     if (httpMethod == "POST") {
       return await postDistricts(event, ddbDocClient);
     } else {

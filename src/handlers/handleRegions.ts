@@ -12,19 +12,19 @@ const handleRegions = async (
   const path = event.path;
   const httpMethod = event.httpMethod;
 
-  if (path.startsWith("regions/summaries")) {
+  if (path && path.startsWith("regions/summaries")) {
     if (httpMethod == "GET") {
       return await getRegionsSummaries(event, ddbDocClient);
     } else {
       return methodNotAllowedResponse();
     }
-  } else if (path.startsWith("regions/detail")) {
+  } else if (path && path.startsWith("regions/detail")) {
     if (httpMethod == "GET") {
       return await getRegionsDetail(event, ddbDocClient);
     } else {
       return methodNotAllowedResponse();
     }
-  } else if (path.startsWith("regions")) {
+  } else if (path && path.startsWith("regions")) {
     if (httpMethod == "POST") {
       return await postRegionss(event, ddbDocClient);
     } else {

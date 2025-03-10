@@ -2,8 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import getRoute from "./routes/getRoute";
 import postRoute from "./routes/postRoute";
-import deleteRoute from "./routes/deleteRoute"
-
+import deleteRoute from "./routes/deleteRoute";
 
 const handleRegions = async (
   event: APIGatewayProxyEvent,
