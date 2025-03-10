@@ -11,7 +11,7 @@ const getDistrictDetail = async (
   ddbDocClient: DynamoDBDocumentClient
 ): Promise<APIGatewayProxyResult> => {
   try {
-    const id = event.pathParameters?.id;
+    const id = event.queryStringParameters?.id;
     if (!id) {
       return badRequestResponse();
     }

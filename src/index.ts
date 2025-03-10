@@ -14,9 +14,9 @@ const ddbDocClient = DynamoDBDocumentClient.from(client);
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
-  const { httpMethod, path, pathParameters } = event;
+  const { httpMethod, path, queryStringParameters } = event;
   console.log(`PATH : ${path}`);
-  console.log(`PARAM : ${pathParameters}`);
+  console.log(`PARAM : ${queryStringParameters}`);
   try {
     if (path && path.startsWith("/regions")) {
       return await handleRegions(event, ddbDocClient);
