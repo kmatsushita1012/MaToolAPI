@@ -16,7 +16,7 @@ phases:
       - echo Build started on `date`
       - tsc
       - CurrentVersion=$(aws lambda get-alias --function-name MaToolAPI --name dev --query 'FunctionVersion' --output text)
-      - zip -q -r lambda.zip index.js route information
+      - zip -q -r lambda.zip dist/*
       - aws lambda update-function-code --function-name MaToolAPI --zip-file fileb://lambda.zip --debug
       - sleep 10
   post_build: #新バージョンを発行し、エイリアスに紐づいているバージョンを新バージョンに変更
