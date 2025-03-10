@@ -7,12 +7,14 @@ phases:
       - ./aws/install --install-dir ~/aws-cli --bin-dir ~/bin --update
       - export PATH=~/bin:$PATH
       - npm install
+      - npm install -g typescript
   pre_build:
     commands:
       - echo No Pre Build phase
   build: #更新前のバージョンを取得した上で、関数の更新を実行
     commands:
       - echo Build started on `date`
+      - tsc
       - CurrentVersion=$(aws lambda get-alias --function-name MaToolAPI --name dev --query 'FunctionVersion' --output text)
       - zip -q -r lambda.zip index.js route information
       - aws lambda update-function-code --function-name MaToolAPI --zip-file fileb://lambda.zip --debug

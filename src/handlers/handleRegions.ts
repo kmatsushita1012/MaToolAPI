@@ -1,0 +1,38 @@
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import getRegionsSummaries from "./regions/getRegionSummaries";
+import getRegionsDetail from "./regions/getRegionDetail";
+import postRegionss from "./regions/postRegions";
+import { methodNotAllowedResponse, notFoundResponse } from "../responses";
+
+const handleRegions = async (
+  event: APIGatewayProxyEvent,
+  ddbDocClient: DynamoDBDocumentClient
+): Promise<APIGatewayProxyResult> => {
+  const path = event.path;
+  const httpMethod = event.httpMethod;
+
+  if (path.startsWith("regions/summaries")) {
+    if (httpMethod == "GET") {
+      return await getRegionsSummaries(event, ddbDocClient);
+    } else {
+      return methodNotAllowedResponse();
+    }
+  } else if (path.startsWith("regions/detail")) {
+    if (httpMethod == "GET") {
+      return await getRegionsDetail(event, ddbDocClient);
+    } else {
+      return methodNotAllowedResponse();
+    }
+  } else if (path.startsWith("regions")) {
+    if (httpMethod == "POST") {
+      return await postRegionss(event, ddbDocClient);
+    } else {
+      return methodNotAllowedResponse();
+    }
+  } else {
+    return notFoundResponse();
+  }
+};
+
+export default handleRegions;
