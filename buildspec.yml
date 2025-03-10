@@ -35,3 +35,8 @@ phases:
         if [ "$CurrentVersion" != "$TargetVersion" ]; then
           aws lambda delete-function --function-name MaToolAPI --qualifier $CurrentVersion
         fi
+
+      - echo "Deploying API Gateway"
+      - API_ID=$(aws apigateway get-rest-apis --query 'items[?name==`MaToolAPI`].id' --output text)
+      - STAGE_NAME="debug" # 例えばprodステージにデプロイ
+      - aws apigateway create-deployment --rest-api-id $API_ID --stage-name $STAGE_NAME
