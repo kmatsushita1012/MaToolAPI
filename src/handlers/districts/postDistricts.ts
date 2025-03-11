@@ -7,6 +7,7 @@ import {
 } from "../../responses";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
+import { toSnakeCase } from "../../caseChanger";
 
 const tableName = "matool_districts";
 const expectedAttributes = [
