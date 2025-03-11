@@ -7,26 +7,26 @@ import { methodNotAllowedResponse, notFoundResponse } from "../responses";
 
 const handleRegions = async (
   event: APIGatewayProxyEvent,
-  ddbDocClient: DynamoDBDocumentClient
+  client: DynamoDBDocumentClient
 ): Promise<APIGatewayProxyResult> => {
   const path = event.path;
   const httpMethod = event.httpMethod;
 
   if (path && path.startsWith("/regions/summaries")) {
     if (httpMethod == "GET") {
-      return await getRegionsSummaries(event, ddbDocClient);
+      return await getRegionsSummaries(event, client);
     } else {
       return methodNotAllowedResponse();
     }
   } else if (path && path.startsWith("/regions/detail")) {
     if (httpMethod == "GET") {
-      return await getRegionsDetail(event, ddbDocClient);
+      return await getRegionsDetail(event, client);
     } else {
       return methodNotAllowedResponse();
     }
   } else if (path && path.startsWith("/regions")) {
     if (httpMethod == "POST") {
-      return await postRegionss(event, ddbDocClient);
+      return await postRegionss(event, client);
     } else {
       return methodNotAllowedResponse();
     }

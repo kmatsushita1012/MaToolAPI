@@ -6,27 +6,34 @@ import {
   notFoundResponse,
 } from "../../responses";
 
-const getRoute = async (
+const tableName = "matool_routes";
+
+const getRouteDetail = async (
   event: APIGatewayProxyEvent,
-  ddbDocClient: DynamoDBDocumentClient
+  client: DynamoDBDocumentClient
 ): Promise<APIGatewayProxyResult> => {
   try {
-    const id = event.queryStringParameters?.id;
-    if (!id) {
+    const districtId = event.queryStringParameters?.districtId;
+    const routeId = event.queryStringParameters?.routeId;
+    if (!districtId || !routeId) {
       return badRequestResponse();
     }
-    const data = await ddbDocClient.send(
+    const data = await client.send(
       new GetCommand({
-        TableName: "matool_routes",
-        Key: { id },
+        TableName: tableName,
+        Key: {
+          primaryKey: districtId,
+          sortKey: routeId,
+        },
       })
     );
     if (!data.Item) {
       return notFoundResponse();
     }
+    const camelData = toCamelCase(data.Item);
     return {
       statusCode: 200,
-      body: JSON.stringify(data.Item),
+      body: JSON.stringify(camelData),
     };
   } catch (err) {
     console.log(`ERROR : ${err}`);
@@ -34,4 +41,4 @@ const getRoute = async (
   }
 };
 
-export default getRoute;
+export default getRouteDetail;

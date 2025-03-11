@@ -6,33 +6,31 @@ import {
   notFoundResponse,
 } from "../../responses";
 
+const tableName = "matool_region";
+
 const getRegionDetail = async (
   event: APIGatewayProxyEvent,
-  ddbDocClient: DynamoDBDocumentClient
+  client: DynamoDBDocumentClient
 ): Promise<APIGatewayProxyResult> => {
-  try {
-    const id = event.queryStringParameters?.id;
-    
-    if (!id) {
-      return badRequestResponse();
-    }
-    const data = await ddbDocClient.send(
-      new GetCommand({
-        TableName: "matool_regions",
-        Key: { id },
-      })
-    );
-    if (!data.Item) {
-      return notFoundResponse();
-    }
-    return {
-      statusCode: 200,
-      body: JSON.stringify(data.Item),
-    };
-  } catch (err) {
-    console.log(`ERROR : ${err}`);
-    return internalServerErrorResponse();
+  const id = event.queryStringParameters?.id;
+
+  if (!id) {
+    return badRequestResponse();
   }
+  const data = await client.send(
+    new GetCommand({
+      TableName: tableName,
+      Key: { id },
+    })
+  );
+  if (!data.Item) {
+    return notFoundResponse();
+  }
+  const camelData = toCamelCase(data.Item);
+  return {
+    statusCode: 200,
+    body: JSON.stringify(camelData),
+  };
 };
 
 export default getRegionDetail;

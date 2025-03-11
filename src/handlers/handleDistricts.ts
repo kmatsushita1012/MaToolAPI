@@ -7,26 +7,26 @@ import { methodNotAllowedResponse, notFoundResponse } from "../responses";
 
 const handleDistricts = async (
   event: APIGatewayProxyEvent,
-  ddbDocClient: DynamoDBDocumentClient
+  client: DynamoDBDocumentClient
 ): Promise<APIGatewayProxyResult> => {
   const path = event.path;
   const httpMethod = event.httpMethod;
 
   if (path && path.startsWith("/districts/summaries")) {
     if (httpMethod == "GET") {
-      return await getDistrictSummaries(event, ddbDocClient);
+      return await getDistrictSummaries(event, client);
     } else {
       return methodNotAllowedResponse();
     }
   } else if (path && path.startsWith("/districts/detail")) {
     if (httpMethod == "GET") {
-      return await getDistrictDetail(event, ddbDocClient);
+      return await getDistrictDetail(event, client);
     } else {
       return methodNotAllowedResponse();
     }
   } else if (path && path.startsWith("/districts")) {
     if (httpMethod == "POST") {
-      return await postDistricts(event, ddbDocClient);
+      return await postDistricts(event, client);
     } else {
       return methodNotAllowedResponse();
     }

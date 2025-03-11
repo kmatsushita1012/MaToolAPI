@@ -14,6 +14,15 @@ export const badRequestResponse = (): APIGatewayProxyResult => ({
   statusCode: 400,
   body: JSON.stringify({ message: "Bad Request" }),
 });
+export const unauthorizedResponse = (): APIGatewayProxyResult => ({
+  statusCode: 401,
+  body: JSON.stringify({ message: "Unauthorized" }),
+});
+
+export const forbiddenResponse = (): APIGatewayProxyResult => ({
+  statusCode: 403,
+  body: JSON.stringify({ message: "Forbidden" }),
+});
 
 export const notFoundResponse = (): APIGatewayProxyResult => ({
   statusCode: 404,
