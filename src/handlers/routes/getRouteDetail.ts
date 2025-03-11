@@ -23,8 +23,8 @@ const getRouteDetail = async (
       new GetCommand({
         TableName: tableName,
         Key: {
-          primaryKey: districtId,
-          sortKey: routeId,
+          district_id: districtId,
+          route_id: routeId,
         },
       })
     );

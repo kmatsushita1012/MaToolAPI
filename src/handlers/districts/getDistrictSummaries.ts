@@ -8,7 +8,7 @@ const getDistrictSummaries = async (
   event: APIGatewayProxyEvent,
   client: DynamoDBDocumentClient
 ): Promise<APIGatewayProxyResult> => {
-  const regionId = event.queryStringParameters?.region_id;
+  const regionId = event.queryStringParameters?.regionId;
   let data;
 
   if (regionId) {
