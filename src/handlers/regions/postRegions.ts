@@ -7,6 +7,7 @@ import {
   forbiddenResponse,
   unauthorizedResponse,
 } from "../../responses";
+import { toSnakeCase } from "../../caseChanger";
 
 const tableName = "matool_regions";
 const expectedAttributes = [

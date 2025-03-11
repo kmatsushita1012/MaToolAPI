@@ -1,5 +1,5 @@
 // スネークケース → キャメルケース変換関数
-const toCamelCase = (obj: any): any => {
+export const toCamelCase = (obj: any): any => {
   if (Array.isArray(obj)) {
     return obj.map(toCamelCase);
   } else if (typeof obj === "object" && obj !== null) {
@@ -14,7 +14,7 @@ const toCamelCase = (obj: any): any => {
 };
 
 // APIリクエスト時にキャメルケース → スネークケース
-const toSnakeCase = (obj: any): any => {
+export const toSnakeCase = (obj: any): any => {
   if (Array.isArray(obj)) {
     return obj.map(toSnakeCase);
   } else if (typeof obj === "object" && obj !== null) {
