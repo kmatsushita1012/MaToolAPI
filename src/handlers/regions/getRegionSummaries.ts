@@ -1,8 +1,7 @@
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { internalServerErrorResponse } from "../../responses";
 
-const tableName = "matool_region";
+const tableName = "matool_regions";
 
 const getRegionSummaries = async (
   event: APIGatewayProxyEvent,

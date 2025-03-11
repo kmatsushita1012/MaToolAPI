@@ -1,7 +1,7 @@
-import { internalServerErrorResponse } from "../../responses";
-
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
+
+const tableName = "matool_districts";
 
 const getDistrictSummaries = async (
   event: APIGatewayProxyEvent,
@@ -13,7 +13,7 @@ const getDistrictSummaries = async (
   if (regionId) {
     data = await client.send(
       new ScanCommand({
-        TableName: "matool_districts",
+        TableName: tableName,
         IndexName: "region_id-index",
         FilterExpression: "region_id = :region_id",
         ExpressionAttributeValues: {

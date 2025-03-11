@@ -1,10 +1,8 @@
 import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import {
-  badRequestResponse,
-  internalServerErrorResponse,
-  notFoundResponse,
-} from "../../responses";
+import { badRequestResponse, notFoundResponse } from "../../responses";
+
+const tableName = "matool_districts";
 
 const getDistrictDetail = async (
   event: APIGatewayProxyEvent,
@@ -16,7 +14,7 @@ const getDistrictDetail = async (
   }
   const data = await client.send(
     new GetCommand({
-      TableName: "matool_districts",
+      TableName: tableName,
       Key: { id },
     })
   );

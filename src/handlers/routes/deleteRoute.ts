@@ -1,12 +1,9 @@
 import { DeleteCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import {
-  unauthorizedResponse,
-  forbiddenResponse,
-  internalServerErrorResponse,
-} from "../../responses";
+import { unauthorizedResponse, forbiddenResponse } from "../../responses";
 
 const tableName = "matool_routes";
+
 const deleteRoute = async (
   event: APIGatewayProxyEvent,
   client: DynamoDBDocumentClient

@@ -28,7 +28,7 @@ export const handler = async (
       return notFoundResponse();
     }
   } catch (error) {
-    console.error("Error processing request:", error);
+    console.error("ERROR:", error);
     return internalServerErrorResponse();
   }
 };

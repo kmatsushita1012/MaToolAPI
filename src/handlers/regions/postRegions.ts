@@ -1,4 +1,4 @@
-import { PutItemCommand, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
+import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
@@ -8,7 +8,7 @@ import {
   unauthorizedResponse,
 } from "../../responses";
 
-const tableName = "matool_region";
+const tableName = "matool_regions";
 const expectedAttributes = [
   "id",
   "name",

@@ -1,11 +1,5 @@
-import { internalServerErrorResponse } from "../../responses";
-
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import {
-  DynamoDBDocumentClient,
-  QueryCommand,
-  ScanCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
 
 const tableName = "matool_routes";
 

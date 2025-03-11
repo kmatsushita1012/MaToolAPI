@@ -7,7 +7,8 @@ import {
 } from "../../responses";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
-const tableName = "tableName";
+
+const tableName = "matool_districts";
 const expectedAttributes = [
   "id",
   "name",
