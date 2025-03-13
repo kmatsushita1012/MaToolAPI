@@ -1,10 +1,9 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-import getRouteDetail from "./routes/getRouteDetail";
-import postRoute from "./routes/postRoute";
-import deleteRoute from "./routes/deleteRoute";
+import getLocation from "../handlers/locations/getLocation";
+import postLocations from "../handlers/locations/postLocation";
 
-const handleRegions = async (
+const handleLocations = async (
   event: APIGatewayProxyEvent,
   client: DynamoDBDocumentClient
 ): Promise<APIGatewayProxyResult> => {
@@ -12,11 +11,9 @@ const handleRegions = async (
   const httpMethod = event.httpMethod;
 
   if (httpMethod == "GET") {
-    return await getRouteDetail(event, client);
+    return await getLocation(event, client);
   } else if (httpMethod == "POST") {
-    return await postRoute(event, client);
-  } else if (httpMethod == "DELETE") {
-    return await deleteRoute(event, client);
+    return await postLocations(event, client);
   } else {
     return {
       statusCode: 405,
@@ -25,4 +22,4 @@ const handleRegions = async (
   }
 };
 
-export default handleRegions;
+export default handleLocations;

@@ -1,10 +1,10 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
-import { toCamelCase } from "../../caseChanger";
+import { toCamelCase } from "../../utils/formatter";
 
 const tableName = "matool_routes";
 
-const getDistrictSummaries = async (
+const getRouteSummaries = async (
   event: APIGatewayProxyEvent,
   client: DynamoDBDocumentClient
 ): Promise<APIGatewayProxyResult> => {
@@ -27,7 +27,8 @@ const getDistrictSummaries = async (
     })
   );
   const items = data.Items?.map((item) => ({
-    id: item.id,
+    districtId: item.districtId,
+    date: item.date,
     title: item.title,
   }));
   const camelData = toCamelCase(items);
@@ -37,4 +38,4 @@ const getDistrictSummaries = async (
   };
 };
 
-export default getDistrictSummaries;
+export default getRouteSummaries;

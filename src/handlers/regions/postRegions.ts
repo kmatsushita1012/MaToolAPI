@@ -6,8 +6,8 @@ import {
   badRequestResponse,
   forbiddenResponse,
   unauthorizedResponse,
-} from "../../responses";
-import { toSnakeCase } from "../../caseChanger";
+} from "../../utils/responses";
+import { toSnakeCase } from "../../utils/formatter";
 
 const tableName = "matool_regions";
 const expectedAttributes = [
@@ -34,15 +34,16 @@ const postRegions = async (
   if (data.id && data.id !== userSub) {
     return forbiddenResponse();
   }
+  //変換
+  const snakeData = toSnakeCase(data);
   //属性の一致を確認
-  const actualAttributes = Object.keys(data).filter(
+  const actualAttributes = Object.keys(snakeData).filter(
     (key) => data[key] !== undefined
   );
   if (actualAttributes.length !== expectedAttributes.length) {
     return badRequestResponse();
   }
   //変換
-  const snakeData = toSnakeCase(data);
   const marshalledData = marshall(snakeData, { removeUndefinedValues: true });
 
   await client.send(

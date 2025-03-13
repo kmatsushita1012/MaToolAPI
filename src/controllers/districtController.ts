@@ -1,9 +1,9 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-import getDistrictSummaries from "./districts/getDistrictSummaries";
-import getDistrictDetail from "./districts/getDistrictDetail";
-import postDistricts from "./districts/postDistricts";
-import { methodNotAllowedResponse, notFoundResponse } from "../responses";
+import getDistrictSummaries from "../handlers/districts/getDistrictSummaries";
+import getDistrictDetail from "../handlers/districts/getDistrictDetail";
+import postDistricts from "../handlers/districts/postDistricts";
+import { methodNotAllowedResponse, notFoundResponse } from "../utils/responses";
 
 const handleDistricts = async (
   event: APIGatewayProxyEvent,

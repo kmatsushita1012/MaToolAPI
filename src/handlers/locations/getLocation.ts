@@ -1,17 +1,23 @@
 import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { badRequestResponse, notFoundResponse } from "../../utils/responses";
+import { notFoundResponse, unauthorizedResponse } from "../../utils/responses";
 import { toCamelCase } from "../../utils/formatter";
 
-const tableName = "matool_districts";
+const tableName = "matool_location";
 
-const getDistrictDetail = async (
+const getLocation = async (
   event: APIGatewayProxyEvent,
   client: DynamoDBDocumentClient
 ): Promise<APIGatewayProxyResult> => {
   const id = event.queryStringParameters?.id;
-  if (!id) {
-    return badRequestResponse();
+
+  //ID確認
+  const userSub = event.requestContext.authorizer?.claims?.sub;
+  if (!userSub) {
+    return unauthorizedResponse();
+  }
+  if (id && id !== userSub) {
+    return forbiddenResponse();
   }
   const data = await client.send(
     new GetCommand({
@@ -29,4 +35,9 @@ const getDistrictDetail = async (
   };
 };
 
-export default getDistrictDetail;
+export default getLocation;
+function forbiddenResponse():
+  | APIGatewayProxyResult
+  | PromiseLike<APIGatewayProxyResult> {
+  throw new Error("Function not implemented.");
+}

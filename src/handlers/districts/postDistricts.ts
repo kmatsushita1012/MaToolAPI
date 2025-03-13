@@ -4,10 +4,10 @@ import {
   badRequestResponse,
   forbiddenResponse,
   unauthorizedResponse,
-} from "../../responses";
+} from "../../utils/responses";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
-import { toSnakeCase } from "../../caseChanger";
+import { toSnakeCase } from "../../utils/formatter";
 
 const tableName = "matool_districts";
 const expectedAttributes = [
@@ -34,15 +34,16 @@ const postDistricts = async (
   if (data.id && data.id !== userSub) {
     return forbiddenResponse();
   }
+  //変換
+  const snakeData = toSnakeCase(data);
   //属性の一致を確認
-  const actualAttributes = Object.keys(data).filter(
+  const actualAttributes = Object.keys(snakeData).filter(
     (key) => data[key] !== undefined
   );
   if (actualAttributes.length !== expectedAttributes.length) {
     return badRequestResponse();
   }
   //変換
-  const snakeData = toSnakeCase(data);
   const marshalledData = marshall(snakeData, { removeUndefinedValues: true });
 
   await client.send(

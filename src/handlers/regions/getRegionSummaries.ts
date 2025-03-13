@@ -1,6 +1,6 @@
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { toCamelCase } from "../../caseChanger";
+import { toCamelCase } from "../../utils/formatter";
 
 const tableName = "matool_regions";
 

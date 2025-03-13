@@ -1,12 +1,16 @@
 // src/app.ts
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import handleRegions from "./handlers/handleRegions";
-import handleDistricts from "./handlers/handleDistricts";
-import handleRoutes from "./handlers/handleRoutes";
-import { internalServerErrorResponse, notFoundResponse } from "./responses";
+import handleRegions from "./controllers/regionController";
+import handleDistricts from "./controllers/districtController";
+import handleRoutes from "./controllers/routeController";
+import {
+  internalServerErrorResponse,
+  notFoundResponse,
+} from "./utils/responses";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import handleLocations from "./controllers/locationController";
 
 const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-1" });
 const client = DynamoDBDocumentClient.from(dynamoDBClient);
@@ -24,6 +28,8 @@ export const handler = async (
       return await handleDistricts(event, client);
     } else if (path && path.startsWith("/routes")) {
       return await handleRoutes(event, client);
+    } else if (path && path.startsWith("/locations")) {
+      return await handleLocations(event, client);
     } else {
       return notFoundResponse();
     }
