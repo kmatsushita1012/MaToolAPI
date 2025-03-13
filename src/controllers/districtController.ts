@@ -1,38 +1,39 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-import getDistrictSummaries from "../handlers/districts/getDistrictSummaries";
-import getDistrictDetail from "../handlers/districts/getDistrictDetail";
-import postDistricts from "../handlers/districts/postDistricts";
-import { methodNotAllowedResponse, notFoundResponse } from "../utils/responses";
+import { badRequestResponse, notImplemented } from "../utils/responses";
+import { fromJson } from "../utils/formatter";
+import { District } from "../domain/models/districts";
+import DistrictRepository from "../inflastructure/repository/DistrictRepository";
 
-const handleDistricts = async (
-  event: APIGatewayProxyEvent,
-  client: DynamoDBDocumentClient
-): Promise<APIGatewayProxyResult> => {
-  const path = event.path;
-  const httpMethod = event.httpMethod;
-
-  if (path && path.startsWith("/districts/summaries")) {
-    if (httpMethod == "GET") {
-      return await getDistrictSummaries(event, client);
-    } else {
-      return methodNotAllowedResponse();
-    }
-  } else if (path && path.startsWith("/districts/detail")) {
-    if (httpMethod == "GET") {
-      return await getDistrictDetail(event, client);
-    } else {
-      return methodNotAllowedResponse();
-    }
-  } else if (path && path.startsWith("/districts")) {
-    if (httpMethod == "POST") {
-      return await postDistricts(event, client);
-    } else {
-      return methodNotAllowedResponse();
-    }
-  } else {
-    return notFoundResponse();
+export default class DistrictController {
+  private repository: DistrictRepository;
+  constructor(client: DynamoDBDocumentClient) {
+    this.repository = new DistrictRepository(client);
   }
-};
 
-export default handleDistricts;
+  getDetail = async (
+    event: APIGatewayProxyEvent
+  ): Promise<APIGatewayProxyResult> => {
+    const id = event.queryStringParameters?.id;
+    if (!id) {
+      return badRequestResponse();
+    }
+    return notImplemented();
+  };
+  getSummaries = async (
+    event: APIGatewayProxyEvent
+  ): Promise<APIGatewayProxyResult> => {
+    const regionId = event.queryStringParameters?.regionId;
+    return notImplemented();
+  };
+  post = async (
+    event: APIGatewayProxyEvent
+  ): Promise<APIGatewayProxyResult> => {
+    if (!event.body) {
+      return badRequestResponse();
+    }
+    const data = fromJson<District>(event.body);
+    const userSub = event.requestContext.authorizer?.claims?.sub;
+    return notImplemented();
+  };
+}

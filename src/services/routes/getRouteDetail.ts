@@ -8,41 +8,27 @@ import { badRequestResponse, notFoundResponse } from "../../utils/responses";
 import { toCamelCase } from "../../utils/formatter";
 import { compareDate, compareDateAndTime } from "../../utils/dateTimeUtils";
 import { makeRouteId } from "../../utils/routeUtils";
+import { SimpleDate } from "../../domain/models/share";
 
 const routeTableName = "matool_routes";
 const locationTableName = "matool_locations";
 
 const getRouteDetail = async (
-  event: APIGatewayProxyEvent,
-  client: DynamoDBDocumentClient
+  districtId: string,
+  date: SimpleDate | null,
+  title: string | null
 ): Promise<APIGatewayProxyResult> => {
-  const districtId = event.queryStringParameters?.districtId;
-  if (!districtId) {
-    return badRequestResponse();
-  }
-  const year = event.queryStringParameters?.year;
-  const month = event.queryStringParameters?.month;
-  const day = event.queryStringParameters?.day;
-  const title = event.queryStringParameters?.title;
-
   let route;
   const currentFullDate = new Date();
-  const currentDate: DateType = {
+  const currentDate: SimpleDate = {
     year: currentFullDate.getFullYear(),
     month: currentFullDate.getMonth() + 1,
     day: currentFullDate.getDate(),
   };
-  if (year && month && day && title) {
-    const date = {
-      year:
-        Number(event.queryStringParameters?.year) || new Date().getFullYear(),
-      month:
-        Number(event.queryStringParameters?.month) || new Date().getMonth() + 1,
-      day: Number(event.queryStringParameters?.day) || new Date().getDate(),
-    };
+  if (date && title) {
     const routeId = makeRouteId(date, title);
     route = await getSpecifiedRoute(client, districtId, routeId);
-  } else if (!year && !month && !day && !title) {
+  } else if (!date && !title) {
     const currentTime = {
       hour: currentFullDate.getHours(),
       minute: currentFullDate.getMinutes(),

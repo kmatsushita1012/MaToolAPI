@@ -28,20 +28,20 @@ export const toSnakeCase = (obj: any): any => {
   return obj;
 };
 
-function fromJson<T>(json: string): T {
+export const fromJson = <T>(json: string): T => {
   try {
     const parsed: T = JSON.parse(json);
     return parsed;
   } catch (error) {
     throw new Error("Invalid JSON string");
   }
-}
+};
 
-function toJson<T>(obj: T): string {
+export const toJson = <T>(obj: T): string => {
   try {
     const jsonString: string = JSON.stringify(obj);
     return jsonString;
   } catch (error) {
     throw new Error("Unable to convert object to JSON string");
   }
-}
+};
