@@ -1,6 +1,6 @@
 import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { toCamelCase, toSnakeCase } from "../../utils/formatter";
-import { Location } from "../../domain/models/location";
+import { Location, LocationWithET } from "../../domain/models/location";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
 import ILocationRepository from "../../domain/interface/repository/ILocationRepository";
@@ -28,7 +28,7 @@ class LocationRepositoryImpl extends ILocationRepository {
     return location;
   };
 
-  put = async (location: Location): Promise<string> => {
+  put = async (location: LocationWithET): Promise<string> => {
     const snakeData = toSnakeCase({ location });
 
     const marshalledData = marshall(snakeData, { removeUndefinedValues: true });

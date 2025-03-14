@@ -12,10 +12,10 @@ export const client = DynamoDBDocumentClient.from(dynamoDBClient);
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
-  const { httpMethod, path, querystringParameters } = event;
+  const { httpMethod, path, queryStringParameters } = event;
   console.log(`METHOD : ${httpMethod}`);
   console.log(`PATH : ${path}`);
-  console.log(`PARAM : ${querystringParameters}`);
+  console.log(`PARAM : ${queryStringParameters}`);
   try {
     return await rootRouter(event);
   } catch (error) {

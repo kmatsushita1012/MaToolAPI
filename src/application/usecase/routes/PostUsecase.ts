@@ -1,4 +1,3 @@
-import { APIGatewayProxyResult } from "aws-lambda";
 import { makeRouteId } from "../../../utils/routeUtils";
 import { Route, RouteWithId } from "../../../domain/models/route";
 import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";

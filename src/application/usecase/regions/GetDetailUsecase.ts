@@ -2,10 +2,7 @@ import IRegionRepository from "../../../domain/interface/repository/IRegionRepos
 import { Region } from "../../../domain/models/regions";
 
 export default class GetDetailUsecase {
-  private repository: IRegionRepository;
-  constructor(repository: IRegionRepository) {
-    this.repository = repository;
-  }
+  constructor(private repository: IRegionRepository) {}
   execute = async (id: string): Promise<Region> => {
     const item = await this.repository.get(id);
     return item;

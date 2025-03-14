@@ -1,6 +1,6 @@
 import { bool } from "aws-sdk/clients/signer";
 import { Coordinate, SimpleDate, SimpleTime, UUID } from "./share";
-import {Location} from "./location";
+import { Location } from "./location";
 export type Route = {
   districtId: string;
   date: SimpleDate;
@@ -27,7 +27,7 @@ export type RouteSummary = {
   title: string;
 };
 
-export type Point = {
+type Point = {
   id: UUID;
   coordinate: Coordinate;
   title: string | null;
@@ -36,7 +36,7 @@ export type Point = {
   isPassed: bool;
 };
 
-export type Segment = {
+type Segment = {
   id: UUID;
   start: Coordinate;
   end: Coordinate;

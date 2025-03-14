@@ -2,10 +2,7 @@ import IRegionRepository from "../../../domain/interface/repository/IRegionRepos
 import { Region, RegionSummary } from "../../../domain/models/regions";
 
 export default class GetSummariesUsecase {
-  private repository: IRegionRepository;
-  constructor(repository: IRegionRepository) {
-    this.repository = repository;
-  }
+  constructor(private repository: IRegionRepository) {}
   execute = async () => {
     const items: Region[] = await this.repository.scan();
     const summaries: RegionSummary[] = items.map((item) => {

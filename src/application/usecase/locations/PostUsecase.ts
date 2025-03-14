@@ -1,9 +1,9 @@
-import { Location } from "../../../domain/models/location";
+import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
+import { Location, LocationWithET } from "../../../domain/models/location";
 import { SimpleDate, SimpleTime } from "../../../domain/models/share";
-import { LocationRepository } from "../../../inflastructure/repository/LocationRepository";
 
 export default class PostUsecae {
-  constructor(private repository: LocationRepository) {}
+  constructor(private repository: ILocationRepository) {}
 
   execute = async (location: Location, userSub: string): Promise<string> => {
     if (location.districtId !== userSub) {
@@ -15,7 +15,10 @@ export default class PostUsecae {
       location.time,
       expirationSpan
     );
-    const locationWithET = { ...location, expirationTime: expirationTime };
+    const locationWithET: LocationWithET = {
+      ...location,
+      expirationTime: expirationTime,
+    };
     const result = await this.repository.put(locationWithET);
     return result;
   };

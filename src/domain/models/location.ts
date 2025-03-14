@@ -6,3 +6,7 @@ export type Location = {
   date: SimpleDate;
   time: SimpleTime;
 };
+
+export type LocationWithET = Location & {
+  expirationTime: number;
+};

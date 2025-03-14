@@ -5,8 +5,9 @@ export type District = {
   name: string;
   regionId: string;
   description: string | null;
-  base: Coordinate;
-  area: Coordinate[];
+  base: Coordinate | null;
+  area: Coordinate[] | null;
+  imagePath: string | null;
 };
 export type DistrictSummary = {
   id: string;

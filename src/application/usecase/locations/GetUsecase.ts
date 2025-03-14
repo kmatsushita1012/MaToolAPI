@@ -1,7 +1,7 @@
-import { LocationRepository } from "../../../inflastructure/repository/LocationRepository";
+import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
 
 export default class GetUsecase {
-  constructor(private repository: LocationRepository) {}
+  constructor(private repository: ILocationRepository) {}
   execute = async (id: string, userSub: string) => {
     if (id !== userSub) {
       throw new Error();
