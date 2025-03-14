@@ -4,8 +4,8 @@ import {
   notFoundResponse,
 } from "../../utils/responses";
 import { client } from "../..";
-import DistrictController from "../../controllers/DistrictController";
-import postDistricts from "../../services/districts/postDistricts";
+import DistrictController from "../controllers/DistrictController";
+import postDistricts from "../../application/usecase/districts/PostUsecase";
 
 const controller = new DistrictController(client);
 

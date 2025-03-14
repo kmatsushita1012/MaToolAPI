@@ -5,7 +5,7 @@ import {
   methodNotAllowedResponse,
   notFoundResponse,
 } from "../../utils/responses";
-import RegionController from "../../controllers/RegionController";
+import RegionController from "../controllers/RegionController";
 import { client } from "../..";
 
 const controller = new RegionController(client);

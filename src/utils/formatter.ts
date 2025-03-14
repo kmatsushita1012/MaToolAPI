@@ -1,29 +1,28 @@
 // スネークケース → キャメルケース変換関数
-export const toCamelCase = (obj: any): any => {
+export const toCamelCase = <T>(obj: T): T => {
   if (Array.isArray(obj)) {
-    return obj.map(toCamelCase);
+    return obj.map(toCamelCase) as unknown as T;
   } else if (typeof obj === "object" && obj !== null) {
     return Object.fromEntries(
-      Object.entries(obj).map(([key, value]) => [
+      Object.entries(obj as Record<string, any>).map(([key, value]) => [
         key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()),
         toCamelCase(value),
       ])
-    );
+    ) as unknown as T;
   }
   return obj;
 };
-
-// APIリクエスト時にキャメルケース → スネークケース
-export const toSnakeCase = (obj: any): any => {
+// キャメルケース → スネークケース変換関数
+export const toSnakeCase = <T>(obj: T): T => {
   if (Array.isArray(obj)) {
-    return obj.map(toSnakeCase);
+    return obj.map(toSnakeCase) as unknown as T;
   } else if (typeof obj === "object" && obj !== null) {
     return Object.fromEntries(
-      Object.entries(obj).map(([key, value]) => [
+      Object.entries(obj as Record<string, any>).map(([key, value]) => [
         key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`),
         toSnakeCase(value),
       ])
-    );
+    ) as unknown as T;
   }
   return obj;
 };
@@ -39,8 +38,8 @@ export const fromJson = <T>(json: string): T => {
 
 export const toJson = <T>(obj: T): string => {
   try {
-    const jsonString: string = JSON.stringify(obj);
-    return jsonString;
+    const jsonstring: string = JSON.stringify(obj);
+    return jsonstring;
   } catch (error) {
     throw new Error("Unable to convert object to JSON string");
   }

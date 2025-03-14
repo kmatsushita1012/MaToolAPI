@@ -7,12 +7,14 @@ import { District, DistrictSummary } from "../../domain/models/districts";
 import { toCamelCase, toSnakeCase } from "../../utils/formatter";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
+import IDistrictRepository from "../../domain/interface/repository/IDistrictRepository";
 
 const tableName = "matool_district";
 
-export default class DistrictRepository {
+class DistrictRepositoryImpl extends IDistrictRepository {
   private client: DynamoDBDocumentClient;
   constructor(client: DynamoDBDocumentClient) {
+    super();
     this.client = client;
   }
 
@@ -27,10 +29,11 @@ export default class DistrictRepository {
       throw new Error();
     }
     const camelData = toCamelCase(data.Item);
-    return camelData;
+    const district: District = camelData as District;
+    return district;
   };
 
-  scan = async (regionId: String): Promise<DistrictSummary[]> => {
+  scan = async (regionId: string): Promise<District[]> => {
     let data;
 
     if (regionId) {
@@ -52,15 +55,15 @@ export default class DistrictRepository {
       );
     }
 
+    if (!data.Items) {
+      throw new Error("No items found");
+    }
     const camelData = toCamelCase(data.Items);
-    const items = camelData.map((item) => ({
-      id: item.id,
-      name: item.name,
-    }));
-    return camelData;
+    const districts: District[] = camelData.map((item) => item as District);
+    return districts;
   };
 
-  putItem = async (item: District): Promise<string> => {
+  put = async (item: District): Promise<string> => {
     const snakeData = toSnakeCase(item);
     const marshalledData = marshall(snakeData, { removeUndefinedValues: true });
 
@@ -73,3 +76,4 @@ export default class DistrictRepository {
     return "Success";
   };
 }
+export { DistrictRepositoryImpl as DistrictRepository };

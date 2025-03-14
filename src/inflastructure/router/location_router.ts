@@ -4,7 +4,7 @@ import {
   methodNotAllowedResponse,
 } from "../../utils/responses";
 import { client } from "../..";
-import LocationController from "../../controllers/LocationController";
+import LocationController from "../controllers/LocationController";
 
 const controller = new LocationController(client);
 

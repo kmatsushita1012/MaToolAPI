@@ -1,7 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 import { methodNotAllowedResponse } from "../../utils/responses";
-import RouteController from "../../controllers/RouteController";
+import RouteController from "../controllers/RouteController";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-1" });

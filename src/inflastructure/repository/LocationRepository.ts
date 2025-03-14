@@ -3,12 +3,14 @@ import { toCamelCase, toSnakeCase } from "../../utils/formatter";
 import { Location } from "../../domain/models/location";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
+import ILocationRepository from "../../domain/interface/repository/ILocationRepository";
 
 const tableName = "matool_location";
 
-export default class LocationRepository {
+class LocationRepositoryImpl extends ILocationRepository {
   private client: DynamoDBDocumentClient;
   constructor(client: DynamoDBDocumentClient) {
+    super();
     this.client = client;
   }
   get = async (id: string): Promise<Location> => {
@@ -22,11 +24,11 @@ export default class LocationRepository {
       throw new Error();
     }
     const camelData = toCamelCase(data.Item);
-    const item: Location = camelData;
-    return item;
+    const location: Location = camelData as Location;
+    return location;
   };
 
-  putItem = async (location: Location) => {
+  put = async (location: Location): Promise<string> => {
     const snakeData = toSnakeCase({ location });
 
     const marshalledData = marshall(snakeData, { removeUndefinedValues: true });
@@ -37,5 +39,8 @@ export default class LocationRepository {
         Item: marshalledData,
       })
     );
+    return "Success";
   };
 }
+
+export { LocationRepositoryImpl as LocationRepository };

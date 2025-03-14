@@ -7,11 +7,13 @@ import { toCamelCase, toSnakeCase } from "../../utils/formatter";
 import { Region, RegionSummary } from "../../domain/models/regions";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
+import IRegionRepository from "../../domain/interface/repository/IRegionRepository";
 const tableName = "matool_region";
 
-export default class RegionRepository {
+class RegionRepositoryImpl extends IRegionRepository {
   private client: DynamoDBDocumentClient;
   constructor(client: DynamoDBDocumentClient) {
+    super();
     this.client = client;
   }
   get = async (id: string): Promise<Region> => {
@@ -25,25 +27,26 @@ export default class RegionRepository {
       throw new Error();
     }
     const camelData = toCamelCase(data.Item);
-    return camelData;
+    const region: Region = camelData as Region;
+    return region;
   };
 
-  scan = async (): Promise<RegionSummary[]> => {
+  scan = async (): Promise<Region[]> => {
     const data = await this.client.send(
       new ScanCommand({
         TableName: tableName,
       })
     );
-    const items = data.Items?.map((item) => ({
-      id: item.id,
-      name: item.name,
-    }));
+    if (!data.Items) {
+      throw new Error();
+    }
 
-    const camelData = toCamelCase(items);
-    return camelData;
+    const camelData = toCamelCase(data.Items);
+    const regions: Region[] = camelData?.map((item) => item as Region);
+    return regions;
   };
 
-  putItem = async (item: Region): Promise<string> => {
+  put = async (item: Region): Promise<string> => {
     //変換
     const snakeData = toSnakeCase(item);
     const marshalledData = marshall(snakeData, { removeUndefinedValues: true });
@@ -58,3 +61,4 @@ export default class RegionRepository {
     return "Success";
   };
 }
+export { RegionRepositoryImpl as RegionRepository };
