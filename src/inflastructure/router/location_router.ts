@@ -4,12 +4,11 @@ import { client } from "../..";
 import LocationController from "../controllers/LocationController";
 import { methodNotAllowed } from "../../utils/error";
 
-const controller = new LocationController(client);
-
 export const locationRouter = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   const httpMethod = event.httpMethod;
+  const controller = new LocationController(client);
 
   if (httpMethod == "GET") {
     return await controller.get(event);

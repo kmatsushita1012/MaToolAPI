@@ -9,7 +9,7 @@ import { badRequest, notFound } from "../../utils/error";
 const rootRouter = async (event: APIGatewayProxyEvent) => {
   const path = event.path;
   if (!path) {
-    return errorResponse(badRequest);
+    return errorResponse(badRequest());
   }
   if (path.startsWith("/regions")) {
     return await regionRouter(event);
