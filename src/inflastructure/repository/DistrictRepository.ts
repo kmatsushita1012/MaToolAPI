@@ -3,7 +3,7 @@ import {
   GetCommand,
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
-import { District, DistrictSummary } from "../../domain/models/districts";
+import { District } from "../../domain/models/districts";
 import { toCamelCase, toSnakeCase } from "../../utils/formatter";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
@@ -12,7 +12,7 @@ import { notFound } from "../../utils/error";
 
 const tableName = "matool_district";
 
-class DistrictRepositoryImpl extends IDistrictRepository {
+class DistrictRepositoryAWSImpl extends IDistrictRepository {
   private client: DynamoDBDocumentClient;
   constructor(client: DynamoDBDocumentClient) {
     super();
@@ -77,4 +77,4 @@ class DistrictRepositoryImpl extends IDistrictRepository {
     return "Success";
   };
 }
-export { DistrictRepositoryImpl as DistrictRepository };
+export { DistrictRepositoryAWSImpl as DistrictRepository };

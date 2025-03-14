@@ -2,7 +2,7 @@ import { APIGatewayProxyEvent } from "aws-lambda";
 import { errorResponse } from "../../utils/responses";
 import { client } from "../..";
 import DistrictController from "../controllers/DistrictController";
-import { badRequest, methodNotAllowed, notFound } from "../../utils/error";
+import { badRequest, notFound } from "../../utils/error";
 
 const controller = new DistrictController(client);
 

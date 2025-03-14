@@ -8,7 +8,7 @@ import { notFound } from "../../utils/error";
 
 const tableName = "matool_location";
 
-class LocationRepositoryImpl extends ILocationRepository {
+class LocationRepositoryAWSImpl extends ILocationRepository {
   private client: DynamoDBDocumentClient;
   constructor(client: DynamoDBDocumentClient) {
     super();
@@ -42,4 +42,4 @@ class LocationRepositoryImpl extends ILocationRepository {
   };
 }
 
-export { LocationRepositoryImpl as LocationRepository };
+export { LocationRepositoryAWSImpl as LocationRepository };

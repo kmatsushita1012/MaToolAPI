@@ -16,7 +16,8 @@ export const handler = async (
   const { httpMethod, path, queryStringParameters } = event;
   console.log(`METHOD : ${httpMethod}`);
   console.log(`PATH : ${path}`);
-  console.log(`PARAM : ${queryStringParameters}`);
+  console.log(`PARAM : ${String(queryStringParameters)}`);
+  console.log(`CLIENT : ${client}`);
   try {
     return await rootRouter(event);
   } catch (error) {

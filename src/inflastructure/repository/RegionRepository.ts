@@ -11,7 +11,7 @@ import IRegionRepository from "../../domain/interface/repository/IRegionReposito
 import { notFound } from "../../utils/error";
 const tableName = "matool_region";
 
-class RegionRepositoryImpl extends IRegionRepository {
+class RegionRepositoryAWSImpl extends IRegionRepository {
   private client: DynamoDBDocumentClient;
   constructor(client: DynamoDBDocumentClient) {
     super();
@@ -62,4 +62,4 @@ class RegionRepositoryImpl extends IRegionRepository {
     return "Success";
   };
 }
-export { RegionRepositoryImpl as RegionRepository };
+export { RegionRepositoryAWSImpl as RegionRepository };
