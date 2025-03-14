@@ -9,7 +9,8 @@ import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
 import IRegionRepository from "../../domain/interface/repository/IRegionRepository";
 import { notFound } from "../../utils/error";
-const tableName = "matool_region";
+
+const tableName = "matool_regions";
 
 class RegionRepositoryAWSImpl extends IRegionRepository {
   private client: DynamoDBDocumentClient;

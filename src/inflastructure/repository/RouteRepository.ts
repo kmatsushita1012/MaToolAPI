@@ -10,6 +10,7 @@ import { RouteWithId } from "../../domain/models/route";
 import { toCamelCase, toSnakeCase } from "../../utils/formatter";
 import IRouteRepository from "../../domain/interface/repository/IRouteRepository";
 import { notFound } from "../../utils/error";
+
 const tableName = "matool_routes";
 
 class RouteRepositoryAWSImpl extends IRouteRepository {

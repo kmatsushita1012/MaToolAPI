@@ -10,7 +10,7 @@ import { marshall } from "@aws-sdk/util-dynamodb";
 import IDistrictRepository from "../../domain/interface/repository/IDistrictRepository";
 import { notFound } from "../../utils/error";
 
-const tableName = "matool_district";
+const tableName = "matool_districts";
 
 class DistrictRepositoryAWSImpl extends IDistrictRepository {
   private client: DynamoDBDocumentClient;

@@ -6,7 +6,7 @@ import { marshall } from "@aws-sdk/util-dynamodb";
 import ILocationRepository from "../../domain/interface/repository/ILocationRepository";
 import { notFound } from "../../utils/error";
 
-const tableName = "matool_location";
+const tableName = "matool_locations";
 
 class LocationRepositoryAWSImpl extends ILocationRepository {
   private client: DynamoDBDocumentClient;
