@@ -18,7 +18,7 @@ export const errorResponse = (error: any): APIGatewayProxyResult => {
   } else {
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Internal Server Error" }),
+      body: JSON.stringify({ message: String(error) }),
     };
   }
 };

@@ -26,6 +26,7 @@ export default class DistrictController {
       const result = await usecase.execute(id);
       return successResponse(result);
     } catch (error) {
+      console.log(error);
       return errorResponse(error);
     }
   };
@@ -42,6 +43,7 @@ export default class DistrictController {
       const result = await usecase.execute(regionId);
       return successResponse(result);
     } catch (error) {
+      console.log(error);
       return errorResponse(error);
     }
   };
@@ -62,6 +64,7 @@ export default class DistrictController {
       const result = await usecase.execute(data, userSub);
       return successResponse(result);
     } catch (error) {
+      console.log(error);
       throw errorResponse(error);
     }
   };

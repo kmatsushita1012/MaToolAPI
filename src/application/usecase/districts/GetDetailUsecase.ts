@@ -1,5 +1,4 @@
 import IDistrictRepository from "../../../domain/interface/repository/IDistrictRepository";
-import { District } from "../../../domain/models/districts";
 
 export default class GetDetailUsecase {
   private repository: IDistrictRepository;

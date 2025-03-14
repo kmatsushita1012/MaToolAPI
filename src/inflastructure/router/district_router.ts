@@ -12,24 +12,12 @@ const districtRouter = async (event: APIGatewayProxyEvent) => {
   if (!path) {
     return errorResponse(badRequest());
   }
-  if (path && path.startsWith("/districts/summaries")) {
-    if (httpMethod == "GET") {
-      return await controller.getSummaries(event);
-    } else {
-      return errorResponse(methodNotAllowed());
-    }
-  } else if (path && path.startsWith("/districts/detail")) {
-    if (httpMethod == "GET") {
-      return await controller.getDetail(event);
-    } else {
-      return errorResponse(methodNotAllowed());
-    }
-  } else if (path && path.startsWith("/districts")) {
-    if (httpMethod == "POST") {
-      return await controller.post(event);
-    } else {
-      return errorResponse(methodNotAllowed());
-    }
+  if (path.startsWith("/districts/summaries") && httpMethod == "GET") {
+    return await controller.getSummaries(event);
+  } else if (path.startsWith("/districts/detail") && httpMethod == "GET") {
+    return await controller.getDetail(event);
+  } else if (path.startsWith("/districts")) {
+    return await controller.post(event);
   } else {
     return errorResponse(notFound());
   }
