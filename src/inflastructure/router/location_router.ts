@@ -1,14 +1,14 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { errorResponse } from "../../utils/responses";
-import { client } from "../..";
 import LocationController from "../controllers/LocationController";
 import { methodNotAllowed } from "../../utils/error";
+import { controllers } from "../..";
 
 export const locationRouter = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   const httpMethod = event.httpMethod;
-  const controller = new LocationController(client);
+  const controller = controllers.location;
 
   if (httpMethod == "GET") {
     return await controller.get(event);

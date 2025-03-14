@@ -1,15 +1,14 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { errorResponse } from "../../utils/responses";
-import RouteController from "../controllers/RouteController";
 import { notFound } from "../../utils/error";
-import { client } from "../..";
+import { controllers } from "../..";
 
 const routeRouter = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   const path = event.path;
   const httpMethod = event.httpMethod;
-  const controller = new RouteController(client);
+  const controller = controllers.route;
   if (path.startsWith("/route/summaries") && httpMethod == "GET") {
     return await controller.getSummaries(event);
   } else if (path.startsWith("/route/detail") && httpMethod == "GET") {

@@ -6,9 +6,11 @@ import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import rootRouter from "./inflastructure/router/root_router";
 import { errorResponse } from "./utils/responses";
 import { internalServerError } from "./utils/error";
+import Controllers from "./inflastructure/controllers";
 
 const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-1" });
-export const client = DynamoDBDocumentClient.from(dynamoDBClient);
+const client = DynamoDBDocumentClient.from(dynamoDBClient);
+export const controllers = new Controllers(client);
 
 export const handler = async (
   event: APIGatewayProxyEvent
