@@ -1,11 +1,9 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-
-import { methodNotAllowedResponse } from "../../utils/responses";
+import { errorResponse } from "../../utils/responses";
 import RouteController from "../controllers/RouteController";
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-1" });
-const client = DynamoDBDocumentClient.from(dynamoDBClient);
+import { badRequest, notFound } from "../../utils/error";
+import { client } from "../..";
+
 const controller = new RouteController(client);
 
 const routeRouter = async (
@@ -13,6 +11,9 @@ const routeRouter = async (
 ): Promise<APIGatewayProxyResult> => {
   const path = event.path;
   const httpMethod = event.httpMethod;
+  if (!path) {
+    errorResponse(badRequest());
+  }
 
   if (path.startsWith("/route/summaries") && httpMethod == "GET") {
     return await controller.getSummaries(event);
@@ -23,7 +24,7 @@ const routeRouter = async (
   } else if (httpMethod == "DELETE") {
     return await controller.delete(event);
   } else {
-    return methodNotAllowedResponse();
+    return errorResponse(notFound());
   }
 };
 

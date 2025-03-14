@@ -1,17 +1,15 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
-import {
-  internalServerErrorResponse,
-  notFoundResponse,
-} from "../../utils/responses";
+import { errorResponse } from "../../utils/responses";
 import routeRouter from "./route_router";
 import districtRouter from "./district_router";
 import regionRouter from "./region_router";
 import locationRouter from "./location_router";
+import { badRequest, notFound } from "../../utils/error";
 
 const rootRouter = async (event: APIGatewayProxyEvent) => {
   const path = event.path;
   if (!path) {
-    return internalServerErrorResponse();
+    return errorResponse(badRequest);
   }
   if (path.startsWith("/regions")) {
     return await regionRouter(event);
@@ -22,7 +20,7 @@ const rootRouter = async (event: APIGatewayProxyEvent) => {
   } else if (path.startsWith("/locations")) {
     return await locationRouter(event);
   } else {
-    return notFoundResponse();
+    return errorResponse(notFound());
   }
 };
 

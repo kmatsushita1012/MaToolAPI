@@ -9,6 +9,7 @@ import {
 import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
 import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
 import { Location } from "../../../domain/models/location";
+import { badRequest, notFound } from "../../../utils/error";
 
 export default class GetDetailUsecase {
   constructor(
@@ -37,13 +38,12 @@ export default class GetDetailUsecase {
       };
       route = await this.getCurrentRoute(districtId, currentDate, currentTime);
     } else {
-      throw new Error();
+      throw badRequest();
     }
     if (!route) {
-      throw new Error();
+      throw notFound();
     }
     let location: Location | null = null;
-    //当日なら位置情報を配信
     if (compareDate(currentDate, route.date) !== 0) {
       location = await this.locationRepository.get(districtId);
     }
@@ -70,7 +70,6 @@ export default class GetDetailUsecase {
     date: SimpleDate,
     time: SimpleTime
   ) => {
-    // クエリで全てのアイテムを取得
     const items = await this.routeRepository.query(districtId);
     const routeWithId = this.selectCurrentItem(items, date, time);
     const route = routeWithId as Route;

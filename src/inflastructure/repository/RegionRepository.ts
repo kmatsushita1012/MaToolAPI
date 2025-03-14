@@ -8,6 +8,7 @@ import { Region, RegionSummary } from "../../domain/models/regions";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
 import IRegionRepository from "../../domain/interface/repository/IRegionRepository";
+import { notFound } from "../../utils/error";
 const tableName = "matool_region";
 
 class RegionRepositoryImpl extends IRegionRepository {
@@ -24,7 +25,7 @@ class RegionRepositoryImpl extends IRegionRepository {
       })
     );
     if (!data.Item) {
-      throw new Error();
+      throw notFound();
     }
     const camelData = toCamelCase(data.Item);
     const region: Region = camelData as Region;
@@ -38,7 +39,7 @@ class RegionRepositoryImpl extends IRegionRepository {
       })
     );
     if (!data.Items) {
-      throw new Error();
+      throw notFound();
     }
 
     const camelData = toCamelCase(data.Items);

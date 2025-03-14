@@ -1,9 +1,6 @@
 import IDistrictRepository from "../../../domain/interface/repository/IDistrictRepository";
 import { District } from "../../../domain/models/districts";
-import {
-  forbiddenResponse,
-  unauthorizedResponse,
-} from "../../../utils/responses";
+import { unauthorized } from "../../../utils/error";
 
 export default class PostUsecase {
   private repository: IDistrictRepository;
@@ -11,11 +8,8 @@ export default class PostUsecase {
     this.repository = repository;
   }
   execute = async (district: District, userSub: string) => {
-    if (!userSub) {
-      return unauthorizedResponse();
-    }
     if (district.id !== userSub) {
-      return forbiddenResponse();
+      return unauthorized();
     }
     const result = await this.repository.put(district);
     return result;

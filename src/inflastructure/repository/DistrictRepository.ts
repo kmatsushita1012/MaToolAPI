@@ -8,6 +8,7 @@ import { toCamelCase, toSnakeCase } from "../../utils/formatter";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
 import IDistrictRepository from "../../domain/interface/repository/IDistrictRepository";
+import { notFound } from "../../utils/error";
 
 const tableName = "matool_district";
 
@@ -26,7 +27,7 @@ class DistrictRepositoryImpl extends IDistrictRepository {
       })
     );
     if (!data.Item) {
-      throw new Error();
+      throw notFound();
     }
     const camelData = toCamelCase(data.Item);
     const district: District = camelData as District;
@@ -56,7 +57,7 @@ class DistrictRepositoryImpl extends IDistrictRepository {
     }
 
     if (!data.Items) {
-      throw new Error("No items found");
+      throw notFound();
     }
     const camelData = toCamelCase(data.Items);
     const districts: District[] = camelData.map((item) => item as District);

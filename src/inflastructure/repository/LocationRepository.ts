@@ -4,6 +4,7 @@ import { Location, LocationWithET } from "../../domain/models/location";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
 import ILocationRepository from "../../domain/interface/repository/ILocationRepository";
+import { notFound } from "../../utils/error";
 
 const tableName = "matool_location";
 
@@ -21,7 +22,7 @@ class LocationRepositoryImpl extends ILocationRepository {
       })
     );
     if (!data.Item) {
-      throw new Error();
+      throw notFound();
     }
     const camelData = toCamelCase(data.Item);
     const location: Location = camelData as Location;
@@ -30,9 +31,7 @@ class LocationRepositoryImpl extends ILocationRepository {
 
   put = async (location: LocationWithET): Promise<string> => {
     const snakeData = toSnakeCase({ location });
-
     const marshalledData = marshall(snakeData, { removeUndefinedValues: true });
-
     await this.client.send(
       new PutItemCommand({
         TableName: tableName,

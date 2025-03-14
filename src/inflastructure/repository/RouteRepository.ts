@@ -9,6 +9,7 @@ import { marshall } from "@aws-sdk/util-dynamodb";
 import { RouteWithId } from "../../domain/models/route";
 import { toCamelCase, toSnakeCase } from "../../utils/formatter";
 import IRouteRepository from "../../domain/interface/repository/IRouteRepository";
+import { notFound } from "../../utils/error";
 const tableName = "matool_routes";
 
 class RouteRepositoryAWSImpl extends IRouteRepository {
@@ -29,7 +30,7 @@ class RouteRepositoryAWSImpl extends IRouteRepository {
       })
     );
     if (!data.Items) {
-      throw new Error();
+      throw notFound();
     }
     const camelData = toCamelCase(data.Items);
     const routes = camelData.map((item) => item as RouteWithId);
@@ -46,7 +47,7 @@ class RouteRepositoryAWSImpl extends IRouteRepository {
       })
     );
     if (!data.Item) {
-      throw new Error();
+      throw notFound();
     }
     const camelData = toCamelCase(data.Item);
     const route: RouteWithId = camelData as RouteWithId;

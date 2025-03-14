@@ -1,3 +1,5 @@
+import { badRequest, internalServerError } from "./error";
+
 // スネークケース → キャメルケース変換関数
 export const toCamelCase = <T>(obj: T): T => {
   if (Array.isArray(obj)) {
@@ -32,7 +34,7 @@ export const fromJson = <T>(json: string): T => {
     const parsed: T = JSON.parse(json);
     return parsed;
   } catch (error) {
-    throw new Error("Invalid JSON string");
+    throw badRequest(String(error));
   }
 };
 
@@ -41,6 +43,21 @@ export const toJson = <T>(obj: T): string => {
     const jsonstring: string = JSON.stringify(obj);
     return jsonstring;
   } catch (error) {
-    throw new Error("Unable to convert object to JSON string");
+    throw internalServerError(String(error));
+  }
+};
+
+export const convertItem = <T>(obj: any): T => {
+  try {
+    return obj as T;
+  } catch (error) {
+    throw internalServerError(String(error));
+  }
+};
+export const convertArray = <T>(arr: any[]): T[] => {
+  try {
+    return arr.map((item) => convertItem<T>(item));
+  } catch (error) {
+    throw internalServerError(String(error));
   }
 };

@@ -1,13 +1,14 @@
 import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
 import { Location, LocationWithET } from "../../../domain/models/location";
 import { SimpleDate, SimpleTime } from "../../../domain/models/share";
+import { unauthorized } from "../../../utils/error";
 
 export default class PostUsecae {
   constructor(private repository: ILocationRepository) {}
 
   execute = async (location: Location, userSub: string): Promise<string> => {
     if (location.districtId !== userSub) {
-      throw new Error();
+      throw unauthorized;
     }
     //変換
     const expirationTime = this.calculateExpirationTime(
