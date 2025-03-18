@@ -1,22 +1,16 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { errorResponse } from "../../utils/responses";
-import LocationController from "../controllers/LocationController";
-import { methodNotAllowed } from "../../utils/error";
-import { controllers } from "../..";
+import { locationController } from "../..";
+import express from "express";
+import { authenticate } from "../Cognito";
+const router = express.Router();
 
-export const locationRouter = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
-  const httpMethod = event.httpMethod;
-  const controller = controllers.location;
+router.get("/", async (req, res) => {
+  const result = await locationController.get(req);
+  res.status(result.status).json(result.body);
+});
 
-  if (httpMethod == "GET") {
-    return await controller.get(event);
-  } else if (httpMethod == "POST") {
-    return await controller.post(event);
-  } else {
-    return errorResponse(methodNotAllowed());
-  }
-};
+router.post("/", authenticate, async (req, res) => {
+  const result = await locationController.post(req);
+  res.status(result.status).json(result.body);
+});
 
-export default locationRouter;
+export default router;

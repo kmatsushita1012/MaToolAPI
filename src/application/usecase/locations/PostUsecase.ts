@@ -1,40 +1,29 @@
 import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
-import { Location, LocationWithET } from "../../../domain/models/location";
+import {
+  Location,
+  LocationWithET,
+  toLocationWithET,
+} from "../../../domain/models/location";
 import { SimpleDate, SimpleTime } from "../../../domain/models/share";
-import { unauthorized } from "../../../utils/error";
+import { calculateExpirationTime } from "../../../utils/DateTimeUtils";
+import { unauthorized } from "../../../utils/Errors";
 
 export default class PostUsecae {
   constructor(private repository: ILocationRepository) {}
 
-  execute = async (location: Location, userSub: string): Promise<string> => {
-    if (location.districtId !== userSub) {
+  execute = async (item: Location, userSub: string): Promise<string> => {
+    if (item.districtId !== userSub) {
       throw unauthorized;
     }
     //変換
-    const expirationTime = this.calculateExpirationTime(
-      location.date,
-      location.time,
+    const expirationTime = calculateExpirationTime(
+      item.date,
+      item.time,
       expirationSpan
     );
-    const locationWithET: LocationWithET = {
-      ...location,
-      expirationTime: expirationTime,
-    };
+    const locationWithET = toLocationWithET(item, expirationTime);
     const result = await this.repository.put(locationWithET);
     return result;
-  };
-
-  private calculateExpirationTime = (
-    date: SimpleDate,
-    time: SimpleTime,
-    span: number
-  ) => {
-    const isostring = `${date.year}-${date.month}-${date.day}T${time.hour}:${
-      time.minute
-    }:${0}Z`;
-    const fullDate = new Date(isostring);
-    const expirationDate = new Date(fullDate.getTime() + span);
-    return Math.floor(expirationDate.getTime() / 1000);
   };
 }
 

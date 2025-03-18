@@ -1,25 +1,26 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { errorResponse } from "../../utils/responses";
-import { notFound } from "../../utils/error";
-import { controllers } from "../..";
+import { routeController } from "../..";
+import express, { Response, Request } from "express";
+import { authenticate } from "../Cognito";
+const router = express.Router();
 
-const routeRouter = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
-  const path = event.path;
-  const httpMethod = event.httpMethod;
-  const controller = controllers.route;
-  if (path.startsWith("/route/summaries") && httpMethod == "GET") {
-    return await controller.getSummaries(event);
-  } else if (path.startsWith("/route/detail") && httpMethod == "GET") {
-    return await controller.getDetail(event);
-  } else if (httpMethod == "POST") {
-    return await controller.post(event);
-  } else if (httpMethod == "DELETE") {
-    return await controller.delete(event);
-  } else {
-    return errorResponse(notFound());
-  }
-};
+router.get("/summaries", async (req, res) => {
+  const result = await routeController.getSummaries(req);
+  res.status(result.status).json(result.body);
+});
 
-export default routeRouter;
+router.get("/detail", async (req, res) => {
+  const result = await routeController.getDetail(req);
+  res.status(result.status).json(result.body);
+});
+
+router.post("/", authenticate, async (req, res) => {
+  const result = await routeController.post(req);
+  res.status(result.status).json(result.body);
+});
+
+router.delete("/", authenticate, async (req, res) => {
+  const result = await routeController.delete(req);
+  res.status(result.status).json(result.body);
+});
+
+export default router;

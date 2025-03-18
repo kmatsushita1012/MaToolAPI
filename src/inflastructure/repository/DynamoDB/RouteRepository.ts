@@ -6,14 +6,14 @@ import {
   QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
-import { RouteWithId } from "../../domain/models/route";
-import { toCamelCase, toSnakeCase } from "../../utils/formatter";
-import IRouteRepository from "../../domain/interface/repository/IRouteRepository";
-import { notFound } from "../../utils/error";
+import { RouteWithId } from "../../../domain/models/route";
+import { toCamelCase, toSnakeCase } from "../../../utils/Formatter";
+import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
+import { notFound } from "../../../utils/Errors";
 
 const tableName = "matool_routes";
 
-class RouteRepositoryAWSImpl extends IRouteRepository {
+export default class RouteRepositoryDynamoDB extends IRouteRepository {
   private client: DynamoDBDocumentClient;
   constructor(client: DynamoDBDocumentClient) {
     super();
@@ -81,4 +81,4 @@ class RouteRepositoryAWSImpl extends IRouteRepository {
   };
 }
 
-export { RouteRepositoryAWSImpl as RouteRepository };
+export { RouteRepositoryDynamoDB as RouteRepository };

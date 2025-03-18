@@ -1,6 +1,9 @@
 import IDistrictRepository from "../../../domain/interface/repository/IDistrictRepository";
-import { District, DistrictSummary } from "../../../domain/models/districts";
-import { convertArray } from "../../../utils/formatter";
+import {
+  District,
+  DistrictSummary,
+  toDistrictSummary,
+} from "../../../domain/models/districts";
 
 export default class GetSummariesUsecase {
   private repository: IDistrictRepository;
@@ -9,7 +12,7 @@ export default class GetSummariesUsecase {
   }
   execute = async (regionId: string) => {
     const items: District[] = await this.repository.scan(regionId);
-    const summaries = convertArray<DistrictSummary>(items);
+    const summaries = items.map((item) => toDistrictSummary(item));
     return summaries;
   };
 }

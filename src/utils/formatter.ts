@@ -1,4 +1,4 @@
-import { badRequest, internalServerError } from "./error";
+import { badRequest, internalServerError } from "./Errors";
 
 // スネークケース → キャメルケース変換関数
 export const toCamelCase = <T>(obj: T): T => {
@@ -27,37 +27,4 @@ export const toSnakeCase = <T>(obj: T): T => {
     ) as unknown as T;
   }
   return obj;
-};
-
-export const fromJson = <T>(json: string): T => {
-  try {
-    const parsed: T = JSON.parse(json);
-    return parsed;
-  } catch (error) {
-    throw badRequest(String(error));
-  }
-};
-
-export const toJson = <T>(obj: T): string => {
-  try {
-    const jsonstring: string = JSON.stringify(obj);
-    return jsonstring;
-  } catch (error) {
-    throw internalServerError(String(error));
-  }
-};
-
-export const convertItem = <T>(obj: any): T => {
-  try {
-    return obj as T;
-  } catch (error) {
-    throw internalServerError(String(error));
-  }
-};
-export const convertArray = <T>(arr: any[]): T[] => {
-  try {
-    return arr.map((item) => convertItem<T>(item));
-  } catch (error) {
-    throw internalServerError(String(error));
-  }
 };

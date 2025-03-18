@@ -1,7 +1,7 @@
 import { makeRouteId } from "../../../utils/routeUtils";
 import { Route, RouteWithId } from "../../../domain/models/route";
 import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
-import { unauthorized } from "../../../utils/error";
+import { unauthorized } from "../../../utils/Errors";
 
 export default class PostRouteUsecase {
   constructor(private routeRepository: IRouteRepository) {}

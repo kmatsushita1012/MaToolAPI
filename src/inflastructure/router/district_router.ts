@@ -1,21 +1,24 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
-import { errorResponse } from "../../utils/responses";
-import { notFound } from "../../utils/error";
-import { controllers } from "../..";
+import { districtController } from "../..";
+import { APIGatewayRequest } from "../../interfaces/request";
+import express, { Response } from "express";
+import "../../interfaces/extension.ts";
+import { authenticate } from "../Cognito";
 
-const districtRouter = async (event: APIGatewayProxyEvent) => {
-  const controller = controllers.district;
-  const path = event.path;
-  const httpMethod = event.httpMethod;
-  if (path.startsWith("/districts/summaries") && httpMethod == "GET") {
-    return await controller.getSummaries(event);
-  } else if (path.startsWith("/districts/detail") && httpMethod == "GET") {
-    return await controller.getDetail(event);
-  } else if (path.startsWith("/districts")) {
-    return await controller.post(event);
-  } else {
-    return errorResponse(notFound());
-  }
-};
+const router = express.Router();
 
-export default districtRouter;
+router.get("/summaries", async (req: APIGatewayRequest, res: Response) => {
+  const result = await districtController.getSummaries(req);
+  res.status(result.status).json(result.body);
+});
+
+router.get("/detail", async (req, res) => {
+  const result = await districtController.getDetail(req);
+  res.status(result.status).json(result.body);
+});
+
+router.post("/", authenticate, async (req, res) => {
+  const result = await districtController.post(req);
+  res.status(result.status).json(result.body);
+});
+
+export default router;

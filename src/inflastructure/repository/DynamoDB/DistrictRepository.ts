@@ -3,16 +3,16 @@ import {
   GetCommand,
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
-import { District } from "../../domain/models/districts";
-import { toCamelCase, toSnakeCase } from "../../utils/formatter";
+import { District } from "../../../domain/models/districts";
+import { toCamelCase, toSnakeCase } from "../../../utils/Formatter";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
-import IDistrictRepository from "../../domain/interface/repository/IDistrictRepository";
-import { notFound } from "../../utils/error";
+import IDistrictRepository from "../../../domain/interface/repository/IDistrictRepository";
+import { notFound } from "../../../utils/Errors";
 
 const tableName = "matool_districts";
 
-class DistrictRepositoryAWSImpl extends IDistrictRepository {
+export default class DistrictRepositoryDynamoDB extends IDistrictRepository {
   private client: DynamoDBDocumentClient;
   constructor(client: DynamoDBDocumentClient) {
     super();
@@ -77,4 +77,3 @@ class DistrictRepositoryAWSImpl extends IDistrictRepository {
     return "Success";
   };
 }
-export { DistrictRepositoryAWSImpl as DistrictRepository };

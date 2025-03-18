@@ -1,5 +1,5 @@
 import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
-import { unauthorized } from "../../../utils/error";
+import { unauthorized } from "../../../utils/Errors";
 
 export default class GetUsecase {
   constructor(private repository: ILocationRepository) {}

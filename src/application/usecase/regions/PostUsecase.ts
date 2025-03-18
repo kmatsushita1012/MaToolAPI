@@ -1,6 +1,6 @@
 import { Region } from "../../../domain/models/regions";
 import IRegionRepository from "../../../domain/interface/repository/IRegionRepository";
-import { unauthorized } from "../../../utils/error";
+import { unauthorized } from "../../../utils/Errors";
 
 export default class PostUsecase {
   constructor(private repository: IRegionRepository) {}

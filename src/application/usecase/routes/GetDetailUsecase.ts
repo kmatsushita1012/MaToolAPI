@@ -1,4 +1,4 @@
-import { compareDate, compareDateAndTime } from "../../../utils/dateTimeUtils";
+import { compareDate, compareDateAndTime } from "../../../utils/DateTimeUtils";
 import { makeRouteId } from "../../../utils/routeUtils";
 import { SimpleDate, SimpleTime } from "../../../domain/models/share";
 import {
@@ -9,7 +9,7 @@ import {
 import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
 import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
 import { Location } from "../../../domain/models/location";
-import { badRequest, notFound } from "../../../utils/error";
+import { badRequest, notFound } from "../../../utils/Errors";
 
 export default class GetDetailUsecase {
   constructor(

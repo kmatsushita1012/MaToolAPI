@@ -1,7 +1,7 @@
-export type UUID = string;
-export type Coordinate = { latitude: Number; longitude: number };
+type UUID = string;
+type Coordinate = { latitude: Number; longitude: number };
 
-export class SimpleDate {
+class SimpleDate {
   year: number;
   month: number;
   day: number;
@@ -20,7 +20,7 @@ export class SimpleDate {
   }
 }
 
-export class SimpleTime {
+class SimpleTime {
   hour: number;
   minute: number;
 
@@ -32,3 +32,5 @@ export class SimpleTime {
     this.minute = Number(minute);
   }
 }
+
+export { UUID, Coordinate, SimpleDate, SimpleTime };

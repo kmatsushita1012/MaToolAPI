@@ -1,14 +1,14 @@
 import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
-import { toCamelCase, toSnakeCase } from "../../utils/formatter";
-import { Location, LocationWithET } from "../../domain/models/location";
+import { toCamelCase, toSnakeCase } from "../../../utils/Formatter";
+import { Location, LocationWithET } from "../../../domain/models/location";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
-import ILocationRepository from "../../domain/interface/repository/ILocationRepository";
-import { notFound } from "../../utils/error";
+import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
+import { notFound } from "../../../utils/Errors";
 
 const tableName = "matool_locations";
 
-class LocationRepositoryAWSImpl extends ILocationRepository {
+export default class LocationRepositoryDynamoDB extends ILocationRepository {
   private client: DynamoDBDocumentClient;
   constructor(client: DynamoDBDocumentClient) {
     super();
@@ -42,4 +42,4 @@ class LocationRepositoryAWSImpl extends ILocationRepository {
   };
 }
 
-export { LocationRepositoryAWSImpl as LocationRepository };
+export { LocationRepositoryDynamoDB as LocationRepository };

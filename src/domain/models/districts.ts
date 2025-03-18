@@ -1,6 +1,6 @@
 import { Coordinate } from "./share";
 
-export type District = {
+interface District {
   id: string;
   name: string;
   regionId: string;
@@ -8,9 +8,18 @@ export type District = {
   base: Coordinate | null;
   area: Coordinate[] | null;
   imagePath: string | null;
-};
-export type DistrictSummary = {
+}
+
+interface DistrictSummary {
   id: string;
   name: string;
   regionId: string;
-};
+}
+
+const toDistrictSummary = (item: District): DistrictSummary => ({
+  id: item.id,
+  name: item.name,
+  regionId: item.regionId,
+});
+
+export { District, DistrictSummary, toDistrictSummary };

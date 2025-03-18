@@ -1,7 +1,7 @@
 import { bool } from "aws-sdk/clients/signer";
 import { Coordinate, SimpleDate, SimpleTime, UUID } from "./share";
 import { Location } from "./location";
-export type Route = {
+interface Route {
   districtId: string;
   date: SimpleDate;
   title: string;
@@ -10,36 +10,49 @@ export type Route = {
   segments: Segment[];
   start: SimpleTime;
   goal: SimpleTime;
-};
+}
 
-export type RouteWithId = Route & {
+interface RouteWithId extends Route {
   routeId: string;
-};
+}
 
-export type RouteAndLocation = {
+interface RouteAndLocation {
   route: Route;
   location: Location | null;
-};
+}
 
-export type RouteSummary = {
+interface RouteSummary {
   districtId: string;
   date: SimpleDate;
   title: string;
-};
+}
 
-type Point = {
+interface Point {
   id: UUID;
   coordinate: Coordinate;
   title: string | null;
   description: string | null;
   time: SimpleTime | null;
   isPassed: bool;
-};
+}
 
-type Segment = {
+interface Segment {
   id: UUID;
   start: Coordinate;
   end: Coordinate;
   coordinates: [Coordinate];
   isPassed: bool;
+}
+
+const makeRouteId = (date: SimpleDate, title: string) => {
+  return `${date.year}${String(date.month).padStart(2, "0")}${String(
+    date.day
+  ).padStart(2, "0")}${title}`;
 };
+
+const toRouteWithId = (route: Route): RouteWithId => {
+  const routeId = makeRouteId(route.date, route.title);
+  return { ...route, routeId };
+};
+
+export { Route, RouteAndLocation, RouteSummary, makeRouteId, toRouteWithId };

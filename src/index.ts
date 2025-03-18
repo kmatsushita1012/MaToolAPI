@@ -1,29 +1,47 @@
 // src/app.ts
-
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import express, { Request, Response } from "express";
+// Extend the Request interface to include the user property
+declare module "express-serve-static-core" {
+  interface Request {
+    user?: any;
+  }
+}
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-import rootRouter from "./inflastructure/router/root_router";
-import { errorResponse } from "./utils/responses";
-import { internalServerError } from "./utils/error";
-import Controllers from "./inflastructure/controllers";
+import Controller from "./interfaces/controllers";
+import AWSRepository from "./inflastructure/repository/DynamoDB";
+import IRepository from "./domain/interface/repository";
+import AppRouter from "./inflastructure/router";
 
+//DynamoDBへの依存を注入
 const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-1" });
 const client = DynamoDBDocumentClient.from(dynamoDBClient);
-export const controllers = new Controllers(client);
+const repository: IRepository = new AWSRepository(client);
+//Controllerを展開
+export const {
+  regionController,
+  districtController,
+  routeController,
+  locationController,
+} = new Controller(repository).all();
+const { regionRouter, districtRouter, routeRouter, locationRouter } = AppRouter;
 
-export const handler = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
-  const { httpMethod, path, queryStringParameters } = event;
-  console.log(`METHOD : ${httpMethod}`);
-  console.log(`PATH : ${path}`);
-  console.log(`PARAM : ${String(queryStringParameters)}`);
-  console.log(`CLIENT : ${client}`);
-  try {
-    return await rootRouter(event);
-  } catch (error) {
-    console.error("ERROR:", error);
-    return errorResponse(internalServerError());
-  }
-};
+const serverlessExpress = require("@vendia/serverless-express");
+const app = require("express")();
+
+app.use(express.json()); // JSONリクエストボディのパース
+
+// ルーティング
+app.use("/region", regionRouter);
+app.use("/district", districtRouter);
+app.use("/route", routeRouter);
+app.use("/location", locationRouter);
+
+app.use("/", (req: Request, res: Response) =>
+  res.send(`Hello. Here is MaToolAPI`)
+);
+
+// ローカル確認用
+if (process.env.NODE_ENV === `develop`) app.listen(3000);
+
+exports.handler = serverlessExpress({ app });

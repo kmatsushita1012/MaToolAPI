@@ -3,16 +3,16 @@ import {
   GetCommand,
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
-import { toCamelCase, toSnakeCase } from "../../utils/formatter";
-import { Region, RegionSummary } from "../../domain/models/regions";
+import { toCamelCase, toSnakeCase } from "../../../utils/Formatter";
+import { Region, RegionSummary } from "../../../domain/models/regions";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
-import IRegionRepository from "../../domain/interface/repository/IRegionRepository";
-import { notFound } from "../../utils/error";
+import IRegionRepository from "../../../domain/interface/repository/IRegionRepository";
+import { notFound } from "../../../utils/Errors";
 
 const tableName = "matool_regions";
 
-class RegionRepositoryAWSImpl extends IRegionRepository {
+export default class RegionRepositoryDynamoDB extends IRegionRepository {
   private client: DynamoDBDocumentClient;
   constructor(client: DynamoDBDocumentClient) {
     super();
@@ -63,4 +63,3 @@ class RegionRepositoryAWSImpl extends IRegionRepository {
     return "Success";
   };
 }
-export { RegionRepositoryAWSImpl as RegionRepository };
