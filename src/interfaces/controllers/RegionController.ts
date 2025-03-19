@@ -15,10 +15,7 @@ export default class RegionController {
 
   getDetail = async (req: APIGatewayRequest): Promise<ApiResponse> => {
     try {
-      const { id } = parseParams(req, (params) => ({ id: params.id! }));
-      if (!id) {
-        throw badRequest();
-      }
+      const { id } = parseParams(req, (params) => ({ id: params.id }));
       const usecase = new RegionUsecase.GetDetailUsecase(this.repository);
       const item = await usecase.execute(id);
       return successResponse(item);

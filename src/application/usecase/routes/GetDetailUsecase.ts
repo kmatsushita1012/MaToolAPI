@@ -38,7 +38,7 @@ export default class GetDetailUsecase {
       };
       route = await this.getCurrentRoute(districtId, currentDate, currentTime);
     } else {
-      throw badRequest();
+      throw badRequest("Inappropriate parameters");
     }
     if (!route) {
       throw notFound();

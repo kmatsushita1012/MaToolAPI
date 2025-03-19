@@ -11,7 +11,7 @@ const parseParams = <T>(
   try {
     return predicate(value.params);
   } catch (error) {
-    throw badRequest();
+    throw badRequest(String(error));
   }
 };
 
@@ -23,7 +23,7 @@ const parseUserSub = (req: APIGatewayRequest): string => {
     }
     return sub;
   } catch (error) {
-    throw internalServerError();
+    throw internalServerError(String(error));
   }
 };
 
@@ -36,7 +36,7 @@ const parseBody = <T>(
   try {
     return predicate(value.body);
   } catch (error) {
-    throw badRequest();
+    throw badRequest(String(error));
   }
 };
 
