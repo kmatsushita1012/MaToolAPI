@@ -28,6 +28,7 @@ export default class RegionController {
   };
   getSummaries = async (req: APIGatewayRequest): Promise<ApiResponse> => {
     try {
+      console.log("controller");
       const usecase = new RegionUsecase.GetSummariesUsecase(this.repository);
       const summaries = await usecase.execute();
       return successResponse(summaries);

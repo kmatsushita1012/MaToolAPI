@@ -4,6 +4,7 @@ import { Region, RegionSummary } from "../../../domain/models/regions";
 export default class GetSummariesUsecase {
   constructor(private repository: IRegionRepository) {}
   execute = async () => {
+    console.log("usecase");
     const items: Region[] = await this.repository.scan();
     const summaries: RegionSummary[] = items.map((item) => {
       return {

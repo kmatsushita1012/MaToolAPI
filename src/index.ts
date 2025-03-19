@@ -1,5 +1,4 @@
-// src/app.ts
-import express, { Request, Response } from "express";
+import express from "express";
 // Extend the Request interface to include the user property
 declare module "express-serve-static-core" {
   interface Request {
@@ -30,7 +29,7 @@ const { regionRouter, districtRouter, routeRouter, locationRouter } = AppRouter;
 const app = express();
 
 app.use(express.json()); // JSONリクエストボディのパース
-
+console.log("index");
 // ルーティング
 app.use("/region", regionRouter);
 app.use("/district", districtRouter);

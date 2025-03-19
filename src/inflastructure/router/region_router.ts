@@ -4,6 +4,7 @@ import { authenticate } from "../Cognito";
 const router = Router();
 
 router.get("/summaries", async (req, res) => {
+  console.log("router");
   const result = await regionController.getSummaries(req);
   res.status(result.status).json(result.body);
 });
