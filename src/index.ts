@@ -39,9 +39,9 @@ app.use("/district", districtRouter);
 app.use("/route", routeRouter);
 app.use("/location", locationRouter);
 
-app.use("/", (req: Request, res: Response) =>
-  res.send(`Hello. Here is MaToolAPI`)
-);
+// app.use("/", (req: Request, res: Response) =>
+//   res.send(`Hello. Here is MaToolAPI`)
+// );
 
 // ローカル確認用
 if (process.env.NODE_ENV === `develop`) app.listen(3000);
