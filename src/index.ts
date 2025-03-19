@@ -12,6 +12,7 @@ import Controller from "./interfaces/controllers";
 import AWSRepository from "./inflastructure/repository/DynamoDB";
 import IRepository from "./domain/interface/repository";
 import AppRouter from "./inflastructure/router";
+import serverlessExpress from "@vendia/serverless-express";
 
 //DynamoDBへの依存を注入
 const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-1" });
@@ -26,8 +27,7 @@ export const {
 } = new Controller(repository).all();
 const { regionRouter, districtRouter, routeRouter, locationRouter } = AppRouter;
 
-const serverlessExpress = require("@vendia/serverless-express");
-const app = require("express")();
+const app = express();
 
 app.use(express.json()); // JSONリクエストボディのパース
 
@@ -36,10 +36,6 @@ app.use("/region", regionRouter);
 app.use("/district", districtRouter);
 app.use("/route", routeRouter);
 app.use("/location", locationRouter);
-
-// app.use("/", (req: Request, res: Response) =>
-//   res.send(`Hello. Here is MaToolAPI`)
-// );
 
 // ローカル確認用
 if (process.env.NODE_ENV === `develop`) app.listen(3000);

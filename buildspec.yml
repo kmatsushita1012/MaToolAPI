@@ -7,7 +7,6 @@ phases:
       - ./aws/install --install-dir ~/aws-cli --bin-dir ~/bin --update
       - export PATH=~/bin:$PATH
       - npm install
-      - npm install express
       - npm install -g typescript
   pre_build:
     commands:
