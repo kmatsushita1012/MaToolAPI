@@ -18,7 +18,7 @@ phases:
       - tsc
       - CurrentVersion=$(aws lambda get-alias --function-name MaToolAPI --name dev --query 'FunctionVersion' --output text)
       - cd dist
-      - zip -q -r ../lambda.zip *
+      - zip -q -r ../lambda.zip ./*
       - cd ..
       - aws lambda update-function-code --function-name MaToolAPI --zip-file fileb://lambda.zip --debug
       - sleep 10
