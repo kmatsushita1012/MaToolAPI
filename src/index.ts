@@ -31,23 +31,18 @@ export const {
 } = new Controller(repository).all();
 
 const app = express();
-// app.use(express.json()); // JSONリクエストボディのパース
+app.use(express.json()); // JSONリクエストボディのパース
 
 // ルーティング
-// app.use("/region", regionRouter);
-// app.use("/district", districtRouter);
-// app.use("/route", routeRouter);
-// app.use("/location", locationRouter);
+app.use("/region", regionRouter);
+app.use("/district", districtRouter);
+app.use("/route", routeRouter);
+app.use("/location", locationRouter);
 
-// テスト
-app.get("/region/summaries", (req, res) => {
-  res.send("/region/summaries");
-});
 // ルート
 app.get("/", (req, res) => {
   res.send("Here is MaToolAPI");
 });
-console.log("index3");
 
 // Lambda 用にサーバーレスハンドラーをエクスポート
 export const handler = serverless({ app });
