@@ -37,6 +37,7 @@ phases:
         fi
 
       - echo "Deploying API Gateway"
-      - API_ID=$(aws apigateway get-rest-apis --query 'items[?name==`MaToolAPI`].id' --output text)
-      - STAGE_NAME="debug" # 例えばprodステージにデプロイ
-      - aws apigateway create-deployment --rest-api-id $API_ID --stage-name $STAGE_NAME
+      - API_ID=$(aws apigatewayv2 get-apis --query 'Items[?Name==`MaToolAPI`].ApiId' --output text)
+      - STAGE_NAME="dev"
+      - aws apigatewayv2 deploy-api --api-id $API_ID --stage-name $STAGE_NAME
+      - echo "Deployment completed for HTTP API $API_ID at stage $STAGE_NAME"
