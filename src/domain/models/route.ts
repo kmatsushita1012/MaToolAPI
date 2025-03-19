@@ -55,4 +55,11 @@ const toRouteWithId = (route: Route): RouteWithId => {
   return { ...route, routeId };
 };
 
-export { Route, RouteAndLocation, RouteSummary, makeRouteId, toRouteWithId };
+export {
+  Route,
+  RouteAndLocation,
+  RouteSummary,
+  RouteWithId,
+  makeRouteId,
+  toRouteWithId,
+};

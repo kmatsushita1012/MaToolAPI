@@ -1,7 +1,8 @@
 import { compareDate, compareDateAndTime } from "../../../utils/DateTimeUtils";
-import { makeRouteId } from "../../../utils/routeUtils";
+
 import { SimpleDate, SimpleTime } from "../../../domain/models/share";
 import {
+  makeRouteId,
   Route,
   RouteAndLocation,
   RouteWithId,
