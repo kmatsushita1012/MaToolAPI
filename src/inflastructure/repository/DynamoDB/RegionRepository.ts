@@ -8,7 +8,7 @@ import { Region, RegionSummary } from "../../../domain/models/regions";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
 import IRegionRepository from "../../../domain/interface/repository/IRegionRepository";
-import { notFound } from "../../../utils/Errors";
+import { internalServerError, notFound } from "../../../utils/Errors";
 
 const tableName = "matool_regions";
 
@@ -19,12 +19,20 @@ export default class RegionRepositoryDynamoDB extends IRegionRepository {
     this.client = client;
   }
   get = async (id: string): Promise<Region> => {
-    const data = await this.client.send(
-      new GetCommand({
-        TableName: tableName,
-        Key: { id: id },
-      })
-    );
+    console.log(`repository id:${id}`);
+    let data;
+    try {
+      data = await this.client.send(
+        new GetCommand({
+          TableName: tableName,
+          Key: { id: id },
+        })
+      );
+    } catch (error) {
+      console.log(error);
+      throw internalServerError();
+    }
+
     if (!data.Item) {
       throw notFound();
     }

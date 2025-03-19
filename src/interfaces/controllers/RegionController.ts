@@ -6,7 +6,6 @@ import {
 } from "../request";
 import { Region } from "../../domain/models/regions";
 import RegionUsecase from "../../application/usecase/regions";
-import { badRequest } from "../../utils/Errors";
 import { ApiResponse, successResponse, errorResponse } from "../responses";
 import IRegionRepository from "../../domain/interface/repository/IRegionRepository";
 
@@ -16,6 +15,7 @@ export default class RegionController {
   getDetail = async (req: APIGatewayRequest): Promise<ApiResponse> => {
     try {
       const { id } = parseParams(req, (params) => ({ id: params.id }));
+      console.log(`contoroller id:${id}`);
       const usecase = new RegionUsecase.GetDetailUsecase(this.repository);
       const item = await usecase.execute(id);
       return successResponse(item);
