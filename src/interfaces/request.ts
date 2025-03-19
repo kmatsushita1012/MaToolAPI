@@ -1,15 +1,14 @@
 import { Request } from "express";
-import { ParamsDictionary } from "express-serve-static-core";
 import { badRequest, internalServerError, unauthorized } from "../utils/Errors";
 
 type APIGatewayRequest = Request & { apiGateway?: any };
 
 const parseParams = <T>(
   value: Request,
-  predicate: (input: ParamsDictionary) => T
+  predicate: (input: Record<string, any>) => T
 ): T => {
   try {
-    return predicate(value.params);
+    return predicate(value.query);
   } catch (error) {
     throw badRequest(String(error));
   }
