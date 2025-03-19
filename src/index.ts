@@ -1,5 +1,5 @@
 // src/app.ts
-import express, { Request, Response } from "express";
+import { Request, Response } from "express";
 // Extend the Request interface to include the user property
 declare module "express-serve-static-core" {
   interface Request {
@@ -26,8 +26,10 @@ export const {
 } = new Controller(repository).all();
 const { regionRouter, districtRouter, routeRouter, locationRouter } = AppRouter;
 
-const serverlessExpress = require("@vendia/serverless-express");
-const app = require("express")();
+const express = require("express");
+const app = express();
+const awsServerlessExpress = require("aws-serverless-express");
+const server = awsServerlessExpress.createServer(app);
 
 app.use(express.json()); // JSONリクエストボディのパース
 
@@ -44,4 +46,6 @@ app.use("/", (req: Request, res: Response) =>
 // ローカル確認用
 if (process.env.NODE_ENV === `develop`) app.listen(3000);
 
-exports.handler = serverlessExpress({ app });
+exports.handler = (event: any, context: any) => {
+  awsServerlessExpress.proxy(server, event, context);
+};
