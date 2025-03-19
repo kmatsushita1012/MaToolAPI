@@ -1,7 +1,7 @@
 import { locationController } from "../..";
-import express from "express";
+import { Router } from "express";
 import { authenticate } from "../Cognito";
-const router = express.Router();
+const router = Router();
 
 router.get("/", async (req, res) => {
   const result = await locationController.get(req);

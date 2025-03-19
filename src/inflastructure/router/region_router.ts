@@ -1,6 +1,3 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { notFound } from "../../utils/Errors";
-import { errorResponse } from "../../interfaces/responses";
 import { regionController } from "../..";
 import { Router } from "express";
 import { authenticate } from "../Cognito";

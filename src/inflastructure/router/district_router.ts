@@ -1,10 +1,10 @@
 import { districtController } from "../..";
 import { APIGatewayRequest } from "../../interfaces/request";
-import express, { Response } from "express";
+import { Router, Response } from "express";
 import "../../interfaces/extension.ts";
 import { authenticate } from "../Cognito";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/summaries", async (req: APIGatewayRequest, res: Response) => {
   const result = await districtController.getSummaries(req);

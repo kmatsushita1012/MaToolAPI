@@ -1,7 +1,7 @@
 import { routeController } from "../..";
-import express, { Response, Request } from "express";
+import { Router, Response, Request } from "express";
 import { authenticate } from "../Cognito";
-const router = express.Router();
+const router = Router();
 
 router.get("/summaries", async (req, res) => {
   const result = await routeController.getSummaries(req);
