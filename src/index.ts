@@ -1,3 +1,4 @@
+// src/app.ts
 import express from "express";
 // Extend the Request interface to include the user property
 declare module "express-serve-static-core" {
@@ -5,14 +6,13 @@ declare module "express-serve-static-core" {
     user?: any;
   }
 }
+import serverless from "@vendia/serverless-express";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import Controller from "./interfaces/controllers";
 import AWSRepository from "./inflastructure/repository/DynamoDB";
 import IRepository from "./domain/interface/repository";
 import AppRouter from "./inflastructure/router";
-import serverlessExpress from "@vendia/serverless-express";
-import bodyParser from "body-parser";
 
 //DynamoDBへの依存を注入
 const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-1" });
@@ -26,19 +26,24 @@ export const {
   locationController,
 } = new Controller(repository).all();
 const { regionRouter, districtRouter, routeRouter, locationRouter } = AppRouter;
-console.log("index");
 
 const app = express();
-const router = express.Router();
-
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json()); // JSONリクエストボディのパース
 
 // ルーティング
-router.use("/region", regionRouter);
-router.use("/district", districtRouter);
-router.use("/route", routeRouter);
-router.use("/location", locationRouter);
+app.use("/region", regionRouter);
+app.use("/district", districtRouter);
+app.use("/route", routeRouter);
+app.use("/location", locationRouter);
 
-app.use("/", router);
-export const handler = serverlessExpress({ app });
+// テスト
+app.get("/region/summaries", (req, res) => {
+  res.send("/region/summaries");
+});
+// ルート
+app.get("/", (req, res) => {
+  res.send("Here is MaToolAPI");
+});
+
+// Lambda 用にサーバーレスハンドラーをエクスポート
+export const handler = serverless({ app });
