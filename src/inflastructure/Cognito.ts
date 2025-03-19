@@ -22,7 +22,7 @@ export const authenticate = async (
   try {
     const command = new GetUserCommand({ AccessToken: token });
     const response = await cognitoClient.send(command);
-    req.user = response;
+    // req.user = response;
     next();
   } catch (error) {
     res.status(401).json({ message: "Unauthorized" });

@@ -1,5 +1,5 @@
 import { routeController } from "../..";
-import { Router, Response, Request } from "express";
+import { Router } from "express";
 import { authenticate } from "../Cognito";
 const router = Router();
 
