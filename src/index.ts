@@ -11,6 +11,7 @@ import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import Controller from "./interfaces/controllers";
 import AWSRepository from "./inflastructure/repository/DynamoDB";
 import IRepository from "./domain/interface/repository";
+import cors from "cors";
 import {
   regionRouter,
   districtRouter,
@@ -29,16 +30,17 @@ export const {
   routeController,
   locationController,
 } = new Controller(repository).all();
-console.log("index1");
+
 const app = express();
+app.use(cors());
 app.use(express.json()); // JSONリクエストボディのパース
-console.log("index2");
+
 // ルーティング
-app.use("/region", regionRouter);
-app.use("/district", districtRouter);
-app.use("/route", routeRouter);
-app.use("/location", locationRouter);
-console.log("index3");
+// app.use("/region", regionRouter);
+// app.use("/district", districtRouter);
+// app.use("/route", routeRouter);
+// app.use("/location", locationRouter);
+
 // テスト
 app.get("/region/summaries", (req, res) => {
   res.send("/region/summaries");
