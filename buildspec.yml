@@ -22,7 +22,7 @@ phases:
       - cp -r dist/* deploy-package/ # dist 内のコンパイルされたファイルをコピー
       - cp -r node_modules deploy-package/ # node_modules をコピー
       - cd deploy-package
-      - zip -q -r ../function.zip . # deploy-package フォルダを ZIP に圧縮
+      - zip -q -r ../lambda.zip . # deploy-package フォルダを ZIP に圧縮
       - cd ..
       - aws lambda update-function-code --function-name MaToolAPI --zip-file fileb://lambda.zip --debug
       - sleep 10
