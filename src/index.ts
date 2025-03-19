@@ -12,6 +12,7 @@ import AWSRepository from "./inflastructure/repository/DynamoDB";
 import IRepository from "./domain/interface/repository";
 import AppRouter from "./inflastructure/router";
 import serverlessExpress from "@vendia/serverless-express";
+import bodyParser from "body-parser";
 
 //DynamoDBへの依存を注入
 const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-1" });
@@ -25,18 +26,19 @@ export const {
   locationController,
 } = new Controller(repository).all();
 const { regionRouter, districtRouter, routeRouter, locationRouter } = AppRouter;
+console.log("index");
 
 const app = express();
+const router = express.Router();
 
-app.use(express.json()); // JSONリクエストボディのパース
-console.log("index");
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
+
 // ルーティング
-app.use("/region", regionRouter);
-app.use("/district", districtRouter);
-app.use("/route", routeRouter);
-app.use("/location", locationRouter);
+router.use("/region", regionRouter);
+router.use("/district", districtRouter);
+router.use("/route", routeRouter);
+router.use("/location", locationRouter);
 
-// ローカル確認用
-if (process.env.NODE_ENV === `develop`) app.listen(3000);
-
-exports.handler = serverlessExpress({ app });
+app.use("/", router);
+export const handler = serverlessExpress({ app });

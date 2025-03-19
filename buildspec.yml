@@ -40,8 +40,8 @@ phases:
           aws lambda delete-function --function-name MaToolAPI --qualifier $CurrentVersion
         fi
 
-      # - echo "Deploying API Gateway"
-      # - API_ID=$(aws apigatewayv2 get-apis --query 'Items[?Name==`MaToolAPI`].ApiId' --output text)
-      # - STAGE_NAME="dev"
-      # - aws apigatewayv2 create-deployment --api-id $API_ID --stage-name dev
-      # - echo "Deployment completed for HTTP API $API_ID at stage $STAGE_NAME"
+      - echo "Deploying API Gateway"
+      - API_ID=$(aws apigatewayv2 get-apis --query 'Items[?Name==`MaToolAPI`].ApiId' --output text)
+      - STAGE_NAME="dev"
+      - aws apigatewayv2 create-deployment --api-id $API_ID --stage-name dev
+      - echo "Deployment completed for HTTP API $API_ID at stage $STAGE_NAME"
