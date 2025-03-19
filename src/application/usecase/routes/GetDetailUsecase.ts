@@ -1,5 +1,3 @@
-import { compareDate, compareDateAndTime } from "../../../utils/DateTimeUtils";
-
 import { SimpleDate, SimpleTime } from "../../../domain/models/share";
 import {
   makeRouteId,
@@ -11,6 +9,7 @@ import IRouteRepository from "../../../domain/interface/repository/IRouteReposit
 import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
 import { Location } from "../../../domain/models/location";
 import { badRequest, notFound } from "../../../utils/Errors";
+import { compareDate, compareDateAndTime } from "../../../utils/DateTimeUtils";
 
 export default class GetDetailUsecase {
   constructor(
@@ -119,26 +118,3 @@ export default class GetDetailUsecase {
     }
   };
 }
-
-//テスト
-// if (require.main === module) {
-//   (async () => {
-//     const items = [
-//       {
-//         date: { year: 2025, month: 3, day: 10 },
-//         start: { hour: 9, minute: 0 },
-//         goal: { hour: 17, minute: 0 },
-//       },
-//       {
-//         date: { year: 2025, month: 3, day: 11 },
-//         start: { hour: 8, minute: 0 },
-//         goal: { hour: 16, minute: 0 },
-//       },
-//     ];
-//     const result = selectCurrentItem(items, {
-//       date: { year: 2025, month: 3, day: 11 },
-//       time: { hour: 18, minute: 0 },
-//     });
-//     console.log(result);
-//   })();
-// }
