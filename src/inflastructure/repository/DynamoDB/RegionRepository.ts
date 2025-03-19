@@ -22,7 +22,7 @@ export default class RegionRepositoryDynamoDB extends IRegionRepository {
     const data = await this.client.send(
       new GetCommand({
         TableName: tableName,
-        Key: { id },
+        Key: { id: id },
       })
     );
     if (!data.Item) {
