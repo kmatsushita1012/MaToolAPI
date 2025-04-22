@@ -12,10 +12,10 @@ export default class Controller {
   public readonly location: LocationController;
 
   constructor(repository: IRepository) {
-    this.region = new RegionController(repository.region);
-    this.district = new DistrictController(repository.district);
-    this.route = new RouteController(repository.route, repository.location);
-    this.location = new LocationController(repository.location);
+    this.region = new RegionController(repository);
+    this.district = new DistrictController(repository);
+    this.route = new RouteController(repository);
+    this.location = new LocationController(repository);
   }
 
   all() {

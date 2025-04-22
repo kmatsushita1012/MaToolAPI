@@ -1,6 +1,7 @@
-import { Location, LocationWithET } from "../../models/location";
+import { Location, ExpirableLocation } from "../../models/locations";
 
 export default abstract class ILocationRepository {
-  abstract get(id: string): Promise<Location>;
-  abstract put(location: LocationWithET): Promise<string>;
+  abstract get(id: string): Promise<Location | null>;
+  abstract put(location: ExpirableLocation): Promise<string>;
+  abstract delete(id: string): Promise<string>;
 }

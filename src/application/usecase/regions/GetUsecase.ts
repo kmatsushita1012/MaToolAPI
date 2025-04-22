@@ -1,11 +1,14 @@
 import IRegionRepository from "../../../domain/interface/repository/IRegionRepository";
 import { Region } from "../../../domain/models/regions";
+import { Errors } from "../../../utils/Errors";
 
-export default class GetDetailUsecase {
+export default class GetUsecase {
   constructor(private repository: IRegionRepository) {}
   execute = async (id: string): Promise<Region> => {
-    console.log(`usecase id:${id}`);
     const item = await this.repository.get(id);
+    if (!item) {
+      throw Errors.NotFound();
+    }
     return item;
   };
 }

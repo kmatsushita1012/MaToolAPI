@@ -1,20 +1,24 @@
-import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
+import {
+  DeleteCommand,
+  DynamoDBDocumentClient,
+  GetCommand,
+} from "@aws-sdk/lib-dynamodb";
 import { toCamelCase, toSnakeCase } from "../../../utils/Formatter";
-import { Location, LocationWithET } from "../../../domain/models/location";
+import { Location, ExpirableLocation } from "../../../domain/models/locations";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
 import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
-import { notFound } from "../../../utils/Errors";
 
 const tableName = "matool_locations";
 
-export default class LocationRepositoryDynamoDB extends ILocationRepository {
+export default class DynamoDBLocationRepository extends ILocationRepository {
   private client: DynamoDBDocumentClient;
   constructor(client: DynamoDBDocumentClient) {
     super();
     this.client = client;
   }
-  get = async (id: string): Promise<Location> => {
+
+  get = async (id: string): Promise<Location | null> => {
     const data = await this.client.send(
       new GetCommand({
         TableName: tableName,
@@ -22,14 +26,13 @@ export default class LocationRepositoryDynamoDB extends ILocationRepository {
       })
     );
     if (!data.Item) {
-      throw notFound();
+      return null;
     }
-    const camelData = toCamelCase(data.Item);
-    const location: Location = camelData as Location;
+    const location = toCamelCase<Location>(data.Item);
     return location;
   };
 
-  put = async (location: LocationWithET): Promise<string> => {
+  put = async (location: ExpirableLocation): Promise<string> => {
     const snakeData = toSnakeCase({ location });
     const marshalledData = marshall(snakeData, { removeUndefinedValues: true });
     await this.client.send(
@@ -40,6 +43,16 @@ export default class LocationRepositoryDynamoDB extends ILocationRepository {
     );
     return "Success";
   };
-}
 
-export { LocationRepositoryDynamoDB as LocationRepository };
+  delete = async (districtId: string): Promise<string> => {
+    await this.client.send(
+      new DeleteCommand({
+        TableName: tableName,
+        Key: {
+          districtId: districtId,
+        },
+      })
+    );
+    return "Success";
+  };
+}

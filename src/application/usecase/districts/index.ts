@@ -1,10 +1,12 @@
-import GetDetailUsecase from "./GetDetailUsecase";
-import GetSummariesUsecase from "./GetSummariesUsecase";
+import GetUsecase from "./GetUsecase";
+import GetAllUsecase from "./GetAllUsecase";
 import PostUsecase from "./PostUsecase";
+import PutUsecase from "./PutUsecase";
 
 const DistrictUsecase = {
-  GetDetailUsecase,
-  GetSummariesUsecase,
+  GetUsecase,
+  GetAllUsecase,
   PostUsecase,
+  PutUsecase,
 };
 export default DistrictUsecase;

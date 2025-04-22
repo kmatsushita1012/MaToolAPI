@@ -1,8 +1,7 @@
-
-import { SimpleDate } from "../../../domain/models/share";
+import { SimpleDate } from "../../../domain/models/shared";
 import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
-import { unauthorized } from "../../../utils/Errors";
-import { makeRouteId } from "../../../domain/models/route";
+import { Errors } from "../../../utils/Errors";
+import { makeRouteId } from "../../../domain/models/routes";
 
 export default class DeleteUsecase {
   constructor(private repository: IRouteRepository) {}
@@ -14,10 +13,10 @@ export default class DeleteUsecase {
     userSub: string
   ): Promise<string> => {
     if (districtId !== userSub) {
-      throw unauthorized();
+      throw  Errors.Unauthorized();
     }
     const routeId = makeRouteId(date, title);
-    const result = await this.repository.delete(districtId, routeId);
+    const result = await this.repository.delete(districtId, date, title);
     return result;
   };
 }

@@ -4,12 +4,12 @@ import IDistrictRepository from "../../../domain/interface/repository/IDistrictR
 import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
 import IRegionRepository from "../../../domain/interface/repository/IRegionRepository";
 import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
-import RegionRepositoryDynamoDB from "./RegionRepository";
-import DistrictRepositoryDynamoDB from "./DistrictRepository";
-import RouteRepositoryDynamoDB from "./RouteRepository";
-import LocationRepositoryDynamoDB from "./LocationRepository";
+import DynamoDBRegionRepository from "./RegionRepository";
+import DynamoDBDistrictRepository from "./DistrictRepository";
+import DynamoDBRouteRepository from "./RouteRepository";
+import DynamoDBLocationRepository from "./LocationRepository";
 
-export default class AWSRepository extends IRepository {
+export default class DynamoDBRepository extends IRepository {
   private client: DynamoDBDocumentClient;
   public readonly region: IRegionRepository;
   public readonly district: IDistrictRepository;
@@ -19,9 +19,9 @@ export default class AWSRepository extends IRepository {
   constructor(client: DynamoDBDocumentClient) {
     super();
     this.client = client;
-    this.region = new RegionRepositoryDynamoDB(this.client);
-    this.district = new DistrictRepositoryDynamoDB(this.client);
-    this.route = new RouteRepositoryDynamoDB(this.client);
-    this.location = new LocationRepositoryDynamoDB(this.client);
+    this.region = new DynamoDBRegionRepository(this.client);
+    this.district = new DynamoDBDistrictRepository(this.client);
+    this.route = new DynamoDBRouteRepository(this.client);
+    this.location = new DynamoDBLocationRepository(this.client);
   }
 }

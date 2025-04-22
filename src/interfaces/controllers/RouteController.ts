@@ -1,30 +1,24 @@
-import { SimpleDate } from "../../domain/models/share";
+import { SimpleDate } from "../../domain/models/shared";
 import RouteUsecase from "../../application/usecase/routes";
-import { Route } from "../../domain/models/route";
-import IRouteRepository from "../../domain/interface/repository/IRouteRepository";
-import ILocationRepository from "../../domain/interface/repository/ILocationRepository";
-import { badRequest } from "../../utils/Errors";
+import { Route } from "../../domain/models/routes";
 import { successResponse, errorResponse, ApiResponse } from "../responses";
 import {
   APIGatewayRequest,
   parseBody,
   parseParams,
+  parseQuery,
   parseUserSub,
 } from "../request";
+import IRepository from "../../domain/interface/repository";
 
 export default class RouteController {
-  constructor(
-    private routeRepository: IRouteRepository,
-    private locationRepository: ILocationRepository
-  ) {}
-  getSummaries = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  constructor(private repository: IRepository) {}
+  getAll = async (req: APIGatewayRequest): Promise<ApiResponse> => {
     try {
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId,
       }));
-      const usecase = new RouteUsecase.GetSummariesUsecase(
-        this.routeRepository
-      );
+      const usecase = new RouteUsecase.GetAllUsecase(this.repository.route);
       const result = usecase.execute(districtId);
       return successResponse(result);
     } catch (error) {
@@ -32,22 +26,21 @@ export default class RouteController {
     }
   };
 
-  getDetail = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  get = async (req: APIGatewayRequest): Promise<ApiResponse> => {
     try {
-      const { districtId, year, month, day, title } = parseParams(
-        req,
-        (params) => ({
-          districtId: params.districtId!,
-          year: params.year ?? null,
-          month: params.month ?? null,
-          day: params.day ?? null,
-          title: params.title ?? null,
-        })
-      );
-      let date = year && month && day ? new SimpleDate(year, month, day) : null;
-      const usecase = new RouteUsecase.GetDetailUsecase(
-        this.routeRepository,
-        this.locationRepository
+      const { districtId } = parseParams(req, (params) => ({
+        districtId: params.districtId!,
+      }));
+      const { year, month, day, title } = parseQuery(req, (params) => ({
+        year: params.year,
+        month: params.month,
+        day: params.day,
+        title: params.title,
+      }));
+      const date = new SimpleDate(year, month, day);
+      const usecase = new RouteUsecase.GetUsecase(
+        this.repository.route,
+        this.repository.district
       );
       const result = await usecase.execute(districtId, date, title);
       return successResponse(result);
@@ -56,12 +49,58 @@ export default class RouteController {
     }
   };
 
+  getCurrent = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+    try {
+      const { districtId } = parseParams(req, (params) => ({
+        districtId: params.districtId!,
+      }));
+      const usecase = new RouteUsecase.GetCurrentUsecase(
+        this.repository.route,
+        this.repository.district
+      );
+      const result = await usecase.execute(districtId);
+      return successResponse(result);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+
   post = async (req: APIGatewayRequest): Promise<ApiResponse> => {
     try {
+      const { districtId } = parseParams(req, (params) => ({
+        districtId: params.districtId!,
+      }));
       const data = parseBody<Route>(req);
       const userSub = parseUserSub(req);
-      const usecase = new RouteUsecase.PostUsecase(this.routeRepository);
-      const result = await usecase.execute(data, userSub);
+      const usecase = new RouteUsecase.PostUsecase(this.repository.route);
+      const result = await usecase.execute(districtId, data, userSub);
+      return successResponse(result);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+  put = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+    try {
+      const { districtId } = parseParams(req, (params) => ({
+        districtId: params.districtId!,
+      }));
+      const { year, month, day, title } = parseQuery(req, (params) => ({
+        year: params.year,
+        month: params.month,
+        day: params.day,
+        title: params.title,
+      }));
+      const date = new SimpleDate(year, month, day);
+      const data = parseBody<Route>(req);
+      const userSub = parseUserSub(req);
+      const usecase = new RouteUsecase.PutUsecase(this.repository.route);
+      const result = await usecase.execute(
+        districtId,
+        date,
+        title,
+        data,
+        userSub
+      );
       return successResponse(result);
     } catch (error) {
       return errorResponse(error);
@@ -70,23 +109,18 @@ export default class RouteController {
 
   delete = async (req: APIGatewayRequest): Promise<ApiResponse> => {
     try {
-      const { districtId, year, month, day, title } = parseParams(
-        req,
-        (params) => ({
-          districtId: params.districtId,
-          year: Number(params.year),
-          month: Number(params.month),
-          day: Number(params.day),
-          title: params.title,
-        })
-      );
+      const { districtId } = parseParams(req, (params) => ({
+        districtId: params.districtId!,
+      }));
+      const { year, month, day, title } = parseQuery(req, (params) => ({
+        year: params.year,
+        month: params.month,
+        day: params.day,
+        title: params.title,
+      }));
       const userSub = parseUserSub(req);
-      const date = {
-        year: year,
-        month: month,
-        day: day,
-      };
-      const usecase = new RouteUsecase.DeleteUsecase(this.routeRepository);
+      const date = new SimpleDate(year, month, day);
+      const usecase = new RouteUsecase.DeleteUsecase(this.repository.route);
       const result = await usecase.execute(districtId, date, title, userSub);
       return successResponse(result);
     } catch (error) {

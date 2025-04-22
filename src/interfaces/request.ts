@@ -1,16 +1,27 @@
 import { Request } from "express";
-import { badRequest, internalServerError, unauthorized } from "../utils/Errors";
+import { Errors } from "../utils/Errors";
 
 type APIGatewayRequest = Request & { apiGateway?: any };
 
-const parseParams = <T>(
+const parseQuery = <T>(
   value: Request,
   predicate: (input: Record<string, any>) => T
 ): T => {
   try {
     return predicate(value.query);
   } catch (error) {
-    throw badRequest(String(error));
+    throw Errors.BadRequest(String(error));
+  }
+};
+
+const parseParams = <T>(
+  value: Request,
+  predicate: (input: Record<string, any>) => T
+): T => {
+  try {
+    return predicate(value.params);
+  } catch (error) {
+    throw Errors.BadRequest(String(error));
   }
 };
 
@@ -18,11 +29,11 @@ const parseUserSub = (req: APIGatewayRequest): string => {
   try {
     const sub = req.apiGateway?.event?.requestContext?.authorizer?.claims?.sub;
     if (!sub) {
-      throw unauthorized();
+      throw Errors.Unauthorized();
     }
     return sub;
   } catch (error) {
-    throw internalServerError(String(error));
+    throw Errors.InternalServerError(String(error));
   }
 };
 
@@ -35,8 +46,8 @@ const parseBody = <T>(
   try {
     return predicate(value.body);
   } catch (error) {
-    throw badRequest(String(error));
+    throw Errors.BadRequest(String(error));
   }
 };
 
-export { APIGatewayRequest, parseParams, parseBody, parseUserSub };
+export { APIGatewayRequest, parseQuery, parseParams, parseBody, parseUserSub };

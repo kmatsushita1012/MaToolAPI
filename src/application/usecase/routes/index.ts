@@ -1,12 +1,16 @@
+import PutUsecase from "./PutUsecase";
 import DeleteUsecase from "./DeleteUsecase";
-import GetDetailUsecase from "./GetDetailUsecase";
-import GetSummariesUsecase from "./GetSummariesUsecase";
+import GetUsecase from "./GetUsecase";
+import GetAllUsecase from "./GetAllUsecase";
 import PostUsecase from "./PostUsecase";
+import GetCurrentUsecase from "./GetCurrentUsecase";
 
 const RouteUsecase = {
-  GetDetailUsecase,
-  GetSummariesUsecase,
+  GetUsecase,
+  GetAllUsecase,
+  GetCurrentUsecase,
   PostUsecase,
+  PutUsecase,
   DeleteUsecase,
 };
 export default RouteUsecase;

@@ -9,3 +9,10 @@ export default abstract class IRepository {
   public abstract readonly route: IRouteRepository;
   public abstract readonly location: ILocationRepository;
 }
+
+export {
+  IRegionRepository,
+  IDistrictRepository,
+  IRouteRepository,
+  ILocationRepository,
+};

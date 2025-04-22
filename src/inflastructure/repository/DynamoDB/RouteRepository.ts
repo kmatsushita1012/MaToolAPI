@@ -6,21 +6,26 @@ import {
   QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
-import { RouteWithId } from "../../../domain/models/route";
 import { toCamelCase, toSnakeCase } from "../../../utils/Formatter";
 import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
-import { notFound } from "../../../utils/Errors";
+import { Errors } from "../../../utils/Errors";
+import {
+  makeRouteId,
+  Route,
+  toStorableRoute,
+} from "../../../domain/models/routes";
+import { SimpleDate } from "../../../domain/models/shared";
 
 const tableName = "matool_routes";
 
-export default class RouteRepositoryDynamoDB extends IRouteRepository {
+export default class DynamoDBRouteRepository extends IRouteRepository {
   private client: DynamoDBDocumentClient;
   constructor(client: DynamoDBDocumentClient) {
     super();
     this.client = client;
   }
 
-  query = async (districtId: string): Promise<RouteWithId[]> => {
+  query = async (districtId: string): Promise<Route[]> => {
     const data = await this.client.send(
       new QueryCommand({
         TableName: tableName,
@@ -31,13 +36,18 @@ export default class RouteRepositoryDynamoDB extends IRouteRepository {
       })
     );
     if (!data.Items) {
-      throw notFound();
+      throw Errors.NotFound();
     }
-    const camelData = toCamelCase(data.Items);
-    const routes = camelData.map((item) => item as RouteWithId);
+    const routes = toCamelCase<Route[]>(data.Items);
     return routes;
   };
-  get = async (districtId: string, routeId: string): Promise<RouteWithId> => {
+
+  get = async (
+    districtId: string,
+    date: SimpleDate,
+    title: string
+  ): Promise<Route | null> => {
+    const routeId = makeRouteId(date, title);
     const data = await this.client.send(
       new GetCommand({
         TableName: tableName,
@@ -48,14 +58,15 @@ export default class RouteRepositoryDynamoDB extends IRouteRepository {
       })
     );
     if (!data.Item) {
-      throw notFound();
+      return null;
     }
-    const camelData = toCamelCase(data.Item);
-    const route: RouteWithId = camelData as RouteWithId;
+    const item = toCamelCase(data.Item);
+    const route = item as Route;
     return route;
   };
 
-  put = async (route: RouteWithId): Promise<string> => {
+  post = async (route: Route): Promise<string> => {
+    const storableRoute = toStorableRoute(route);
     const snakeData = toSnakeCase(route);
     const marshalledData = marshall(route, { removeUndefinedValues: true });
     await this.client.send(
@@ -67,7 +78,25 @@ export default class RouteRepositoryDynamoDB extends IRouteRepository {
     return "Success";
   };
 
-  delete = async (districtId: string, routeId: string): Promise<string> => {
+  put = async (route: Route): Promise<string> => {
+    const storableRoute = toStorableRoute(route);
+    const snakeData = toSnakeCase(route);
+    const marshalledData = marshall(route, { removeUndefinedValues: true });
+    await this.client.send(
+      new PutItemCommand({
+        TableName: tableName,
+        Item: marshalledData,
+      })
+    );
+    return "Success";
+  };
+
+  delete = async (
+    districtId: string,
+    date: SimpleDate,
+    title: string
+  ): Promise<string> => {
+    const routeId = makeRouteId(date, title);
     await this.client.send(
       new DeleteCommand({
         TableName: tableName,
@@ -80,5 +109,3 @@ export default class RouteRepositoryDynamoDB extends IRouteRepository {
     return "Success";
   };
 }
-
-export { RouteRepositoryDynamoDB as RouteRepository };

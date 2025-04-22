@@ -15,7 +15,7 @@ export const authenticate = async (
 ): Promise<void> => {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) {
-    res.status(401).json({ message: "Unauthorized" });
+    res.status(401).json({ message: " Errors.Unauthorized" });
     return;
   }
 
@@ -25,7 +25,7 @@ export const authenticate = async (
     // req.user = response;
     next();
   } catch (error) {
-    res.status(401).json({ message: "Unauthorized" });
+    res.status(401).json({ message: " Errors.Unauthorized" });
     return;
   }
 };

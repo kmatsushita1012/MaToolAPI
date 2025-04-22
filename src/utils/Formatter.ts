@@ -1,28 +1,27 @@
-// スネークケース → キャメルケース変換関数
-export const toCamelCase = <T>(obj: T): T => {
-  if (Array.isArray(obj)) {
-    return obj.map(toCamelCase) as unknown as T;
-  } else if (typeof obj === "object" && obj !== null) {
+export const toCamelCase = <T>(input: Record<string, any> | Array<any>): T => {
+  if (Array.isArray(input)) {
+    return input.map(toCamelCase) as unknown as T;
+  } else if (typeof input === "object" && input !== null) {
     return Object.fromEntries(
-      Object.entries(obj as Record<string, any>).map(([key, value]) => [
+      Object.entries(input).map(([key, value]) => [
         key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()),
         toCamelCase(value),
       ])
     ) as unknown as T;
   }
-  return obj;
+  return input as unknown as T;
 };
-// キャメルケース → スネークケース変換関数
-export const toSnakeCase = <T>(obj: T): T => {
-  if (Array.isArray(obj)) {
-    return obj.map(toSnakeCase) as unknown as T;
-  } else if (typeof obj === "object" && obj !== null) {
+
+export const toSnakeCase = (input: any): Record<string, any> | Array<any> => {
+  if (Array.isArray(input)) {
+    return input.map(toSnakeCase);
+  } else if (typeof input === "object" && input !== null) {
     return Object.fromEntries(
-      Object.entries(obj as Record<string, any>).map(([key, value]) => [
+      Object.entries(input).map(([key, value]) => [
         key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`),
         toSnakeCase(value),
       ])
-    ) as unknown as T;
+    );
   }
-  return obj;
+  return input;
 };

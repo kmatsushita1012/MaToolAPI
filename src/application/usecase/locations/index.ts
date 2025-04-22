@@ -1,8 +1,10 @@
+import DeleteUsecase from "./DeleteUsecase";
 import GetUsecase from "./GetUsecase";
-import PostUsecase from "./PostUsecase";
+import PutUsecase from "./PutUsecase";
 
 const LocationUsecase = {
   GetUsecase,
-  PostUsecase,
+  PutUsecase,
+  DeleteUsecase,
 };
 export default LocationUsecase;

@@ -1,10 +1,10 @@
-import GetDetailUsecase from "./GetDetailUsecase";
-import GetSummariesUsecase from "./GetSummariesUsecase";
-import PostUsecase from "./PostUsecase";
+import GetUsecase from "./GetUsecase";
+import GetAllUsecase from "./GetAllUsecase";
+import PutUsecase from "./PutUsecase";
 
 const RegionUsecase = {
-  GetDetailUsecase,
-  GetSummariesUsecase,
-  PostUsecase,
+  GetUsecase,
+  GetAllUsecase,
+  PutUsecase,
 };
 export default RegionUsecase;

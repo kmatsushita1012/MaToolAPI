@@ -1,44 +1,47 @@
 import {
-  parseParams,
   APIGatewayRequest,
   parseUserSub,
   parseBody,
+  parseParams,
 } from "../request";
 import { Region } from "../../domain/models/regions";
 import RegionUsecase from "../../application/usecase/regions";
 import { ApiResponse, successResponse, errorResponse } from "../responses";
-import IRegionRepository from "../../domain/interface/repository/IRegionRepository";
+import IRepository from "../../domain/interface/repository";
 
 export default class RegionController {
-  constructor(private repository: IRegionRepository) {}
+  constructor(private repository: IRepository) {}
 
-  getDetail = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  get = async (req: APIGatewayRequest): Promise<ApiResponse> => {
     try {
-      const { id } = parseParams(req, (params) => ({ id: params.id }));
-      console.log(`contoroller id:${id}`);
-      const usecase = new RegionUsecase.GetDetailUsecase(this.repository);
-      const item = await usecase.execute(id);
+      const { regionId } = parseParams(req, (params) => ({
+        regionId: params.regionId!,
+      }));
+      const usecase = new RegionUsecase.GetUsecase(this.repository.region);
+      const item = await usecase.execute(regionId);
       return successResponse(item);
     } catch (error) {
       return errorResponse(error);
     }
   };
-  getSummaries = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  getAll = async (req: APIGatewayRequest): Promise<ApiResponse> => {
     try {
-      console.log("controller");
-      const usecase = new RegionUsecase.GetSummariesUsecase(this.repository);
+      const usecase = new RegionUsecase.GetAllUsecase(this.repository.region);
       const summaries = await usecase.execute();
       return successResponse(summaries);
     } catch (error) {
       return errorResponse(error);
     }
   };
-  post = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  put = async (req: APIGatewayRequest): Promise<ApiResponse> => {
     try {
+      const { regionId } = parseParams(req, (params) => ({
+        regionId: params.regionId!,
+      }));
       const data = parseBody<Region>(req);
       const userSub = parseUserSub(req);
-      const usecase = new RegionUsecase.PostUsecase(this.repository);
-      const result = await usecase.execute(data, userSub);
+      const usecase = new RegionUsecase.PutUsecase(this.repository.region);
+      const result = await usecase.execute(regionId, data, userSub);
       return successResponse(result);
     } catch (error) {
       return errorResponse(error);

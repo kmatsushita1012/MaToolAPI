@@ -1,18 +1,19 @@
-import { makeRouteId, Route, RouteWithId } from "../../../domain/models/route";
+import { Route } from "../../../domain/models/routes";
 import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
-import { unauthorized } from "../../../utils/Errors";
+import { Errors } from "../../../utils/Errors";
 
 export default class PostRouteUsecase {
   constructor(private routeRepository: IRouteRepository) {}
 
-  async execute(route: Route, userSub: string): Promise<string> {
-    const id = route.districtId;
-    if (route.districtId !== userSub) {
-      throw unauthorized();
+  async execute(
+    districtId: string,
+    route: Route,
+    userSub: string
+  ): Promise<string> {
+    if (districtId !== userSub || districtId !== route.districtId) {
+      throw Errors.Unauthorized();
     }
-    const routeId = makeRouteId(route.date, route.title);
-    const routeWithId: RouteWithId = { ...route, routeId: routeId };
-    const result = await this.routeRepository.put(routeWithId);
+    const result = await this.routeRepository.post(route);
     return result;
   }
 }
