@@ -7,7 +7,7 @@ import {
 } from "../request";
 import LocationUsecase from "../../application/usecase/locations";
 import { ApiResponse, successResponse, errorResponse } from "../responses";
-import IRepository from "../../domain/interface/repository";
+import IRepository from "../../domain/interfaces/repository";
 import { Location } from "../../domain/models/locations";
 
 export default class LocationController {

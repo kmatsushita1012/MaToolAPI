@@ -1,4 +1,4 @@
-import IDistrictRepository from "../../../domain/interface/repository/IDistrictRepository";
+import IDistrictRepository from "../../../domain/interfaces/repository/IDistrictRepository";
 import { District } from "../../../domain/models/districts";
 import { Errors } from "../../../utils/Errors";
 

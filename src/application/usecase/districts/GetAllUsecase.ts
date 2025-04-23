@@ -1,5 +1,5 @@
-import { IRegionRepository } from "../../../domain/interface/repository";
-import IDistrictRepository from "../../../domain/interface/repository/IDistrictRepository";
+import { IRegionRepository } from "../../../domain/interfaces/repository";
+import IDistrictRepository from "../../../domain/interfaces/repository/IDistrictRepository";
 import {
   PublicDistrict,
   toPublicDistrict,

@@ -1,9 +1,9 @@
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-import IRepository from "../../../domain/interface/repository";
-import IDistrictRepository from "../../../domain/interface/repository/IDistrictRepository";
-import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
-import IRegionRepository from "../../../domain/interface/repository/IRegionRepository";
-import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
+import IRepository from "../../../domain/interfaces/repository";
+import IDistrictRepository from "../../../domain/interfaces/repository/IDistrictRepository";
+import ILocationRepository from "../../../domain/interfaces/repository/ILocationRepository";
+import IRegionRepository from "../../../domain/interfaces/repository/IRegionRepository";
+import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
 import DynamoDBRegionRepository from "./RegionRepository";
 import DynamoDBDistrictRepository from "./DistrictRepository";
 import DynamoDBRouteRepository from "./RouteRepository";

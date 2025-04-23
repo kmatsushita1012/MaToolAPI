@@ -1,5 +1,5 @@
 import { Route } from "../../../domain/models/routes";
-import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
+import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
 import { Errors } from "../../../utils/Errors";
 
 export default class PostRouteUsecase {

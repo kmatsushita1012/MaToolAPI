@@ -1,4 +1,4 @@
-import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
+import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
 import { RouteSummary, toRouteSummary } from "../../../domain/models/routes";
 
 export default class GetAllUsecase {

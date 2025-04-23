@@ -3,7 +3,7 @@ import DistrictController from "./DistrictController";
 import LocationController from "./LocationController";
 import RegionController from "./RegionController";
 import RouteController from "./RouteController";
-import IRepository from "../../domain/interface/repository";
+import IRepository from "../../domain/interfaces/repository";
 
 export default class Controller {
   public readonly region: RegionController;

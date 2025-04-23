@@ -2,12 +2,12 @@ import {
   DynamoDBDocumentClient,
   GetCommand,
   ScanCommand,
+  PutCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { toCamelCase, toSnakeCase } from "../../../utils/Formatter";
 import { Region } from "../../../domain/models/regions";
-import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
-import IRegionRepository from "../../../domain/interface/repository/IRegionRepository";
+import IRegionRepository from "../../../domain/interfaces/repository/IRegionRepository";
 import { Errors } from "../../../utils/Errors";
 
 const tableName = "matool_regions";
@@ -50,7 +50,7 @@ export default class DynamoDBRegionRepository extends IRegionRepository {
     const snakeData = toSnakeCase(item);
     const marshalledData = marshall(snakeData, { removeUndefinedValues: true });
     await this.client.send(
-      new PutItemCommand({
+      new PutCommand({
         TableName: tableName,
         Item: marshalledData,
       })

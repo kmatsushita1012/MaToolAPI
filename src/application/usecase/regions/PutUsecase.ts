@@ -1,5 +1,5 @@
 import { Region } from "../../../domain/models/regions";
-import IRegionRepository from "../../../domain/interface/repository/IRegionRepository";
+import IRegionRepository from "../../../domain/interfaces/repository/IRegionRepository";
 import { Errors } from "../../../utils/Errors";
 
 export default class PutUsecase {

@@ -9,7 +9,7 @@ import {
   parseQuery,
   parseUserSub,
 } from "../request";
-import IRepository from "../../domain/interface/repository";
+import IRepository from "../../domain/interfaces/repository";
 
 export default class RouteController {
   constructor(private repository: IRepository) {}

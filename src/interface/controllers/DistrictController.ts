@@ -8,7 +8,7 @@ import {
 import { District } from "../../domain/models/districts";
 import DistrictUsecase from "../../application/usecase/districts";
 import { ApiResponse, errorResponse, successResponse } from "../responses";
-import IRepository from "../../domain/interface/repository";
+import IRepository from "../../domain/interfaces/repository";
 
 export default class DistrictController {
   constructor(private repository: IRepository) {}

@@ -1,4 +1,4 @@
-import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
+import ILocationRepository from "../../../domain/interfaces/repository/ILocationRepository";
 import {
   Location,
   toExpirableLocation,

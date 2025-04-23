@@ -10,7 +10,7 @@ import {
   PutItemCommand,
 } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
-import IDistrictRepository from "../../../domain/interface/repository/IDistrictRepository";
+import IDistrictRepository from "../../../domain/interfaces/repository/IDistrictRepository";
 import { Errors } from "../../../utils/Errors";
 
 const tableName = "matool_districts";

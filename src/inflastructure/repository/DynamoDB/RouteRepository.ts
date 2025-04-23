@@ -7,7 +7,7 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
 import { toCamelCase, toSnakeCase } from "../../../utils/Formatter";
-import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
+import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
 import { Errors } from "../../../utils/Errors";
 import {
   makeRouteId,

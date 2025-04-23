@@ -1,4 +1,4 @@
-import IRegionRepository from "../../../domain/interface/repository/IRegionRepository";
+import IRegionRepository from "../../../domain/interfaces/repository/IRegionRepository";
 import { Region } from "../../../domain/models/regions";
 
 export default class GetAllUsecase {

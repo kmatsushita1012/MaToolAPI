@@ -7,7 +7,7 @@ import { toCamelCase, toSnakeCase } from "../../../utils/Formatter";
 import { Location, ExpirableLocation } from "../../../domain/models/locations";
 import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { marshall } from "@aws-sdk/util-dynamodb";
-import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
+import ILocationRepository from "../../../domain/interfaces/repository/ILocationRepository";
 
 const tableName = "matool_locations";
 

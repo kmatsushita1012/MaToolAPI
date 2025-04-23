@@ -7,7 +7,7 @@ import {
 import { Region } from "../../domain/models/regions";
 import RegionUsecase from "../../application/usecase/regions";
 import { ApiResponse, successResponse, errorResponse } from "../responses";
-import IRepository from "../../domain/interface/repository";
+import IRepository from "../../domain/interfaces/repository";
 
 export default class RegionController {
   constructor(private repository: IRepository) {}
