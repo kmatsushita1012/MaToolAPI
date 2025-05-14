@@ -44,8 +44,8 @@ export default class DynamoDBRegionRepository extends IRegionRepository {
           TableName: this.tableName,
         })
       );
-      if (!data.Items) {
-        throw Errors.NotFound();
+      if (!data.Items || data.Items.length === 0) {
+        return [];
       }
       const regions = toCamelCase<[Region]>(data.Items);
       return regions;

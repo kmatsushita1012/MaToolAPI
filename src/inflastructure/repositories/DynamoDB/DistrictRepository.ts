@@ -34,7 +34,7 @@ class DynamoDBDistrictRepository extends IDistrictRepository {
   };
 
   queryByRegion = async (regionId: string): Promise<District[]> => {
-    const result = await this.client.send(
+    const data = await this.client.send(
       new QueryCommand({
         TableName: this.tableName,
         IndexName: "region_id-index",
@@ -44,9 +44,10 @@ class DynamoDBDistrictRepository extends IDistrictRepository {
         },
       })
     );
-
-    const items = result.Items ?? [];
-    return toCamelCase<District[]>(items);
+    if (!data.Items || data.Items.length === 0) {
+      return [];
+    }
+    return toCamelCase<District[]>(data.Items);
   };
 
   put = async (id: string, item: District): Promise<string> => {

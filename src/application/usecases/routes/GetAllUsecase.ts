@@ -21,6 +21,9 @@ export default class GetAllUsecase {
   execute = async (id: string, user: UserRole): Promise<RouteSummary[]> => {
     console.log(`GetAllUsecase1 ${id}`);
     const district = await this.districtRepository.get(id);
+    if (!district) {
+      throw Errors.NotFound();
+    }
     console.log(`GetAllUsecase2 ${district?.id}`);
     if (
       district?.visibility === Visibility.AdminOnly &&
@@ -30,9 +33,6 @@ export default class GetAllUsecase {
     ) {
       console.log(`GetAllUsecase Forbidden`);
       throw Errors.Forbidden();
-    }
-    if (!district) {
-      throw Errors.NotFound();
     }
     const details = await this.routeRepository.query(id);
     console.log(`GetAllUsecase3 ${details}`);

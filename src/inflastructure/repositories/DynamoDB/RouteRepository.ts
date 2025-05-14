@@ -37,7 +37,7 @@ export default class DynamoDBRouteRepository extends IRouteRepository {
           },
         })
       );
-      if (!data.Items) {
+      if (!data.Items || data.Items.length === 0) {
         console.log(`DynamoDBRouteRepository query noItem`);
         return [];
       }
