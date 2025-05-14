@@ -17,13 +17,18 @@ class DynamoDBDistrictRepository extends IDistrictRepository {
   }
 
   get = async (id: string): Promise<District | null> => {
+    console.log(`DynamoDBDistrictRepository ${id} ${this.tableName}`);
     const data = await this.client.send(
       new GetCommand({
         TableName: this.tableName,
         Key: { id },
       })
     );
-    if (!data.Item) return null;
+    if (!data.Item) {
+      console.log(`DynamoDBDistrictRepository null`);
+      return null;
+    }
+    console.log(`DynamoDBDistrictRepository ${data.Item}`);
     return toCamelCase<District>(data.Item);
   };
 
@@ -40,7 +45,7 @@ class DynamoDBDistrictRepository extends IDistrictRepository {
     );
 
     const items = result.Items ?? [];
-    return toCamelCase(items) as District[];
+    return toCamelCase<District[]>(items);
   };
 
   put = async (id: string, item: District): Promise<string> => {
