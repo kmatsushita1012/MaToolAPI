@@ -91,7 +91,7 @@ const createRegionUsecases = (repositories: Repositories): RegionUsecases => ({
 
 const createRouteUsecases = (repositories: Repositories): RouteUsecases => ({
   get: new GetRouteUsecase(repositories.route, repositories.district),
-  getAll: new GetAllRouteUsecase(repositories.route),
+  getAll: new GetAllRouteUsecase(repositories.route, repositories.district),
   getCurrent: new GetCurrentRouteUsecase(
     repositories.route,
     repositories.district

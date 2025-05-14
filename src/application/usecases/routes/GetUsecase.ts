@@ -6,7 +6,11 @@ import {
   UserRole,
   UserRoleType,
 } from "../../../domain/entities/shared";
-import { Route, toPublicRoute } from "../../../domain/entities/routes";
+import {
+  PublicRoute,
+  removeTime,
+  toPublicRoute,
+} from "../../../domain/entities/routes";
 
 export default class GetUsecase {
   constructor(
@@ -19,7 +23,7 @@ export default class GetUsecase {
     date: SimpleDate,
     title: string,
     user: UserRole
-  ): Promise<Route> => {
+  ): Promise<PublicRoute> => {
     const district = await this.districtRepository.get(id);
     if (
       district?.visibility === Visibility.AdminOnly &&
@@ -33,6 +37,15 @@ export default class GetUsecase {
     if (!route || !district) {
       throw Errors.NotFound();
     }
-    return toPublicRoute(route, district);
+    if (
+      district?.visibility === Visibility.Partial &&
+      (user.type === UserRoleType.Guest ||
+        (user.type === UserRoleType.District && user.id !== id) ||
+        (user.type === UserRoleType.Region && user.id !== district?.regionId))
+    ) {
+      return removeTime(toPublicRoute(route, district));
+    } else {
+      return toPublicRoute(route, district);
+    }
   };
 }

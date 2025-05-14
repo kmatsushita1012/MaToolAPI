@@ -4,9 +4,6 @@ import GetUsecase from "./GetUsecase";
 import GetAllUsecase from "./GetAllUsecase";
 import PostUsecase from "./PostUsecase";
 import GetCurrentUsecase from "./GetCurrentUsecase";
-import { Repositories } from "../../../domain/interfaces/repository";
-import { Route } from "../../../domain/entities/routes";
-import { isNull } from "util";
 
 interface RouteUsecases {
   get: GetUsecase;
@@ -25,4 +22,3 @@ export {
   PutUsecase as PutRouteUsecase,
   DeleteUsecase as DeleteRouteUsecase,
 };
-

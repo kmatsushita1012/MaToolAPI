@@ -37,11 +37,14 @@ const toRouteSummary = (route: PublicRoute): RouteSummary => {
   return { districtId, districtName, date, title };
 };
 
-const removeTime = (route: Route): Route => {
-  route.start = null;
-  route.goal = null;
-  route.points.forEach((point) => {
-    point.time = null;
-  });
-  return route;
+const removeTime = (route: PublicRoute): PublicRoute => {
+  return {
+    ...route,
+    start: null,
+    goal: null,
+    points: route.points.map((point) => ({
+      ...point,
+      time: null,
+    })),
+  };
 };

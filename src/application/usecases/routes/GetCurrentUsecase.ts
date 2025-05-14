@@ -3,18 +3,19 @@ import { Errors } from "../../../utils/Errors";
 import IDistrictRepository from "../../../domain/interfaces/repository/IDistrictRepository";
 import { UserRole, UserRoleType } from "../../../domain/entities/shared";
 import {
+  PublicRoute,
   removeTime,
   Route,
   toPublicRoute,
 } from "../../../domain/entities/routes";
 import { compareDate, convertDate } from "../../../utils/DateTime";
-export default class GetUsecase {
+export default class GetCurrentUsecase {
   constructor(
     private routeRepository: IRouteRepository,
     private districtRepository: IDistrictRepository
   ) {}
 
-  execute = async (id: string, user: UserRole): Promise<Route> => {
+  execute = async (id: string, user: UserRole): Promise<PublicRoute> => {
     const district = await this.districtRepository.get(id);
     if (
       district?.visibility === Visibility.AdminOnly &&
@@ -34,9 +35,10 @@ export default class GetUsecase {
         (user.type === UserRoleType.District && user.id !== id) ||
         (user.type === UserRoleType.Region && user.id !== district?.regionId))
     ) {
-      route = removeTime(route);
+      return removeTime(toPublicRoute(route, district));
+    } else {
+      return toPublicRoute(route, district);
     }
-    return toPublicRoute(route, district);
   };
 
   private getCurrentRoute = async (
