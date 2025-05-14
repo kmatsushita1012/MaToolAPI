@@ -15,13 +15,16 @@ export default class GetAllUsecase {
   ) {}
 
   execute = async (id: string, user: UserRole): Promise<RouteSummary[]> => {
+    console.log(`GetAllUsecase1 ${id}`);
     const district = await this.districtRepository.get(id);
+    console.log(`GetAllUsecase2 ${district?.id}`);
     if (
-      district?.visibility === Visibility.AdminOnly ||
-      user.type === UserRoleType.Guest ||
-      (user.type === UserRoleType.District && user.id !== id) ||
-      (user.type === UserRoleType.Region && user.id !== district?.regionId)
+      district?.visibility === Visibility.AdminOnly &&
+      (user.type === UserRoleType.Guest ||
+        (user.type === UserRoleType.District && user.id !== id) ||
+        (user.type === UserRoleType.Region && user.id !== district?.regionId))
     ) {
+      console.log(`GetAllUsecase Forbidden`);
       throw Errors.Forbidden();
     }
     if (!district) {
