@@ -1,4 +1,8 @@
-import { SimpleDate, UserRole } from "../../domain/entities/shared";
+import {
+  SimpleDate,
+  UserRole,
+  UserRoleType,
+} from "../../domain/entities/shared";
 import { Route } from "../../domain/entities/routes";
 import { successResponse, errorResponse, ApiResponse } from "../responses";
 import { parseBody, parseParams, parseQuery } from "../request";
@@ -36,12 +40,11 @@ export default class RouteController {
 
   getAll = async (req: Request): Promise<ApiResponse> => {
     try {
-      console.log(`Route getAll1`);
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId as string,
       }));
       const user = req.user ?? UserRole.Guest();
-      console.log(`Route getAll2 ${districtId} ${user}`);
+      console.log(`Route getAll1 `);
       const result = this.usecases.getAll.execute(districtId, user);
       return successResponse(result);
     } catch (error) {

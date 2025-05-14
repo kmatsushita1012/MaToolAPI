@@ -1,4 +1,4 @@
-import { Coordinate } from "../shared";
+import { Coordinate, Visibility } from "../shared";
 
 interface District {
   id: string;

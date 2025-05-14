@@ -1,7 +1,7 @@
-const Visibility = {
+export const Visibility = {
   AdminOnly: "admin",
   Partial: "route",
   Everyone: "all",
 } as const;
 
-type Visibility = (typeof Visibility)[keyof typeof Visibility];
+export type Visibility = (typeof Visibility)[keyof typeof Visibility];

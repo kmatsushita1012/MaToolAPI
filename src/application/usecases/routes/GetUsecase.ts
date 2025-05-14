@@ -5,6 +5,7 @@ import {
   SimpleDate,
   UserRole,
   UserRoleType,
+  Visibility,
 } from "../../../domain/entities/shared";
 import {
   PublicRoute,

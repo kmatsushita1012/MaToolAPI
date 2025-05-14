@@ -1,7 +1,7 @@
 import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
 import { Errors } from "../../../utils/Errors";
 import IDistrictRepository from "../../../domain/interfaces/repository/IDistrictRepository";
-import { UserRole, UserRoleType } from "../../../domain/entities/shared";
+import { UserRole, UserRoleType, Visibility } from "../../../domain/entities/shared";
 import {
   PublicRoute,
   removeTime,

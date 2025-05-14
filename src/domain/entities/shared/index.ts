@@ -4,6 +4,7 @@ import SimpleDate from "./SimpleDate";
 import SimpleTime from "./SimpleTime";
 import Span from "./Span";
 import { UserRole, UserRoleType } from "./UserRole";
+import { Visibility } from "./Visibility";
 
 export {
   Coordinate,
@@ -13,4 +14,5 @@ export {
   DateAndTime,
   UserRole,
   UserRoleType,
+  Visibility,
 };

@@ -6,7 +6,11 @@ import {
 } from "../../../domain/entities/routes";
 import { IDistrictRepository } from "../../../domain/interfaces/repository";
 import { Errors } from "../../../utils/Errors";
-import { UserRole, UserRoleType } from "../../../domain/entities/shared";
+import {
+  UserRole,
+  UserRoleType,
+  Visibility,
+} from "../../../domain/entities/shared";
 
 export default class GetAllUsecase {
   constructor(

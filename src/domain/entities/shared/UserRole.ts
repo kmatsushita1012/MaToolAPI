@@ -11,6 +11,9 @@ export enum UserRoleType {
 
 export const UserRole = {
   Region: (id: string): UserRole => ({ type: UserRoleType.Region, id }),
-  District: (id: string): UserRole => ({ type: UserRoleType.District, id }),
+  District: (id: string): UserRole => ({
+    type: UserRoleType.District,
+    id,
+  }),
   Guest: (): UserRole => ({ type: UserRoleType.Guest }),
 };
