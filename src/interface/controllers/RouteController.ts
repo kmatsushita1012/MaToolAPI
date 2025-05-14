@@ -35,15 +35,17 @@ export default class RouteController {
   };
 
   getAll = async (req: Request): Promise<ApiResponse> => {
-    console.log(`Route getAll`);
     try {
+      console.log(`Route getAll1`);
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId as string,
       }));
       const user = req.user ?? UserRole.Guest();
+      console.log(`Route getAll2 ${districtId} ${user}`);
       const result = this.usecases.getAll.execute(districtId, user);
       return successResponse(result);
     } catch (error) {
+      console.log(`Route getAll error ${error}`);
       return errorResponse(error);
     }
   };
