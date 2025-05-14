@@ -16,9 +16,11 @@ export const authenticate = async (
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
+    console.log("No Token");
     req.user = { type: UserRoleType.Guest };
     return next();
   }
+  console.log("Token");
 
   try {
     const command = new GetUserCommand({ AccessToken: token });
@@ -37,7 +39,7 @@ export const authenticate = async (
     } else {
       req.user = { type: UserRoleType.Guest };
     }
-    console.log(req.user);
+    logUserRole(req.user);
   } catch (error) {
     console.error("Cognito認証失敗:", error);
     req.user = { type: UserRoleType.Guest };
