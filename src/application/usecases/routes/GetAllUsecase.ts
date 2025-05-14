@@ -36,8 +36,7 @@ export default class GetAllUsecase {
     }
     const details = await this.routeRepository.query(id);
     console.log(`GetAllUsecase3 ${details}`);
-    console.log(`GetAllUsecase4 ${!details}`);
-    if (!details) {
+    if (!details || details.length === 0) {
       return [];
     }
 

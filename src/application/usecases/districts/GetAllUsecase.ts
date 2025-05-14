@@ -5,7 +5,6 @@ import {
   toPublicDistrict,
 } from "../../../domain/entities/districts";
 import { Errors } from "../../../utils/Errors";
-
 export default class GetAllUsecase {
   constructor(
     private districtRepository: IDistrictRepository,
@@ -17,6 +16,9 @@ export default class GetAllUsecase {
     const region = await this.regionRepository.get(regionId);
     if (!region) {
       throw Errors.NotFound();
+    }
+    if (!districts || districts.length === 0) {
+      return [];
     }
     const items = districts.map((item) => toPublicDistrict(item, region));
     return items;
