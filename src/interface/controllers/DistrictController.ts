@@ -10,10 +10,10 @@ export default class DistrictController {
 
   get = async (req: Request): Promise<ApiResponse> => {
     try {
-      console.log(`District get`);
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId as string,
       }));
+      console.log(`District get ${districtId}`);
       const result = await this.usecases.get.execute(districtId);
       return successResponse(result);
     } catch (error) {
@@ -24,10 +24,10 @@ export default class DistrictController {
 
   getAll = async (req: Request): Promise<ApiResponse> => {
     try {
-      console.log(`District getAll`);
       const { regionId } = parseParams(req, (params) => ({
         regionId: params.regionId as string,
       }));
+      console.log(`District getAll ${regionId}`);
       const result = await this.usecases.getAll.execute(regionId);
       return successResponse(result);
     } catch (error) {
@@ -38,9 +38,10 @@ export default class DistrictController {
 
   post = async (req: Request): Promise<ApiResponse> => {
     try {
-      console.log(`District Post`);
       const data = parseBody<District>(req);
+
       const user = req.user ?? UserRole.Guest();
+      console.log(`District post ${user}`);
       const result = await this.usecases.post.execute(data, user);
       return successResponse(result);
     } catch (error) {
@@ -57,6 +58,7 @@ export default class DistrictController {
       }));
       const data = parseBody<District>(req);
       const user = req.user ?? UserRole.Guest();
+      console.log(`District Put ${user}`);
       const result = await this.usecases.put.execute(districtId, data, user);
       return successResponse(result);
     } catch (error) {

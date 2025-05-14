@@ -8,35 +8,35 @@ import { UserRole } from "../domain/entities/shared";
 // }
 
 const parseQuery = <T>(
-  value: Request,
+  req: Request,
   predicate: (input: Record<string, any>) => T
 ): T => {
   try {
-    return predicate(value.query);
+    return predicate(req.query);
   } catch (error) {
     throw Errors.BadRequest(String(error));
   }
 };
 
 const parseParams = <T>(
-  value: Request,
+  req: Request,
   predicate: (input: Record<string, any>) => T
 ): T => {
   try {
-    return predicate(value.params);
+    return predicate(req.params);
   } catch (error) {
     throw Errors.BadRequest(String(error));
   }
 };
 
 const parseBody = <T>(
-  value: Request,
+  req: Request,
   predicate: (input: any) => T = (input) => {
     return input as T;
   }
 ): T => {
   try {
-    return predicate(value.body);
+    return predicate(req.body);
   } catch (error) {
     throw Errors.BadRequest(String(error));
   }
