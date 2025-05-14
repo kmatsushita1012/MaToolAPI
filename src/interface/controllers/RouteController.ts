@@ -45,7 +45,7 @@ export default class RouteController {
       }));
       const user = req.user ?? UserRole.Guest();
       console.log(`Route getAll1 `);
-      const result = this.usecases.getAll.execute(districtId, user);
+      const result = await this.usecases.getAll.execute(districtId, user);
       return successResponse(result);
     } catch (error) {
       console.log(`Route getAll error ${error}`);
