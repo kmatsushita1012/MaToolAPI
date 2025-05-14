@@ -28,9 +28,11 @@ export default class GetAllUsecase {
       throw Errors.NotFound();
     }
     const details = await this.routeRepository.query(id);
+    console.log(`GetAllUsecase1 { ${details}`);
     const summaries: RouteSummary[] = details.map((item) =>
       toRouteSummary(toPublicRoute(item, district))
     );
+    console.log(`GetAllUsecase2 { ${summaries}`);
     return summaries;
   };
 }

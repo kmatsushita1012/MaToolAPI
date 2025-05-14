@@ -27,13 +27,13 @@ export const authenticate = async (
     const attributes = response.UserAttributes ?? [];
 
     const role = attributes.find((attr) => attr.Name === "custom:role")?.Value;
-    const sub = attributes.find((attr) => attr.Name === "sub")?.Value;
+    const username = response.Username; 
 
     if (
       (role === UserRoleType.Region || role === UserRoleType.District) &&
-      sub
+      username
     ) {
-      req.user = { type: role as UserRoleType, id: sub };
+      req.user = { type: role as UserRoleType, id: username };
     } else {
       req.user = { type: UserRoleType.Guest };
     }

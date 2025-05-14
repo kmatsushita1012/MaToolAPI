@@ -1,7 +1,7 @@
 const Visibility = {
-  AdminOnly: "district",
-  Partial: "partial",
-  Everyone: "public",
+  AdminOnly: "admin",
+  Partial: "route",
+  Everyone: "all",
 } as const;
 
 type Visibility = (typeof Visibility)[keyof typeof Visibility];
