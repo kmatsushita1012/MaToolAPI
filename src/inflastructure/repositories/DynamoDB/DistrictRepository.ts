@@ -6,10 +6,7 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import { District } from "../../../domain/entities/districts";
 import { toCamelCase, toSnakeCase } from "../formatter";
-import { ConditionalCheckFailedException } from "@aws-sdk/client-dynamodb";
-import { marshall } from "@aws-sdk/util-dynamodb";
 import IDistrictRepository from "../../../domain/interfaces/repository/IDistrictRepository";
-import { Errors } from "../../../utils/Errors";
 
 class DynamoDBDistrictRepository extends IDistrictRepository {
   constructor(

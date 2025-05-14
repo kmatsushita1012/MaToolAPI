@@ -13,10 +13,10 @@ import createRouter from "./interface/router";
 const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-1" });
 const client = DynamoDBDocumentClient.from(dynamoDBClient);
 const repositories = createDynamoDBRepositories(client, {
-  region: "matool-regions",
-  district: "matool-districts",
-  route: "matool-routes",
-  location: "matool-locations",
+  region: "matool_regions",
+  district: "matool_districts",
+  route: "matool_routes",
+  location: "matool_locations",
 });
 const usecases = createUsecases(repositories);
 const controllers = createControllers(usecases);
