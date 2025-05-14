@@ -41,7 +41,9 @@ export default class DynamoDBRouteRepository extends IRouteRepository {
         console.log(`DynamoDBRouteRepository query noItem`);
         return [];
       }
+      console.log(`DynamoDBRouteRepository ${data.Items}`);
       const routes = toCamelCase<Route[]>(data.Items);
+      console.log(`DynamoDBRouteRepository ${routes}`);
       return routes;
     } catch (error) {
       console.log(error);

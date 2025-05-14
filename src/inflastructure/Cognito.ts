@@ -14,7 +14,7 @@ export const authenticate = async (
   next: NextFunction
 ): Promise<void> => {
   const token = req.headers.authorization?.split(" ")[1];
-
+  console.log(req.headers.authorization?.split(" "));
   if (!token) {
     console.log("No Token");
     req.user = { type: UserRoleType.Guest };
