@@ -1,5 +1,5 @@
-import { Route } from "../../models/routes";
-import { SimpleDate } from "../../models/shared";
+import { Route } from "../../entities/routes";
+import { SimpleDate } from "../../entities/shared";
 
 export default abstract class IRouteRepository {
   abstract query(districtId: string): Promise<Route[]>;

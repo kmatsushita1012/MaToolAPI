@@ -1,7 +1,11 @@
 import { Request } from "express";
 import { Errors } from "../utils/Errors";
+import { UserRole } from "../domain/entities/shared";
 
-type APIGatewayRequest = Request & { apiGateway?: any };
+// interface AuthenticatedRequest extends Request {
+//
+//   user: UserRole;
+// }
 
 const parseQuery = <T>(
   value: Request,
@@ -25,18 +29,6 @@ const parseParams = <T>(
   }
 };
 
-const parseUserSub = (req: APIGatewayRequest): string => {
-  try {
-    const sub = req.apiGateway?.event?.requestContext?.authorizer?.claims?.sub;
-    if (!sub) {
-      throw Errors.Unauthorized();
-    }
-    return sub;
-  } catch (error) {
-    throw Errors.InternalServerError(String(error));
-  }
-};
-
 const parseBody = <T>(
   value: Request,
   predicate: (input: any) => T = (input) => {
@@ -50,4 +42,4 @@ const parseBody = <T>(
   }
 };
 
-export { APIGatewayRequest, parseQuery, parseParams, parseBody, parseUserSub };
+export { parseQuery, parseParams, parseBody };

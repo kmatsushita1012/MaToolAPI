@@ -1,4 +1,4 @@
-import { SimpleDate, SimpleTime, Span } from "../domain/models/shared";
+import { SimpleDate, SimpleTime, Span } from "../domain/entities/shared";
 
 const compareDate = (earlier: Date, later: Date) => {
   return later.getTime() - earlier.getTime();

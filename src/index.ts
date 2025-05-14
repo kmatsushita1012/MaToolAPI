@@ -2,16 +2,25 @@ import express from "express";
 import serverless from "@vendia/serverless-express";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-import Controller from "./interface/controllers";
-import DynamoDBRepository from "./inflastructure/repository/DynamoDB";
-import IRepository from "./domain/interfaces/repository";
-import router from "./inflastructure/router";
+import {
+  createControllers,
+  createDynamoDBRepositories,
+  createUsecases,
+} from "./di";
+import createRouter from "./interface/router";
 
 //DynamoDBへの依存を注入
 const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-1" });
 const client = DynamoDBDocumentClient.from(dynamoDBClient);
-const repository: IRepository = new DynamoDBRepository(client);
-export const controllers = new Controller(repository);
+const repositories = createDynamoDBRepositories(client, {
+  region: "matool-regions",
+  district: "matool-districts",
+  route: "matool-routes",
+  location: "matool-locations",
+});
+const usecases = createUsecases(repositories);
+const controllers = createControllers(usecases);
+const router = createRouter(controllers);
 
 const app = express();
 app.use(express.json());

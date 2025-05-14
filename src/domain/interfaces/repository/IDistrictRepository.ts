@@ -1,4 +1,4 @@
-import { District } from "../../models/districts";
+import { District } from "../../entities/districts";
 
 export default abstract class IDistrictRepository {
   abstract get(id: string): Promise<District | null>;

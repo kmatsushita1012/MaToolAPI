@@ -1,61 +1,64 @@
-import {
-  APIGatewayRequest,
-  parseBody,
-  parseParams,
-  parseQuery,
-  parseUserSub,
-} from "../request";
-import LocationUsecase from "../../application/usecase/locations";
+import { parseBody, parseParams, parseQuery } from "../request";
+import { Request } from "express";
 import { ApiResponse, successResponse, errorResponse } from "../responses";
-import IRepository from "../../domain/interfaces/repository";
-import { Location } from "../../domain/models/locations";
+import { Location } from "../../domain/entities/locations";
+import { LocationUsecases } from "../../application/usecases/locations";
+import { UserRole } from "../../domain/entities/shared";
 
 export default class LocationController {
-  constructor(private repository: IRepository) {}
+  constructor(private usecases: LocationUsecases) {}
 
-  get = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  get = async (req: Request): Promise<ApiResponse> => {
     try {
+      console.log(`Location get`);
       const { districtId } = parseQuery(req, (params) => ({
         districtId: params.districtId!,
       }));
-      const userSub = parseUserSub(req);
-      const usecase = new LocationUsecase.GetUsecase(
-        this.repository.location,
-        this.repository.district,
-        this.repository.region
-      );
-      const location = await usecase.execute(districtId, userSub);
+      const user = req.user ?? UserRole.Guest();
+      const location = await this.usecases.get.execute(districtId, user);
       return successResponse(location);
     } catch (error) {
       return errorResponse(error);
     }
   };
 
-  put = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  getAll = async (req: Request): Promise<ApiResponse> => {
     try {
+      console.log(`Location getAll`);
+      const { districtId } = parseQuery(req, (params) => ({
+        districtId: params.districtId!,
+      }));
+      const user = req.user ?? UserRole.Guest();
+      const location = await this.usecases.get.execute(districtId, user);
+      return successResponse(location);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+
+  put = async (req: Request): Promise<ApiResponse> => {
+    try {
+      console.log(`Location put`);
       const { districtId } = parseQuery(req, (params) => ({
         districtId: params.districtId!,
       }));
       const data = parseBody<Location>(req);
-      const userSub = parseUserSub(req);
-      const usecase = new LocationUsecase.PutUsecase(this.repository.location);
-      const result = await usecase.execute(districtId, data, userSub);
+      const user = req.user ?? UserRole.Guest();
+      const result = await this.usecases.put.execute(districtId, data, user);
       return successResponse(result);
     } catch (error) {
       return errorResponse(error);
     }
   };
 
-  delete = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  delete = async (req: Request): Promise<ApiResponse> => {
     try {
+      console.log(`Location delete`);
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,
       }));
-      const userSub = parseUserSub(req);
-      const usecase = new LocationUsecase.DeleteUsecase(
-        this.repository.location
-      );
-      const location = await usecase.execute(districtId, userSub);
+      const user = req.user ?? UserRole.Guest();
+      const location = await this.usecases.delete.execute(districtId, user);
       return successResponse(location);
     } catch (error) {
       return errorResponse(error);

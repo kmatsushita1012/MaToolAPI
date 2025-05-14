@@ -1,32 +1,15 @@
-import { SimpleDate } from "../../domain/models/shared";
-import RouteUsecase from "../../application/usecase/routes";
-import { Route } from "../../domain/models/routes";
+import { SimpleDate, UserRole } from "../../domain/entities/shared";
+import { Route } from "../../domain/entities/routes";
 import { successResponse, errorResponse, ApiResponse } from "../responses";
-import {
-  APIGatewayRequest,
-  parseBody,
-  parseParams,
-  parseQuery,
-  parseUserSub,
-} from "../request";
-import IRepository from "../../domain/interfaces/repository";
+import { parseBody, parseParams, parseQuery } from "../request";
+import { RouteUsecases } from "../../application/usecases/routes";
+import { Request } from "express";
 
 export default class RouteController {
-  constructor(private repository: IRepository) {}
-  getAll = async (req: APIGatewayRequest): Promise<ApiResponse> => {
-    try {
-      const { districtId } = parseParams(req, (params) => ({
-        districtId: params.districtId,
-      }));
-      const usecase = new RouteUsecase.GetAllUsecase(this.repository.route);
-      const result = usecase.execute(districtId);
-      return successResponse(result);
-    } catch (error) {
-      return errorResponse(error);
-    }
-  };
+  constructor(private usecases: RouteUsecases) {}
 
-  get = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  get = async (req: Request): Promise<ApiResponse> => {
+    console.log(`Route get`);
     try {
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,
@@ -38,48 +21,63 @@ export default class RouteController {
         title: params.title,
       }));
       const date = new SimpleDate(year, month, day);
-      const usecase = new RouteUsecase.GetUsecase(
-        this.repository.route,
-        this.repository.district
+      const user = req.user ?? UserRole.Guest();
+      const result = await this.usecases.get.execute(
+        districtId,
+        date,
+        title,
+        user
       );
-      const result = await usecase.execute(districtId, date, title);
       return successResponse(result);
     } catch (error) {
       return errorResponse(error);
     }
   };
 
-  getCurrent = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  getAll = async (req: Request): Promise<ApiResponse> => {
+    console.log(`Route getAll`);
     try {
       const { districtId } = parseParams(req, (params) => ({
-        districtId: params.districtId!,
+        districtId: params.districtId as string,
       }));
-      const usecase = new RouteUsecase.GetCurrentUsecase(
-        this.repository.route,
-        this.repository.district
-      );
-      const result = await usecase.execute(districtId);
+      const user = req.user ?? UserRole.Guest();
+      const result = this.usecases.getAll.execute(districtId, user);
       return successResponse(result);
     } catch (error) {
       return errorResponse(error);
     }
   };
 
-  post = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  getCurrent = async (req: Request): Promise<ApiResponse> => {
+    console.log(`Route getCurrent`);
     try {
       const { districtId } = parseParams(req, (params) => ({
-        districtId: params.districtId!,
+        districtId: params.districtId as string,
+      }));
+      const user = req.user ?? UserRole.Guest();
+      const result = await this.usecases.getCurrent.execute(districtId, user);
+      return successResponse(result);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+
+  post = async (req: Request): Promise<ApiResponse> => {
+    console.log(`Route post`);
+    try {
+      const { districtId } = parseParams(req, (params) => ({
+        districtId: params.districtId as string,
       }));
       const data = parseBody<Route>(req);
-      const userSub = parseUserSub(req);
-      const usecase = new RouteUsecase.PostUsecase(this.repository.route);
-      const result = await usecase.execute(districtId, data, userSub);
+      const user = req.user ?? UserRole.Guest();
+      const result = await this.usecases.post.execute(districtId, data, user);
       return successResponse(result);
     } catch (error) {
       return errorResponse(error);
     }
   };
-  put = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  put = async (req: Request): Promise<ApiResponse> => {
+    console.log(`Route put`);
     try {
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,
@@ -92,14 +90,13 @@ export default class RouteController {
       }));
       const date = new SimpleDate(year, month, day);
       const data = parseBody<Route>(req);
-      const userSub = parseUserSub(req);
-      const usecase = new RouteUsecase.PutUsecase(this.repository.route);
-      const result = await usecase.execute(
+      const user = req.user ?? UserRole.Guest();
+      const result = await this.usecases.put.execute(
         districtId,
         date,
         title,
         data,
-        userSub
+        user
       );
       return successResponse(result);
     } catch (error) {
@@ -107,7 +104,8 @@ export default class RouteController {
     }
   };
 
-  delete = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  delete = async (req: Request): Promise<ApiResponse> => {
+    console.log(`Route delete`);
     try {
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,
@@ -118,10 +116,14 @@ export default class RouteController {
         day: params.day,
         title: params.title,
       }));
-      const userSub = parseUserSub(req);
+      const user = req.user ?? UserRole.Guest();
       const date = new SimpleDate(year, month, day);
-      const usecase = new RouteUsecase.DeleteUsecase(this.repository.route);
-      const result = await usecase.execute(districtId, date, title, userSub);
+      const result = await this.usecases.delete.execute(
+        districtId,
+        date,
+        title,
+        user
+      );
       return successResponse(result);
     } catch (error) {
       return errorResponse(error);

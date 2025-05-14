@@ -1,0 +1,95 @@
+import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
+import { Errors } from "../../../utils/Errors";
+import IDistrictRepository from "../../../domain/interfaces/repository/IDistrictRepository";
+import { UserRole, UserRoleType } from "../../../domain/entities/shared";
+import {
+  removeTime,
+  Route,
+  toPublicRoute,
+} from "../../../domain/entities/routes";
+import { compareDate, convertDate } from "../../../utils/DateTime";
+export default class GetUsecase {
+  constructor(
+    private routeRepository: IRouteRepository,
+    private districtRepository: IDistrictRepository
+  ) {}
+
+  execute = async (id: string, user: UserRole): Promise<Route> => {
+    const district = await this.districtRepository.get(id);
+    if (
+      district?.visibility === Visibility.AdminOnly &&
+      (user.type === UserRoleType.Guest ||
+        (user.type === UserRoleType.District && user.id !== id) ||
+        (user.type === UserRoleType.Region && user.id !== district?.regionId))
+    ) {
+      throw Errors.Forbidden();
+    }
+    let route = await this.getCurrentRoute(id, new Date());
+    if (!route || !district) {
+      throw Errors.NotFound();
+    }
+    if (
+      district?.visibility === Visibility.Partial &&
+      (user.type === UserRoleType.Guest ||
+        (user.type === UserRoleType.District && user.id !== id) ||
+        (user.type === UserRoleType.Region && user.id !== district?.regionId))
+    ) {
+      route = removeTime(route);
+    }
+    return toPublicRoute(route, district);
+  };
+
+  private getCurrentRoute = async (
+    districtId: string,
+    date: Date
+  ): Promise<Route> => {
+    const items = await this.routeRepository.query(districtId);
+    const route = this.selectCurrentItem(items, date);
+    return route;
+  };
+
+  private selectCurrentItem = (items: Route[], now: Date): Route => {
+    //ソート
+    const sortedItems = items.sort((a, b) => {
+      if (!b.start) {
+        return -1;
+      } else if (!a.start) {
+        return 1;
+      }
+      const dateA = convertDate(a.date, a.start);
+      const dateB = convertDate(b.date, b.start);
+      return compareDate(dateB, dateA);
+    });
+    //期間が近いものをreturn
+    let timeTarget: Route | undefined;
+    let dateTarget: Route | undefined;
+    for (let i = sortedItems.length - 1; i >= 0; i--) {
+      const item = sortedItems[i];
+      if (item.start && item.goal) {
+        const start = convertDate(item.date, item.start);
+        const diffOfStart = compareDate(start, now);
+        const goal = convertDate(item.date, item.goal);
+        const diffOfGoal = compareDate(goal, now);
+        //時間内
+        if (diffOfStart <= 0 && diffOfGoal > 0) {
+          return sortedItems[i];
+        }
+        // 一候補
+        if (diffOfStart > 0) {
+          timeTarget = sortedItems[i];
+          continue;
+        }
+        //候補が適切
+        if (diffOfGoal < 0 && timeTarget) {
+          return timeTarget;
+        }
+      } else {
+        const fullDate = convertDate(item.date, { hour: 0, minute: 0 });
+        if (compareDate(fullDate, now) === 0) {
+          dateTarget = item;
+        }
+      }
+    }
+    return timeTarget ?? dateTarget ?? sortedItems[0];
+  };
+}

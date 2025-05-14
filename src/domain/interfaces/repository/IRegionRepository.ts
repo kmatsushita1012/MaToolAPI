@@ -1,4 +1,4 @@
-import { Region } from "../../models/regions";
+import { Region } from "../../entities/regions";
 
 export default abstract class IRegionRepository {
   abstract get(id: string): Promise<Region | null>;

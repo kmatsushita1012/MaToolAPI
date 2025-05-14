@@ -1,28 +1,20 @@
-import {
-  APIGatewayRequest,
-  parseBody,
-  parseParams,
-  parseQuery,
-  parseUserSub,
-} from "../request";
-import { District } from "../../domain/models/districts";
-import DistrictUsecase from "../../application/usecase/districts";
+import { parseBody, parseParams } from "../request";
+import { District } from "../../domain/entities/districts";
 import { ApiResponse, errorResponse, successResponse } from "../responses";
-import IRepository from "../../domain/interfaces/repository";
+import { DistrictUsecases } from "../../application/usecases/districts";
+import { Request } from "express";
+import { UserRole } from "../../domain/entities/shared";
 
 export default class DistrictController {
-  constructor(private repository: IRepository) {}
+  constructor(private usecases: DistrictUsecases) {}
 
-  get = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  get = async (req: Request): Promise<ApiResponse> => {
     try {
+      console.log(`District get`);
       const { districtId } = parseParams(req, (params) => ({
-        districtId: params.districtId!,
+        districtId: params.districtId as string,
       }));
-      const usecase = new DistrictUsecase.GetUsecase(
-        this.repository.district,
-        this.repository.region
-      );
-      const result = await usecase.execute(districtId);
+      const result = await this.usecases.get.execute(districtId);
       return successResponse(result);
     } catch (error) {
       console.log(error);
@@ -30,16 +22,13 @@ export default class DistrictController {
     }
   };
 
-  getAll = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  getAll = async (req: Request): Promise<ApiResponse> => {
     try {
+      console.log(`District getAll`);
       const { regionId } = parseParams(req, (params) => ({
-        regionId: params.regionId!,
+        regionId: params.regionId as string,
       }));
-      const usecase = new DistrictUsecase.GetAllUsecase(
-        this.repository.district,
-        this.repository.region
-      );
-      const result = await usecase.execute(regionId);
+      const result = await this.usecases.getAll.execute(regionId);
       return successResponse(result);
     } catch (error) {
       console.log(error);
@@ -47,12 +36,12 @@ export default class DistrictController {
     }
   };
 
-  post = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  post = async (req: Request): Promise<ApiResponse> => {
     try {
+      console.log(`District Post`);
       const data = parseBody<District>(req);
-      const userSub = parseUserSub(req);
-      const usecase = new DistrictUsecase.PostUsecase(this.repository.district);
-      const result = await usecase.execute(data, userSub);
+      const user = req.user ?? UserRole.Guest();
+      const result = await this.usecases.post.execute(data, user);
       return successResponse(result);
     } catch (error) {
       console.log(error);
@@ -60,15 +49,15 @@ export default class DistrictController {
     }
   };
 
-  put = async (req: APIGatewayRequest): Promise<ApiResponse> => {
+  put = async (req: Request): Promise<ApiResponse> => {
     try {
+      console.log(`District Put`);
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,
       }));
       const data = parseBody<District>(req);
-      const userSub = parseUserSub(req);
-      const usecase = new DistrictUsecase.PutUsecase(this.repository.district);
-      const result = await usecase.execute(districtId, data, userSub);
+      const user = req.user ?? UserRole.Guest();
+      const result = await this.usecases.put.execute(districtId, data, user);
       return successResponse(result);
     } catch (error) {
       console.log(error);
