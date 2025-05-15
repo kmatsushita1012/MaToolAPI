@@ -1,11 +1,6 @@
-import {
-  SimpleDate,
-  UserRole,
-  UserRoleType,
-} from "../../../domain/entities/shared";
+import { UserRole, UserRoleType } from "../../../domain/entities/shared";
 import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
 import { Errors } from "../../../utils/Errors";
-import { makeRouteId } from "../../../domain/entities/routes";
 
 export default class DeleteUsecase {
   constructor(private routeRepository: IRouteRepository) {}
