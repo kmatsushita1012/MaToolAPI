@@ -11,7 +11,7 @@ export default class LocationController {
   get = async (req: Request): Promise<ApiResponse> => {
     try {
       console.log(`Location get`);
-      const { districtId } = parseQuery(req, (params) => ({
+      const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,
       }));
       const user = req.user ?? UserRole.Guest();
@@ -25,11 +25,11 @@ export default class LocationController {
   getAll = async (req: Request): Promise<ApiResponse> => {
     try {
       console.log(`Location getAll`);
-      const { districtId } = parseQuery(req, (params) => ({
-        districtId: params.districtId!,
+      const { regionId } = parseParams(req, (params) => ({
+        regionId: params.regionId!,
       }));
       const user = req.user ?? UserRole.Guest();
-      const location = await this.usecases.getAll.execute(districtId, user);
+      const location = await this.usecases.getAll.execute(regionId, user);
       return successResponse(location);
     } catch (error) {
       return errorResponse(error);
@@ -39,7 +39,7 @@ export default class LocationController {
   put = async (req: Request): Promise<ApiResponse> => {
     try {
       console.log(`Location put`);
-      const { districtId } = parseQuery(req, (params) => ({
+      const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,
       }));
       const data = parseBody<Location>(req);
