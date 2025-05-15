@@ -15,6 +15,10 @@ export default class PutUsecae {
     item: Location,
     user: UserRole
   ): Promise<string> => {
+    console.log(
+      `LocationPut ${JSON.stringify(user)} ${JSON.stringify(item)} ${id}`
+    );
+
     if (
       user.type === UserRoleType.Guest ||
       id !== user.id ||

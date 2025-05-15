@@ -9,6 +9,7 @@ import {
 } from "../application/usecases/districts";
 import {
   DeleteLocationUsecase,
+  GetAllLocationUsecase,
   GetLocationUsecase,
   LocationUsecases,
   PutLocationUsecase,
@@ -75,6 +76,11 @@ const createLocationUsecases = (
   repositories: Repositories
 ): LocationUsecases => ({
   get: new GetLocationUsecase(
+    repositories.location,
+    repositories.district,
+    repositories.region
+  ),
+  getAll: new GetAllLocationUsecase(
     repositories.location,
     repositories.district,
     repositories.region
