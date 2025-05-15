@@ -10,7 +10,6 @@ export default class RegionController {
 
   get = async (req: Request): Promise<ApiResponse> => {
     try {
-      console.log(`Region Get`);
       const { regionId } = parseParams(req, (params) => ({
         regionId: params.regionId!,
       }));
@@ -23,7 +22,7 @@ export default class RegionController {
   };
   getAll = async (req: Request): Promise<ApiResponse> => {
     try {
-      console.log(`Region GetAll`);
+
       const items = await this.usecases.getAll.execute();
       return successResponse(items);
     } catch (error) {
@@ -32,7 +31,6 @@ export default class RegionController {
   };
   put = async (req: Request): Promise<ApiResponse> => {
     try {
-      console.log(`Region Put`);
       const { regionId } = parseParams(req, (params) => ({
         regionId: params.regionId!,
       }));

@@ -34,7 +34,7 @@ const createRouter = (controllers: Controllers): Router => {
 
   //Route 単一
   router.get(
-    "/districts/:districtId/routes/search?year=:year&month=:month&day=:day&title=:title",
+    "/districts/:districtId/routes/search",
     authenticate,
     async (req, res) => {
       const result = await controllers.route.get(req);
@@ -46,7 +46,7 @@ const createRouter = (controllers: Controllers): Router => {
     "/districts/:districtId/routes/current",
     authenticate,
     async (req, res) => {
-      const result = await controllers.route.get(req);
+      const result = await controllers.route.getCurrent(req);
       res.status(result.statusCode).json(result.body);
     }
   );
@@ -70,7 +70,7 @@ const createRouter = (controllers: Controllers): Router => {
   );
   //Route 更新
   router.put(
-    "/districts/:districtId/routes?year=:year&month=:month&day=:day&title=:title",
+    "/districts/:districtId/routes",
     authenticate,
     async (req, res) => {
       const result = await controllers.route.post(req);
@@ -79,7 +79,7 @@ const createRouter = (controllers: Controllers): Router => {
   );
   //Route 削除
   router.delete(
-    "/districts/:districtId/routes?year=:year&month=:month&day=:day&title=:title",
+    "/districts/:districtId/routes",
     authenticate,
     async (req, res) => {
       const result = await controllers.route.delete(req);
@@ -88,7 +88,7 @@ const createRouter = (controllers: Controllers): Router => {
   );
   //Location 単一
   router.get(
-    "/districts/:districtId/location",
+    "/districts/:districtId/locations",
     authenticate,
     async (req, res) => {
       const result = await controllers.location.get(req);
@@ -97,7 +97,7 @@ const createRouter = (controllers: Controllers): Router => {
   );
   // Location put
   router.put(
-    "/districts/:districtId/location",
+    "/districts/:districtId/locations",
     authenticate,
     async (req, res) => {
       const result = await controllers.location.put(req);
@@ -106,7 +106,7 @@ const createRouter = (controllers: Controllers): Router => {
   );
   //Location 削除
   router.delete(
-    "/districts/:districtId/location",
+    "/districts/:districtId/locations",
     authenticate,
     async (req, res) => {
       const result = await controllers.location.delete(req);

@@ -36,8 +36,6 @@ export default class GetAllUsecase {
     if (!details || details.length === 0) {
       return [];
     }
-    console.log(`Route getAll ${JSON.stringify(details)}`);
-
     const summaries: RouteSummary[] = details.map((item) =>
       toRouteSummary(toPublicRoute(item, district))
     );

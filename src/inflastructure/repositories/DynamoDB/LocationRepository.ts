@@ -26,7 +26,7 @@ class DynamoDBLocationRepository extends ILocationRepository {
       const data = await this.client.send(
         new GetCommand({
           TableName: this.tableName,
-          Key: { id },
+          Key: { district_id: id },
         })
       );
       if (!data.Item) {

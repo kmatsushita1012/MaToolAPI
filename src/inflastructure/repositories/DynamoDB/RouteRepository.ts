@@ -40,7 +40,7 @@ export default class DynamoDBRouteRepository extends IRouteRepository {
       if (!data.Items || data.Items.length === 0) {
         return [];
       }
-      const routes = toCamelCase<Route[]>(data.Items[0]);
+      const routes = toCamelCase<Route[]>(data.Items);
       return routes;
     } catch (error) {
       console.log(error);
@@ -72,8 +72,7 @@ export default class DynamoDBRouteRepository extends IRouteRepository {
     if (!data.Item) {
       return null;
     }
-    const item = toCamelCase(data.Item);
-    const route = item as Route;
+    const route = toCamelCase<Route>(data.Item);
     return route;
   };
 

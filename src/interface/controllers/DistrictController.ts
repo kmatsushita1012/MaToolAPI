@@ -50,13 +50,11 @@ export default class DistrictController {
 
   put = async (req: Request): Promise<ApiResponse> => {
     try {
-      console.log(`District Put`);
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,
       }));
       const data = parseBody<District>(req);
       const user = req.user ?? UserRole.Guest();
-      console.log(`District Put ${user}`);
       const result = await this.usecases.put.execute(districtId, data, user);
       return successResponse(result);
     } catch (error) {
