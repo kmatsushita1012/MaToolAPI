@@ -26,7 +26,8 @@ export default class PutUsecae {
     ) {
       throw Errors.Unauthorized();
     }
-    const expirationTime = add(item.timestamp, expirationSpan);
+    const timestamp = new Date(item.timestamp * 1000);
+    const expirationTime = add(timestamp, expirationSpan);
     const locationWithET = toExpirableLocation(item, expirationTime);
     const result = await this.repository.put(locationWithET);
     return result;

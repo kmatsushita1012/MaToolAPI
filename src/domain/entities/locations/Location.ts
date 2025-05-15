@@ -3,7 +3,7 @@ import { Coordinate } from "../shared";
 interface Location {
   districtId: string;
   coordinate: Coordinate;
-  timestamp: Date;
+  timestamp: number;
 }
 
 export default Location;
