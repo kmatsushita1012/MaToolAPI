@@ -19,23 +19,19 @@ export default class GetAllUsecase {
   ) {}
 
   execute = async (id: string, user: UserRole): Promise<RouteSummary[]> => {
-    console.log(`GetAllUsecase1 ${id}`);
     const district = await this.districtRepository.get(id);
     if (!district) {
       throw Errors.NotFound();
     }
-    console.log(`GetAllUsecase2 ${district?.id}`);
     if (
       district?.visibility === Visibility.AdminOnly &&
       (user.type === UserRoleType.Guest ||
         (user.type === UserRoleType.District && user.id !== id) ||
         (user.type === UserRoleType.Region && user.id !== district?.regionId))
     ) {
-      console.log(`GetAllUsecase Forbidden`);
       throw Errors.Forbidden();
     }
     const details = await this.routeRepository.query(id);
-    console.log(`GetAllUsecase3 ${details}`);
     if (!details || details.length === 0) {
       return [];
     }
@@ -43,7 +39,6 @@ export default class GetAllUsecase {
     const summaries: RouteSummary[] = details.map((item) =>
       toRouteSummary(toPublicRoute(item, district))
     );
-    console.log(`GetAllUsecase5 ${summaries}`);
     return summaries;
   };
 }

@@ -17,19 +17,15 @@ class DynamoDBDistrictRepository extends IDistrictRepository {
   }
 
   get = async (id: string): Promise<District | null> => {
-    console.log(`DynamoDBDistrictRepository ${id} ${this.tableName}`);
     const data = await this.client.send(
       new GetCommand({
         TableName: this.tableName,
         Key: { id: id },
       })
     );
-    console.log(`DynamoDBDistrictRepositorty Get Done`);
     if (!data.Item) {
-      console.log(`DynamoDBDistrictRepository null`);
       return null;
     }
-    console.log(`DynamoDBDistrictRepository ${data.Item}`);
     return toCamelCase<District>(data.Item);
   };
 

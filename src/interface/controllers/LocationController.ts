@@ -29,7 +29,7 @@ export default class LocationController {
         districtId: params.districtId!,
       }));
       const user = req.user ?? UserRole.Guest();
-      const location = await this.usecases.get.execute(districtId, user);
+      const location = await this.usecases.getAll.execute(districtId, user);
       return successResponse(location);
     } catch (error) {
       return errorResponse(error);

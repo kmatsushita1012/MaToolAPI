@@ -3,6 +3,7 @@ import {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
+  ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { toCamelCase, toSnakeCase } from "../formatter";
 import {
@@ -39,6 +40,24 @@ class DynamoDBLocationRepository extends ILocationRepository {
     }
   };
 
+  getAll = async (id: string): Promise<Location[]> => {
+    try {
+      const data = await this.client.send(
+        new ScanCommand({
+          TableName: this.tableName,
+        })
+      );
+      if (!data.Items) {
+        return [];
+      }
+      const location = toCamelCase<Location[]>(data.Items);
+      return location;
+    } catch (error) {
+      console.log(error);
+      throw Errors.InternalServerError(error as string);
+    }
+  };
+
   put = async (location: ExpirableLocation): Promise<string> => {
     const snakedItem = toSnakeCase(location);
     try {
@@ -61,7 +80,7 @@ class DynamoDBLocationRepository extends ILocationRepository {
         new DeleteCommand({
           TableName: this.tableName,
           Key: {
-            districtId: districtId,
+            district_id: districtId,
           },
         })
       );

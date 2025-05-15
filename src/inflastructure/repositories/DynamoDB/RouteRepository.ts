@@ -38,12 +38,9 @@ export default class DynamoDBRouteRepository extends IRouteRepository {
         })
       );
       if (!data.Items || data.Items.length === 0) {
-        console.log(`DynamoDBRouteRepository query noItem`);
         return [];
       }
-      console.log(`DynamoDBRouteRepository ${data.Items}`);
       const routes = toCamelCase<Route[]>(data.Items);
-      console.log(`DynamoDBRouteRepository ${routes}`);
       return routes;
     } catch (error) {
       console.log(error);
@@ -125,7 +122,7 @@ export default class DynamoDBRouteRepository extends IRouteRepository {
         new DeleteCommand({
           TableName: this.tableName,
           Key: {
-            districtId: districtId,
+            district_id: districtId,
             routeId: routeId,
           },
         })

@@ -13,7 +13,6 @@ export default class DistrictController {
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId as string,
       }));
-      console.log(`District get ${districtId}`);
       const result = await this.usecases.get.execute(districtId);
       return successResponse(result);
     } catch (error) {
@@ -27,7 +26,6 @@ export default class DistrictController {
       const { regionId } = parseParams(req, (params) => ({
         regionId: params.regionId as string,
       }));
-      console.log(`District getAll ${regionId}`);
       const result = await this.usecases.getAll.execute(regionId);
       return successResponse(result);
     } catch (error) {
