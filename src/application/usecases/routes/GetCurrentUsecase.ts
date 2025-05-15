@@ -19,17 +19,17 @@ export default class GetCurrentUsecase {
     private districtRepository: IDistrictRepository
   ) {}
 
-  execute = async (id: string, user: UserRole): Promise<PublicRoute> => {
-    const district = await this.districtRepository.get(id);
+  execute = async (districtId: string, user: UserRole): Promise<PublicRoute> => {
+    const district = await this.districtRepository.get(districtId);
     if (
       district?.visibility === Visibility.AdminOnly &&
       (user.type === UserRoleType.Guest ||
-        (user.type === UserRoleType.District && user.id !== id) ||
+        (user.type === UserRoleType.District && user.id !== districtId) ||
         (user.type === UserRoleType.Region && user.id !== district?.regionId))
     ) {
       throw Errors.Forbidden();
     }
-    let route = await this.getCurrentRoute(id, new Date());
+    let route = await this.getCurrentRoute(districtId, new Date());
     console.log(
       `Route getCurrent ${JSON.stringify(district)} ${JSON.stringify(route)}`
     );
@@ -39,7 +39,7 @@ export default class GetCurrentUsecase {
     if (
       district?.visibility === Visibility.Partial &&
       (user.type === UserRoleType.Guest ||
-        (user.type === UserRoleType.District && user.id !== id) ||
+        (user.type === UserRoleType.District && user.id !== districtId) ||
         (user.type === UserRoleType.Region && user.id !== district?.regionId))
     ) {
       return removeTime(toPublicRoute(route, district));

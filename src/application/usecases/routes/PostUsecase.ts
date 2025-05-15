@@ -6,10 +6,14 @@ import { Errors } from "../../../utils/Errors";
 export default class PostRouteUsecase {
   constructor(private routeRepository: IRouteRepository) {}
 
-  async execute(id: string, route: Route, user: UserRole): Promise<string> {
+  async execute(
+    districtId: string,
+    route: Route,
+    user: UserRole
+  ): Promise<string> {
     if (
       user.type === UserRoleType.Guest ||
-      id !== user.id ||
+      districtId !== user.id ||
       route.districtId !== user.id
     ) {
       throw Errors.Unauthorized();

@@ -10,19 +10,18 @@ import {
 export default class PutRouteUsecase {
   constructor(private routeRepository: IRouteRepository) {}
 
-  async execute(
-    id: string,
-    route: Route,
-    user: UserRole
-  ): Promise<string> {
+  async execute(id: string, route: Route, user: UserRole): Promise<string> {
+    const old = await this.routeRepository.get(id);
+    if (!old) {
+      throw Errors.NotFound();
+    }
     if (
       user.type === UserRoleType.Guest ||
-      id !== user.id ||
-      route.districtId !== user.id
+      route.districtId !== user.id ||
+      old.districtId !== user.id
     ) {
       throw Errors.Unauthorized();
     }
-
     const result = await this.routeRepository.put(route);
     return result;
   }

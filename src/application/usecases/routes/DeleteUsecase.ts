@@ -8,13 +8,17 @@ import { Errors } from "../../../utils/Errors";
 import { makeRouteId } from "../../../domain/entities/routes";
 
 export default class DeleteUsecase {
-  constructor(private repository: IRouteRepository) {}
+  constructor(private routeRepository: IRouteRepository) {}
 
   execute = async (id: string, user: UserRole): Promise<string> => {
-    if (user.type === UserRoleType.Guest || id !== user.id) {
+    const old = await this.routeRepository.get(id);
+    if (!old) {
+      throw Errors.NotFound();
+    }
+    if (user.type === UserRoleType.Guest || old.districtId !== user.id) {
       throw Errors.Unauthorized();
     }
-    const result = await this.repository.delete(id);
+    const result = await this.routeRepository.delete(id);
     return result;
   };
 }
