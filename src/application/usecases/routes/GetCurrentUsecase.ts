@@ -1,7 +1,11 @@
 import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
 import { Errors } from "../../../utils/Errors";
 import IDistrictRepository from "../../../domain/interfaces/repository/IDistrictRepository";
-import { UserRole, UserRoleType, Visibility } from "../../../domain/entities/shared";
+import {
+  UserRole,
+  UserRoleType,
+  Visibility,
+} from "../../../domain/entities/shared";
 import {
   PublicRoute,
   removeTime,
@@ -26,6 +30,9 @@ export default class GetCurrentUsecase {
       throw Errors.Forbidden();
     }
     let route = await this.getCurrentRoute(id, new Date());
+    console.log(
+      `Route getCurrent ${JSON.stringify(district)} ${JSON.stringify(route)}`
+    );
     if (!route || !district) {
       throw Errors.NotFound();
     }
@@ -44,8 +51,11 @@ export default class GetCurrentUsecase {
   private getCurrentRoute = async (
     districtId: string,
     date: Date
-  ): Promise<Route> => {
+  ): Promise<Route | null> => {
     const items = await this.routeRepository.query(districtId);
+    if (!items || items.length === 0) {
+      return null;
+    }
     const route = this.selectCurrentItem(items, date);
     return route;
   };

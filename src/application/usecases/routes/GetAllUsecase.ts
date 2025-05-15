@@ -1,5 +1,6 @@
 import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
 import {
+  Route,
   RouteSummary,
   toPublicRoute,
   toRouteSummary,
@@ -31,10 +32,11 @@ export default class GetAllUsecase {
     ) {
       throw Errors.Forbidden();
     }
-    const details = await this.routeRepository.query(id);
+    const details: Route[] = await this.routeRepository.query(id);
     if (!details || details.length === 0) {
       return [];
     }
+    console.log(`Route getAll ${JSON.stringify(details)}`);
 
     const summaries: RouteSummary[] = details.map((item) =>
       toRouteSummary(toPublicRoute(item, district))
