@@ -2,7 +2,6 @@ import IRouteRepository from "../../../domain/interfaces/repository/IRouteReposi
 import { Errors } from "../../../utils/Errors";
 import IDistrictRepository from "../../../domain/interfaces/repository/IDistrictRepository";
 import {
-  SimpleDate,
   UserRole,
   UserRoleType,
   Visibility,
@@ -20,7 +19,13 @@ export default class GetUsecase {
   ) {}
 
   execute = async (id: string, user: UserRole): Promise<PublicRoute> => {
-    const district = await this.districtRepository.get(id);
+    console.log(id);
+
+    const route = await this.routeRepository.get(id);
+    if (!route) {
+      throw Errors.NotFound();
+    }
+    const district = await this.districtRepository.get(route.districtId);
     if (
       district?.visibility === Visibility.AdminOnly &&
       (user.type === UserRoleType.Guest ||
@@ -29,8 +34,8 @@ export default class GetUsecase {
     ) {
       throw Errors.Forbidden();
     }
-    const route = await this.routeRepository.get(id);
-    if (!route || !district) {
+    console.log(route);
+    if (!district) {
       throw Errors.NotFound();
     }
     if (
