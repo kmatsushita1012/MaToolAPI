@@ -32,15 +32,6 @@ const createRouter = (controllers: Controllers): Router => {
     res.status(result.statusCode).json(result.body);
   });
 
-  //Route 単一
-  router.get(
-    "/districts/:districtId/routes/search",
-    authenticate,
-    async (req, res) => {
-      const result = await controllers.route.get(req);
-      res.status(result.statusCode).json(result.body);
-    }
-  );
   //Route 現在
   router.get(
     "/districts/:districtId/routes/current",
@@ -65,24 +56,6 @@ const createRouter = (controllers: Controllers): Router => {
     authenticate,
     async (req, res) => {
       const result = await controllers.route.post(req);
-      res.status(result.statusCode).json(result.body);
-    }
-  );
-  //Route 更新
-  router.put(
-    "/districts/:districtId/routes",
-    authenticate,
-    async (req, res) => {
-      const result = await controllers.route.post(req);
-      res.status(result.statusCode).json(result.body);
-    }
-  );
-  //Route 削除
-  router.delete(
-    "/districts/:districtId/routes",
-    authenticate,
-    async (req, res) => {
-      const result = await controllers.route.delete(req);
       res.status(result.statusCode).json(result.body);
     }
   );
@@ -127,6 +100,22 @@ const createRouter = (controllers: Controllers): Router => {
   //District 追加
   router.post("/districts", authenticate, async (req, res) => {
     const result = await controllers.district.post(req);
+    res.status(result.statusCode).json(result.body);
+  });
+  //Route 単一
+  router.get("/routes/:routeId", authenticate, async (req, res) => {
+    const result = await controllers.route.get(req);
+    res.status(result.statusCode).json(result.body);
+  });
+
+  //Route 更新
+  router.put("/routes/:routeId", authenticate, async (req, res) => {
+    const result = await controllers.route.post(req);
+    res.status(result.statusCode).json(result.body);
+  });
+  //Route 削除
+  router.delete("/routes/:routeId", authenticate, async (req, res) => {
+    const result = await controllers.route.delete(req);
     res.status(result.statusCode).json(result.body);
   });
   return router;

@@ -10,16 +10,11 @@ import { makeRouteId } from "../../../domain/entities/routes";
 export default class DeleteUsecase {
   constructor(private repository: IRouteRepository) {}
 
-  execute = async (
-    id: string,
-    date: SimpleDate,
-    title: string,
-    user: UserRole
-  ): Promise<string> => {
+  execute = async (id: string, user: UserRole): Promise<string> => {
     if (user.type === UserRoleType.Guest || id !== user.id) {
       throw Errors.Unauthorized();
     }
-    const result = await this.repository.delete(id, date, title);
+    const result = await this.repository.delete(id);
     return result;
   };
 }

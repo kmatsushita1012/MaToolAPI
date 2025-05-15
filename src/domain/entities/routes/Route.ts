@@ -3,6 +3,7 @@ import Point from "./Point";
 import Segment from "./Segment";
 
 interface Route {
+  id: string;
   districtId: string;
   date: SimpleDate;
   title: string;

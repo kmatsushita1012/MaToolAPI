@@ -14,23 +14,11 @@ export default class RouteController {
 
   get = async (req: Request): Promise<ApiResponse> => {
     try {
-      const { districtId } = parseParams(req, (params) => ({
-        districtId: params.districtId!,
+      const { routeId } = parseParams(req, (params) => ({
+        routeId: params.routeId!,
       }));
-      const { year, month, day, title } = parseQuery(req, (params) => ({
-        year: params.year,
-        month: params.month,
-        day: params.day,
-        title: params.title,
-      }));
-      const date = new SimpleDate(year, month, day);
       const user = req.user ?? UserRole.Guest();
-      const result = await this.usecases.get.execute(
-        districtId,
-        date,
-        title,
-        user
-      );
+      const result = await this.usecases.get.execute(routeId, user);
       return successResponse(result);
     } catch (error) {
       return errorResponse(error);
@@ -78,25 +66,12 @@ export default class RouteController {
   };
   put = async (req: Request): Promise<ApiResponse> => {
     try {
-      const { districtId } = parseParams(req, (params) => ({
-        districtId: params.districtId!,
+      const { routeId } = parseParams(req, (params) => ({
+        routeId: params.routeId!,
       }));
-      const { year, month, day, title } = parseQuery(req, (params) => ({
-        year: params.year,
-        month: params.month,
-        day: params.day,
-        title: params.title,
-      }));
-      const date = new SimpleDate(year, month, day);
       const data = parseBody<Route>(req);
       const user = req.user ?? UserRole.Guest();
-      const result = await this.usecases.put.execute(
-        districtId,
-        date,
-        title,
-        data,
-        user
-      );
+      const result = await this.usecases.put.execute(routeId, data, user);
       return successResponse(result);
     } catch (error) {
       return errorResponse(error);
@@ -105,23 +80,11 @@ export default class RouteController {
 
   delete = async (req: Request): Promise<ApiResponse> => {
     try {
-      const { districtId } = parseParams(req, (params) => ({
-        districtId: params.districtId!,
-      }));
-      const { year, month, day, title } = parseQuery(req, (params) => ({
-        year: params.year,
-        month: params.month,
-        day: params.day,
-        title: params.title,
+      const { routeId } = parseParams(req, (params) => ({
+        routeId: params.routeId!,
       }));
       const user = req.user ?? UserRole.Guest();
-      const date = new SimpleDate(year, month, day);
-      const result = await this.usecases.delete.execute(
-        districtId,
-        date,
-        title,
-        user
-      );
+      const result = await this.usecases.delete.execute(routeId, user);
       return successResponse(result);
     } catch (error) {
       return errorResponse(error);

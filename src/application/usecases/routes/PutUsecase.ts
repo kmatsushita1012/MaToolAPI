@@ -12,8 +12,6 @@ export default class PutRouteUsecase {
 
   async execute(
     id: string,
-    date: SimpleDate,
-    title: string,
     route: Route,
     user: UserRole
   ): Promise<string> {

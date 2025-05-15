@@ -19,12 +19,7 @@ export default class GetUsecase {
     private districtRepository: IDistrictRepository
   ) {}
 
-  execute = async (
-    id: string,
-    date: SimpleDate,
-    title: string,
-    user: UserRole
-  ): Promise<PublicRoute> => {
+  execute = async (id: string, user: UserRole): Promise<PublicRoute> => {
     const district = await this.districtRepository.get(id);
     if (
       district?.visibility === Visibility.AdminOnly &&
@@ -34,7 +29,7 @@ export default class GetUsecase {
     ) {
       throw Errors.Forbidden();
     }
-    const route = await this.routeRepository.get(id, date, title);
+    const route = await this.routeRepository.get(id);
     if (!route || !district) {
       throw Errors.NotFound();
     }

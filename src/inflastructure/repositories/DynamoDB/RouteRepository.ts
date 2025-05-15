@@ -1,4 +1,3 @@
-import { PutItemCommand } from "@aws-sdk/client-dynamodb";
 import {
   DeleteCommand,
   DynamoDBDocumentClient,
@@ -7,16 +6,10 @@ import {
   PutCommand,
   QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
-import { marshall } from "@aws-sdk/util-dynamodb";
 import { toCamelCase, toSnakeCase } from "../formatter";
 import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
 import { Errors } from "../../../utils/Errors";
-import {
-  makeRouteId,
-  Route,
-  toStorableRoute,
-} from "../../../domain/entities/routes";
-import { SimpleDate } from "../../../domain/entities/shared";
+import { Route } from "../../../domain/entities/routes";
 
 export default class DynamoDBRouteRepository extends IRouteRepository {
   constructor(
@@ -31,9 +24,10 @@ export default class DynamoDBRouteRepository extends IRouteRepository {
       const data = await this.client.send(
         new QueryCommand({
           TableName: this.tableName,
-          KeyConditionExpression: "district_id = :district_id",
+          IndexName: "district_id-index",
+          KeyConditionExpression: "district_id = :districtId",
           ExpressionAttributeValues: {
-            ":district_id": districtId,
+            ":districtId": districtId,
           },
         })
       );
@@ -48,20 +42,14 @@ export default class DynamoDBRouteRepository extends IRouteRepository {
     }
   };
 
-  get = async (
-    districtId: string,
-    date: SimpleDate,
-    title: string
-  ): Promise<Route | null> => {
-    const routeId = makeRouteId(date, title);
+  get = async (id: string): Promise<Route | null> => {
     let data: GetCommandOutput;
     try {
       data = await this.client.send(
         new GetCommand({
           TableName: this.tableName,
           Key: {
-            district_id: districtId,
-            route_id: routeId,
+            id: id,
           },
         })
       );
@@ -77,8 +65,7 @@ export default class DynamoDBRouteRepository extends IRouteRepository {
   };
 
   post = async (route: Route): Promise<string> => {
-    const storableRoute = toStorableRoute(route);
-    const snakedItem = toSnakeCase(storableRoute);
+    const snakedItem = toSnakeCase(route);
     try {
       await this.client.send(
         new PutCommand({
@@ -94,8 +81,7 @@ export default class DynamoDBRouteRepository extends IRouteRepository {
   };
 
   put = async (route: Route): Promise<string> => {
-    const storableRoute = toStorableRoute(route);
-    const snakedItem = toSnakeCase(storableRoute);
+    const snakedItem = toSnakeCase(route);
     try {
       await this.client.send(
         new PutCommand({
@@ -110,19 +96,13 @@ export default class DynamoDBRouteRepository extends IRouteRepository {
     }
   };
 
-  delete = async (
-    districtId: string,
-    date: SimpleDate,
-    title: string
-  ): Promise<string> => {
-    const routeId = makeRouteId(date, title);
+  delete = async (id: string): Promise<string> => {
     try {
       await this.client.send(
         new DeleteCommand({
           TableName: this.tableName,
           Key: {
-            district_id: districtId,
-            route_id: routeId,
+            id: id,
           },
         })
       );
