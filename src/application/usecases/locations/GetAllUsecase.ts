@@ -46,7 +46,9 @@ export default class GetAllUsecase {
     }
     var foundFlag = false;
     for (let span of region.spans) {
-      if (include(span, currentTime)) {
+      const start = new Date(span.start * 1000);
+      const end = new Date(span.end * 1000);
+      if (include(start, end, currentTime)) {
         foundFlag = true;
       }
     }

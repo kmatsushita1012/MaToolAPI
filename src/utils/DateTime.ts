@@ -4,8 +4,8 @@ const compareDate = (earlier: Date, later: Date) => {
   return later.getTime() - earlier.getTime();
 };
 
-const include = (span: Span, current: Date) => {
-  return compareDate(span.start, current) && compareDate(current, span.end);
+const include = (start: Date, end: Date, current: Date) => {
+  return compareDate(start, current) && compareDate(current, end);
 };
 
 const convertDate = (date: SimpleDate, time: SimpleTime): Date => {
