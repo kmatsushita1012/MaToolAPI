@@ -34,7 +34,7 @@ const createRouter = (controllers: Controllers): Router => {
 
   //Route 単一
   router.get(
-    "/districts/:districtId/routes?year=:year&month=:month&day=:day&title=:title",
+    "/districts/:districtId/routes/search?year=:year&month=:month&day=:day&title=:title",
     authenticate,
     async (req, res) => {
       const result = await controllers.route.get(req);
