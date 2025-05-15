@@ -10,7 +10,6 @@ export default class LocationController {
 
   get = async (req: Request): Promise<ApiResponse> => {
     try {
-      console.log(`Location get`);
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,
       }));
@@ -24,7 +23,6 @@ export default class LocationController {
 
   getAll = async (req: Request): Promise<ApiResponse> => {
     try {
-      console.log(`Location getAll`);
       const { regionId } = parseParams(req, (params) => ({
         regionId: params.regionId!,
       }));
@@ -38,7 +36,6 @@ export default class LocationController {
 
   put = async (req: Request): Promise<ApiResponse> => {
     try {
-      console.log(`Location put`);
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,
       }));
@@ -53,7 +50,6 @@ export default class LocationController {
 
   delete = async (req: Request): Promise<ApiResponse> => {
     try {
-      console.log(`Location delete`);
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,
       }));

@@ -32,7 +32,6 @@ app.get("/", (req, res) => {
   res.send("Here is MaToolAPI");
 });
 
-// ✅ ローカル用の起動コードを追加
 if (require.main === module) {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {

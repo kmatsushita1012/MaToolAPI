@@ -37,9 +37,7 @@ export default class DistrictController {
   post = async (req: Request): Promise<ApiResponse> => {
     try {
       const data = parseBody<District>(req);
-
       const user = req.user ?? UserRole.Guest();
-      console.log(`District post ${user}`);
       const result = await this.usecases.post.execute(data, user);
       return successResponse(result);
     } catch (error) {

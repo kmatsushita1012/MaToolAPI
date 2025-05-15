@@ -14,20 +14,15 @@ export const authenticate = async (
   next: NextFunction
 ): Promise<void> => {
   const token = req.headers.authorization?.split(" ")[1];
-  console.log(`header ${req.headers.authorization?.split(" ")}`);
   if (!token) {
-    console.log("No Token");
     req.user = { type: UserRoleType.Guest };
     return next();
   }
-  console.log("Token");
 
   try {
     const command = new GetUserCommand({ AccessToken: token });
     const response = await cognitoClient.send(command);
-
     const attributes = response.UserAttributes ?? [];
-
     const role = attributes.find((attr) => attr.Name === "custom:role")?.Value;
     const username = response.Username;
 

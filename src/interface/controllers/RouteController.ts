@@ -13,7 +13,6 @@ export default class RouteController {
   constructor(private usecases: RouteUsecases) {}
 
   get = async (req: Request): Promise<ApiResponse> => {
-    console.log(`Route get`);
     try {
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,
@@ -52,7 +51,6 @@ export default class RouteController {
   };
 
   getCurrent = async (req: Request): Promise<ApiResponse> => {
-    console.log(`Route getCurrent`);
     try {
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId as string,
@@ -66,7 +64,6 @@ export default class RouteController {
   };
 
   post = async (req: Request): Promise<ApiResponse> => {
-    console.log(`Route post`);
     try {
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId as string,
@@ -80,7 +77,6 @@ export default class RouteController {
     }
   };
   put = async (req: Request): Promise<ApiResponse> => {
-    console.log(`Route put`);
     try {
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,
@@ -108,7 +104,6 @@ export default class RouteController {
   };
 
   delete = async (req: Request): Promise<ApiResponse> => {
-    console.log(`Route delete`);
     try {
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId!,

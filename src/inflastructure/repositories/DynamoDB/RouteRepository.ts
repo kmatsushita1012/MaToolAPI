@@ -122,7 +122,7 @@ export default class DynamoDBRouteRepository extends IRouteRepository {
           TableName: this.tableName,
           Key: {
             district_id: districtId,
-            routeId: routeId,
+            route_id: routeId,
           },
         })
       );

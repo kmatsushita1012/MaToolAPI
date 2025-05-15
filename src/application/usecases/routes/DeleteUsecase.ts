@@ -19,7 +19,6 @@ export default class DeleteUsecase {
     if (user.type === UserRoleType.Guest || id !== user.id) {
       throw Errors.Unauthorized();
     }
-    const routeId = makeRouteId(date, title);
     const result = await this.repository.delete(id, date, title);
     return result;
   };
