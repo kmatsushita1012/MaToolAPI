@@ -110,7 +110,7 @@ const createRouter = (controllers: Controllers): Router => {
 
   //Route 更新
   router.put("/routes/:routeId", authenticate, async (req, res) => {
-    const result = await controllers.route.post(req);
+    const result = await controllers.route.put(req);
     res.status(result.statusCode).json(result.body);
   });
   //Route 削除
