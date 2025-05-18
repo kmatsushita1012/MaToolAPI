@@ -1,47 +1,43 @@
 version: 0.2
+
+env:
+  variables:
+    FUNCTION_NAME: "MaToolAPI"
+    ALIAS_NAME: "dev"
+    STAGE_NAME: "dev"
+    API_NAME: "MaToolAPI"
+
 phases:
   install:
-    commands: #AWS CLIをインストール
-      - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-      - unzip -q awscliv2.zip
-      - ./aws/install --install-dir ~/aws-cli --bin-dir ~/bin --update
-      - export PATH=~/bin:$PATH
-      - npm install
-      - npm install -g typescript
-  pre_build:
     commands:
-      - echo No Pre Build phase
-  build: #更新前のバージョンを取得した上で、関数の更新を実行
+      - npm ci
+
+  build:
     commands:
       - echo Build started on `date`
-      - tsc
-      - CurrentVersion=$(aws lambda get-alias --function-name MaToolAPI --name dev --query 'FunctionVersion' --output text)
-
-      - echo "Zipping deployment package"
+      - ./node_modules/.bin/tsc
       - mkdir -p deploy-package
-      - cp -r dist/* deploy-package/ # dist 内のコンパイルされたファイルをコピー
-      - cp -r node_modules deploy-package/ # node_modules をコピー
+      - cp -r dist/* deploy-package/
+      - cp -r node_modules deploy-package/
       - cd deploy-package
-      - zip -q -r ../lambda.zip . # deploy-package フォルダを ZIP に圧縮
+      - zip -q -r ../lambda.zip .
       - cd ..
-      - aws lambda update-function-code --function-name MaToolAPI --zip-file fileb://lambda.zip --debug
+      - echo "Updating Lambda function code"
+      - aws lambda update-function-code --function-name $FUNCTION_NAME --zip-file fileb://lambda.zip
       - sleep 10
-  post_build: #新バージョンを発行し、エイリアスに紐づいているバージョンを新バージョンに変更
+
+  post_build:
     commands:
       - echo Build completed on `date`
-      - ls
-      - aws lambda publish-version --function-name MaToolAPI --description "update version"
-      - TargetVersion=$(aws lambda list-versions-by-function --function-name MaToolAPI --query 'Versions[-1].Version' --output text)
-      - echo $CurrentVersion
-      - echo $TargetVersion
-      - LC_ALL=C.UTF-8 aws lambda update-alias --function-name MaToolAPI --name dev --function-version $TargetVersion
-      # - aws lambda delete-function --function-name MaToolAPI --qualifier $CurrentVersion
+      - echo "Publishing new version and updating alias"
+      - CurrentVersion=$(aws lambda get-alias --function-name $FUNCTION_NAME --name $ALIAS_NAME --query 'FunctionVersion' --output text)
+      - aws lambda publish-version --function-name $FUNCTION_NAME --description "Updated on `date`"
+      - TargetVersion=$(aws lambda list-versions-by-function --function-name $FUNCTION_NAME --query 'Versions[-1].Version' --output text)
+      - aws lambda update-alias --function-name $FUNCTION_NAME --name $ALIAS_NAME --function-version $TargetVersion
       - |
         if [ "$CurrentVersion" != "$TargetVersion" ]; then
-          aws lambda delete-function --function-name MaToolAPI --qualifier $CurrentVersion
+          aws lambda delete-function --function-name $FUNCTION_NAME --qualifier $CurrentVersion
         fi
       - echo "Deploying API Gateway"
-      - API_ID=$(aws apigatewayv2 get-apis --query 'Items[?Name==`MaToolAPI`].ApiId' --output text)
-      - STAGE_NAME="dev"
-      - aws apigatewayv2 create-deployment --api-id $API_ID --stage-name dev
-      - echo "Deployment completed for HTTP API $API_ID at stage $STAGE_NAME"
+      - API_ID=$(aws apigatewayv2 get-apis --query "Items[?Name==\`$API_NAME\`].ApiId" --output text)
+      - aws apigatewayv2 create-deployment --api-id $API_ID --stage-name $STAGE_NAME
