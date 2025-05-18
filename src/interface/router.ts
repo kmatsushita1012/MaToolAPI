@@ -10,6 +10,15 @@ const createRouter = (controllers: Controllers): Router => {
     const result = await controllers.district.getAll(req);
     res.status(result.statusCode).json(result.body);
   });
+  //District 追加
+  router.post(
+    "/regions/:regionId/districts",
+    authenticate,
+    async (req, res) => {
+      const result = await controllers.district.post(req);
+      res.status(result.statusCode).json(result.body);
+    }
+  );
   //Location 全件
   router.get("/regions/:regionId/locations", async (req, res) => {
     const result = await controllers.location.getAll(req);
@@ -95,11 +104,6 @@ const createRouter = (controllers: Controllers): Router => {
   //District 更新
   router.put("/districts/:districtId", authenticate, async (req, res) => {
     const result = await controllers.district.put(req);
-    res.status(result.statusCode).json(result.body);
-  });
-  //District 追加
-  router.post("/districts", authenticate, async (req, res) => {
-    const result = await controllers.district.post(req);
     res.status(result.statusCode).json(result.body);
   });
   //Route 単一

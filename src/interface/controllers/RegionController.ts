@@ -31,7 +31,7 @@ export default class RegionController {
   put = async (req: Request): Promise<ApiResponse> => {
     try {
       const { regionId } = parseParams(req, (params) => ({
-        regionId: params.regionId!,
+        regionId: params.regionId! as string,
       }));
       const data = parseBody<Region>(req);
       const user = req.user ?? UserRole.Guest();
