@@ -4,10 +4,12 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider";
 import { UserRoleType } from "../../domain/entities/shared";
 import { ICognitoUserManager } from "../../domain/interface/aws_cognito";
-import { Errors } from "../../utils/Errors";
 
 class CognitoUserManager extends ICognitoUserManager {
-  constructor(private client: CognitoIdentityProviderClient) {
+  constructor(
+    private client: CognitoIdentityProviderClient,
+    private userPoolId: string
+  ) {
     super();
   }
   async invite(
@@ -16,7 +18,7 @@ class CognitoUserManager extends ICognitoUserManager {
     role: UserRoleType
   ): Promise<boolean> {
     const command = new AdminCreateUserCommand({
-      UserPoolId: "YOUR_USER_POOL_ID",
+      UserPoolId: this.userPoolId,
       Username: username,
       UserAttributes: [
         { Name: "email", Value: email },

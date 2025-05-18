@@ -67,8 +67,9 @@ const createDynamoDBRepositories = (
 });
 
 const createCognitoUserManager = (
-  client: CognitoIdentityProviderClient
-): CognitoUserManager => new CognitoUserManager(client);
+  client: CognitoIdentityProviderClient,
+  userPoolId: string
+): CognitoUserManager => new CognitoUserManager(client, userPoolId);
 
 const createDistrictUsecases = (
   repositories: Repositories,

@@ -10,9 +10,12 @@ import {
 } from "./di";
 import createRouter from "./interface/router";
 import { CognitoIdentityProviderClient } from "@aws-sdk/client-cognito-identity-provider";
+import dotenv from "dotenv";
+dotenv.config();
 
 const region = "ap-northeast-1";
-
+const userPoolId = process.env.USER_POOL_ID ?? "";
+console.log(userPoolId);
 //DynamoDBへの依存を注入
 const dynamoDBClient = new DynamoDBClient({ region: region });
 const cognitoClient = new CognitoIdentityProviderClient({ region: region }); // 東京リージョンなど
@@ -24,7 +27,7 @@ const repositories = createDynamoDBRepositories(dynamoDBDocumentclient, {
   route: "matool_routes",
   location: "matool_locations",
 });
-const cognitoManager = createCognitoUserManager(cognitoClient);
+const cognitoManager = createCognitoUserManager(cognitoClient, userPoolId);
 const usecases = createUsecases(repositories, cognitoManager);
 const controllers = createControllers(usecases);
 const router = createRouter(controllers);
