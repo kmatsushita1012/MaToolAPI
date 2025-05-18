@@ -8,7 +8,7 @@ interface District {
   base: Coordinate | null;
   area: Coordinate[];
   imagePath: string | null;
-  performances: [Performance];
+  performances: Performance[];
   visibility: Visibility;
 }
 

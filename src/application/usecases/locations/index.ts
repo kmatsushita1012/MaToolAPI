@@ -1,4 +1,4 @@
-import { Repositories } from "../../../domain/interfaces/repository";
+import { Repositories } from "../../../domain/interface/repository";
 import DeleteUsecase from "./DeleteUsecase";
 import GetAllUsecase from "./GetAllUsecase";
 import GetUsecase from "./GetUsecase";

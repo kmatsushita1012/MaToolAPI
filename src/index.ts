@@ -3,22 +3,29 @@ import serverless from "@vendia/serverless-express";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import {
+  createCognitoUserManager,
   createControllers,
   createDynamoDBRepositories,
   createUsecases,
 } from "./di";
 import createRouter from "./interface/router";
+import { CognitoIdentityProviderClient } from "@aws-sdk/client-cognito-identity-provider";
+
+const region = "ap-northeast-1";
 
 //DynamoDBへの依存を注入
-const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-1" });
-const client = DynamoDBDocumentClient.from(dynamoDBClient);
-const repositories = createDynamoDBRepositories(client, {
+const dynamoDBClient = new DynamoDBClient({ region: region });
+const cognitoClient = new CognitoIdentityProviderClient({ region: region }); // 東京リージョンなど
+const dynamoDBDocumentclient = DynamoDBDocumentClient.from(dynamoDBClient);
+
+const repositories = createDynamoDBRepositories(dynamoDBDocumentclient, {
   region: "matool_regions",
   district: "matool_districts",
   route: "matool_routes",
   location: "matool_locations",
 });
-const usecases = createUsecases(repositories);
+const cognitoManager = createCognitoUserManager(cognitoClient);
+const usecases = createUsecases(repositories, cognitoManager);
 const controllers = createControllers(usecases);
 const router = createRouter(controllers);
 

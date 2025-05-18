@@ -1,6 +1,6 @@
-import IDistrictRepository from "../../../domain/interfaces/repository/IDistrictRepository";
-import ILocationRepository from "../../../domain/interfaces/repository/ILocationRepository";
-import IRegionRepository from "../../../domain/interfaces/repository/IRegionRepository";
+import IDistrictRepository from "../../../domain/interface/repository/IDistrictRepository";
+import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
+import IRegionRepository from "../../../domain/interface/repository/IRegionRepository";
 import { Location, toPublicLocation } from "../../../domain/entities/locations";
 import PublicLocation from "../../../domain/entities/locations/PublicLocation";
 import { include } from "../../../utils/DateTime";

@@ -6,7 +6,7 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import { District } from "../../../domain/entities/districts";
 import { toCamelCase, toSnakeCase } from "../formatter";
-import IDistrictRepository from "../../../domain/interfaces/repository/IDistrictRepository";
+import IDistrictRepository from "../../../domain/interface/repository/IDistrictRepository";
 
 class DynamoDBDistrictRepository extends IDistrictRepository {
   constructor(

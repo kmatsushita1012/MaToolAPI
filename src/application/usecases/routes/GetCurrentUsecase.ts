@@ -1,6 +1,6 @@
-import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
+import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
 import { Errors } from "../../../utils/Errors";
-import IDistrictRepository from "../../../domain/interfaces/repository/IDistrictRepository";
+import IDistrictRepository from "../../../domain/interface/repository/IDistrictRepository";
 import {
   UserRole,
   UserRoleType,
@@ -19,7 +19,10 @@ export default class GetCurrentUsecase {
     private districtRepository: IDistrictRepository
   ) {}
 
-  execute = async (districtId: string, user: UserRole): Promise<PublicRoute> => {
+  execute = async (
+    districtId: string,
+    user: UserRole
+  ): Promise<PublicRoute> => {
     const district = await this.districtRepository.get(districtId);
     if (
       district?.visibility === Visibility.AdminOnly &&

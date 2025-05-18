@@ -10,7 +10,7 @@ import {
   Location,
   ExpirableLocation,
 } from "../../../domain/entities/locations";
-import ILocationRepository from "../../../domain/interfaces/repository/ILocationRepository";
+import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
 import { Errors } from "../../../utils/Errors";
 
 class DynamoDBLocationRepository extends ILocationRepository {

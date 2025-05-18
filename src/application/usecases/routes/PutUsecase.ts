@@ -1,5 +1,5 @@
 import { Route } from "../../../domain/entities/routes";
-import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
+import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
 import { Errors } from "../../../utils/Errors";
 import {
   SimpleDate,

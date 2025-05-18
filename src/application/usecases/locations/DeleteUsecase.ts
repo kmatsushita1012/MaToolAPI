@@ -1,5 +1,5 @@
 import { Errors } from "../../../utils/Errors";
-import ILocationRepository from "../../../domain/interfaces/repository/ILocationRepository";
+import ILocationRepository from "../../../domain/interface/repository/ILocationRepository";
 import { UserRole, UserRoleType } from "../../../domain/entities/shared";
 
 export default class DeleteUsecase {

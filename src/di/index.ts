@@ -29,7 +29,7 @@ import {
   PutRouteUsecase,
   RouteUsecases,
 } from "../application/usecases/routes";
-import { Repositories } from "../domain/interfaces/repository";
+import { Repositories } from "../domain/interface/repository";
 import {
   DynamoDBRegionRepository,
   DynamoDBDistrictRepository,
@@ -42,6 +42,8 @@ import DistrictController from "../interface/controllers/DistrictController";
 import LocationController from "../interface/controllers/LocationController";
 import RegionController from "../interface/controllers/RegionController";
 import RouteController from "../interface/controllers/RouteController";
+import { CognitoUserManager } from "../inflastructure/manager";
+import { CognitoIdentityProviderClient } from "@aws-sdk/client-cognito-identity-provider";
 
 export {
   createDistrictUsecases,
@@ -51,6 +53,7 @@ export {
   createUsecases,
   createControllers,
   createDynamoDBRepositories,
+  createCognitoUserManager,
 };
 
 const createDynamoDBRepositories = (
@@ -63,12 +66,21 @@ const createDynamoDBRepositories = (
   location: new DynamoDBLocationRepository(client, tableName.location),
 });
 
+const createCognitoUserManager = (
+  client: CognitoIdentityProviderClient
+): CognitoUserManager => new CognitoUserManager(client);
+
 const createDistrictUsecases = (
-  repositories: Repositories
+  repositories: Repositories,
+  manager: CognitoUserManager
 ): DistrictUsecases => ({
   get: new GetDistrictUsecase(repositories.district, repositories.region),
   getAll: new GetAllDistrictUsecase(repositories.district, repositories.region),
-  post: new PostDistrictUsecase(repositories.district),
+  post: new PostDistrictUsecase(
+    repositories.district,
+    repositories.region,
+    manager
+  ),
   put: new PutDistrictUsecase(repositories.district),
 });
 
@@ -107,9 +119,12 @@ const createRouteUsecases = (repositories: Repositories): RouteUsecases => ({
   delete: new DeleteRouteUsecase(repositories.route),
 });
 
-const createUsecases = (repositories: Repositories): Usecases => ({
+const createUsecases = (
+  repositories: Repositories,
+  manager: CognitoUserManager
+): Usecases => ({
   regions: createRegionUsecases(repositories),
-  districts: createDistrictUsecases(repositories),
+  districts: createDistrictUsecases(repositories, manager),
   routes: createRouteUsecases(repositories),
   locations: createLocationUsecases(repositories),
 });

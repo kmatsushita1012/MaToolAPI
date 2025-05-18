@@ -1,11 +1,11 @@
-import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
+import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
 import {
   Route,
   RouteSummary,
   toPublicRoute,
   toRouteSummary,
 } from "../../../domain/entities/routes";
-import { IDistrictRepository } from "../../../domain/interfaces/repository";
+import { IDistrictRepository } from "../../../domain/interface/repository";
 import { Errors } from "../../../utils/Errors";
 import {
   UserRole,

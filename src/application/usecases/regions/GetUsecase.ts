@@ -1,4 +1,4 @@
-import IRegionRepository from "../../../domain/interfaces/repository/IRegionRepository";
+import IRegionRepository from "../../../domain/interface/repository/IRegionRepository";
 import { Region } from "../../../domain/entities/regions";
 import { Errors } from "../../../utils/Errors";
 

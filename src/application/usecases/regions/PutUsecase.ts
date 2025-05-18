@@ -1,6 +1,6 @@
 import { Region } from "../../../domain/entities/regions";
 import { UserRole, UserRoleType } from "../../../domain/entities/shared";
-import IRegionRepository from "../../../domain/interfaces/repository/IRegionRepository";
+import IRegionRepository from "../../../domain/interface/repository/IRegionRepository";
 import { Errors } from "../../../utils/Errors";
 
 export default class PutUsecase {

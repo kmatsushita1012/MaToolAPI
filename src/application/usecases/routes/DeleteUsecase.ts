@@ -1,5 +1,5 @@
 import { UserRole, UserRoleType } from "../../../domain/entities/shared";
-import IRouteRepository from "../../../domain/interfaces/repository/IRouteRepository";
+import IRouteRepository from "../../../domain/interface/repository/IRouteRepository";
 import { Errors } from "../../../utils/Errors";
 
 export default class DeleteUsecase {

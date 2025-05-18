@@ -1,7 +1,7 @@
 import {
   IDistrictRepository,
   IRegionRepository,
-} from "../../../domain/interfaces/repository";
+} from "../../../domain/interface/repository";
 import {
   PublicDistrict,
   toPublicDistrict,

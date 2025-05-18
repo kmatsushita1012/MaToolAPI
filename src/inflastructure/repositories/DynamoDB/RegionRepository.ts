@@ -7,7 +7,7 @@ import {
 import { toCamelCase, toSnakeCase } from "../formatter";
 import { Region } from "../../../domain/entities/regions";
 import { marshall } from "@aws-sdk/util-dynamodb";
-import IRegionRepository from "../../../domain/interfaces/repository/IRegionRepository";
+import IRegionRepository from "../../../domain/interface/repository/IRegionRepository";
 import { Errors } from "../../../utils/Errors";
 
 export default class DynamoDBRegionRepository extends IRegionRepository {

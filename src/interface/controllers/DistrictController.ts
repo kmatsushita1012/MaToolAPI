@@ -1,5 +1,5 @@
 import { parseBody, parseParams } from "../request";
-import { District } from "../../domain/entities/districts";
+import { District, DistrictForm } from "../../domain/entities/districts";
 import { ApiResponse, errorResponse, successResponse } from "../responses";
 import { DistrictUsecases } from "../../application/usecases/districts";
 import { Request } from "express";
@@ -36,9 +36,12 @@ export default class DistrictController {
 
   post = async (req: Request): Promise<ApiResponse> => {
     try {
-      const data = parseBody<District>(req);
+      const { regionId } = parseParams(req, (params) => ({
+        regionId: params.regionId as string,
+      }));
+      const data = parseBody<DistrictForm>(req);
       const user = req.user ?? UserRole.Guest();
-      const result = await this.usecases.post.execute(data, user);
+      const result = await this.usecases.post.execute(regionId, data, user);
       return successResponse(result);
     } catch (error) {
       console.log(error);

@@ -1,4 +1,4 @@
-import { Repositories } from "../../domain/interfaces/repository";
+import { Repositories } from "../../domain/interface/repository";
 import { DistrictUsecases } from "./districts";
 import { LocationUsecases } from "./locations";
 import { RegionUsecases } from "./regions";

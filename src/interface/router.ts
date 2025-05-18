@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { authenticate } from "../inflastructure/Cognito";
+import { authenticate } from "../inflastructure/authenticate";
 import { Controllers } from "./controllers";
 
 const createRouter = (controllers: Controllers): Router => {

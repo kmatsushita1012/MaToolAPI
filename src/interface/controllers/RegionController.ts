@@ -13,7 +13,7 @@ export default class RegionController {
       const { regionId } = parseParams(req, (params) => ({
         regionId: params.regionId!,
       }));
-      
+
       const item = await this.usecases.get.execute(regionId);
       return successResponse(item);
     } catch (error) {
@@ -22,7 +22,6 @@ export default class RegionController {
   };
   getAll = async (req: Request): Promise<ApiResponse> => {
     try {
-
       const items = await this.usecases.getAll.execute();
       return successResponse(items);
     } catch (error) {
