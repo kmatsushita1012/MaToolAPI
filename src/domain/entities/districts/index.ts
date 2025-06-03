@@ -15,7 +15,8 @@ const toPublicDistrict = (
   district: District,
   region: Region
 ): PublicDistrict => {
-  return { ...district, regionName: region.name };
+  const { base, ...rest } = district;
+  return { ...rest, base: base ?? region.base, regionName: region.name };
 };
 
 const makeDistrictId = (name: string, region: Region): string => {
