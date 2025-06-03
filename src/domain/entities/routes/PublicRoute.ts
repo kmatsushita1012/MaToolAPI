@@ -1,10 +1,8 @@
 import { SimpleTime } from "../shared";
 import Route from "./Route";
 
-interface PublicRoute extends Omit<Route, "start" | "goal"> {
+interface PublicRoute extends Route {
   districtName: string;
-  start: SimpleTime | null;
-  goal: SimpleTime | null;
 }
 
 export default PublicRoute;

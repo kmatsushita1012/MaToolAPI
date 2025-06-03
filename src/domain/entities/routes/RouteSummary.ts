@@ -1,4 +1,4 @@
-import { SimpleDate } from "../shared";
+import { SimpleDate, SimpleTime } from "../shared";
 
 interface RouteSummary {
   id: string;
@@ -6,6 +6,7 @@ interface RouteSummary {
   districtName: string;
   date: SimpleDate;
   title: string;
+  start: SimpleTime;
 }
 
 export default RouteSummary;

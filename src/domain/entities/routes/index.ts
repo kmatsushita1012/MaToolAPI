@@ -25,15 +25,13 @@ const toPublicRoute = (route: Route, district: District): PublicRoute => {
 };
 
 const toRouteSummary = (route: PublicRoute): RouteSummary => {
-  const { id, districtId, districtName, date, title } = route; // 必要な情報のみ取り出し
-  return { id, districtId, districtName, date, title };
+  const { id, districtId, districtName, date, title, start } = route; // 必要な情報のみ取り出し
+  return { id, districtId, districtName, date, title, start };
 };
 
 const removeTime = (route: PublicRoute): PublicRoute => {
   return {
     ...route,
-    start: null,
-    goal: null,
     points: route.points.map((point) => ({
       ...point,
       time: null,
