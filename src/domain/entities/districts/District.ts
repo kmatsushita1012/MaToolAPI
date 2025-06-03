@@ -10,6 +10,7 @@ interface District {
   imagePath: string | null;
   performances: Performance[];
   visibility: Visibility;
+  
 }
 
 export default District;
