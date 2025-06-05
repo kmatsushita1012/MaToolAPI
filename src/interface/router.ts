@@ -50,12 +50,17 @@ const createRouter = (controllers: Controllers): Router => {
       res.status(result.statusCode).json(result.body);
     }
   );
+  //Route 編集用
+  router.get("/districts/:districtId/tools", authenticate, async (req, res) => {
+    const result = await controllers.district.getTools(req);
+    res.status(result.statusCode).json(result.body);
+  });
   //Route 全件
   router.get(
     "/districts/:districtId/routes",
     authenticate,
     async (req, res) => {
-      const result = await controllers.route.getAll(req);
+      const sresult = await controllers.route.getAll(req);
       res.status(result.statusCode).json(result.body);
     }
   );

@@ -34,6 +34,19 @@ export default class DistrictController {
     }
   };
 
+  getTools = async (req: Request): Promise<ApiResponse> => {
+    try {
+      const { districtId } = parseParams(req, (params) => ({
+        districtId: params.districtId as string,
+      }));
+      const result = await this.usecases.getTools.execute(districtId);
+      return successResponse(result);
+    } catch (error) {
+      console.log(error);
+      return errorResponse(error);
+    }
+  };
+
   post = async (req: Request): Promise<ApiResponse> => {
     try {
       const { regionId } = parseParams(req, (params) => ({
