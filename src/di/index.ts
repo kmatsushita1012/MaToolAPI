@@ -44,6 +44,7 @@ import RegionController from "../interface/controllers/RegionController";
 import RouteController from "../interface/controllers/RouteController";
 import { CognitoUserManager } from "../inflastructure/manager";
 import { CognitoIdentityProviderClient } from "@aws-sdk/client-cognito-identity-provider";
+import GetToolsUsecase from "../application/usecases/districts/GetTools";
 
 export {
   createDistrictUsecases,
@@ -83,6 +84,7 @@ const createDistrictUsecases = (
     manager
   ),
   put: new PutDistrictUsecase(repositories.district),
+  getTools: new GetToolsUsecase(repositories.district, repositories.region),
 });
 
 const createLocationUsecases = (

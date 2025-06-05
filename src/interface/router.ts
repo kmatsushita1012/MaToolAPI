@@ -60,7 +60,7 @@ const createRouter = (controllers: Controllers): Router => {
     "/districts/:districtId/routes",
     authenticate,
     async (req, res) => {
-      const sresult = await controllers.route.getAll(req);
+      const result = await controllers.route.getAll(req);
       res.status(result.statusCode).json(result.body);
     }
   );
