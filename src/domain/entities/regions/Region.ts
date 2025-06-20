@@ -9,6 +9,7 @@ interface Region {
   city: string;
   base: Coordinate;
   spans: Span[];
+  events: RegionEvent[];
   imagePath: string;
 }
 
