@@ -34,7 +34,7 @@ export default class GetToolsUsecase {
       regionId: district.regionId,
       regionName: region.name,
       performances: district.performances,
-      events: region.events.concat(performances),
+      milestones: region.milestones.concat(performances),
       base: district.base ?? region.base,
       spans: region.spans,
     };

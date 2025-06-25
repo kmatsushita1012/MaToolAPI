@@ -7,7 +7,7 @@ export interface DistrictTool {
   regionId: string;
   regionName: string;
   performances: Performance[];
-  events: Information[];
+  milestones: Information[];
   base: Coordinate;
   spans: Span[];
 }
