@@ -1,4 +1,4 @@
-import { Coordinate, Span } from "../shared";
+import { Coordinate, Information, Span } from "../shared";
 
 interface Region {
   id: string;
@@ -9,7 +9,7 @@ interface Region {
   city: string;
   base: Coordinate;
   spans: Span[];
-  events: RegionEvent[];
+  events: Information[];
   imagePath: string;
 }
 

@@ -1,4 +1,5 @@
-import { Coordinate, Span } from "../shared";
+import { Coordinate, Information, Span } from "../shared";
+import Performance from "./Performance";
 
 export interface DistrictTool {
   districtId: string;
@@ -6,6 +7,7 @@ export interface DistrictTool {
   regionId: string;
   regionName: string;
   performances: Performance[];
+  events: Information[];
   base: Coordinate;
   spans: Span[];
 }

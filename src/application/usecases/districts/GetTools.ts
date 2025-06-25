@@ -2,6 +2,8 @@ import { IRegionRepository } from "../../../domain/interface/repository";
 import IDistrictRepository from "../../../domain/interface/repository/IDistrictRepository";
 import { DistrictTool } from "../../../domain/entities/districts";
 import { Errors } from "../../../utils/Errors";
+import { Information } from "../../../domain/entities/shared";
+
 export default class GetToolsUsecase {
   constructor(
     private districtRepository: IDistrictRepository,
@@ -17,14 +19,22 @@ export default class GetToolsUsecase {
     if (!region) {
       throw Errors.NotFound();
     }
+    const performances: Information[] = district.performances.map(
+      (performance) => ({
+        id: performance.id,
+        name: performance.name,
+        description: performance.description,
+      })
+    );
     const item: DistrictTool = {
-        districtId: districtId,
-        districtName: district.name,
-        regionId: district.regionId,
-        regionName: region.name,
-        performances: district.performances,
-        base: district.base ?? region.base,
-        spans: region.spans
+      districtId: districtId,
+      districtName: district.name,
+      regionId: district.regionId,
+      regionName: region.name,
+      performances: district.performances,
+      events: region.events.concat(performances),
+      base: district.base ?? region.base,
+      spans: region.spans,
     };
     return item;
   };

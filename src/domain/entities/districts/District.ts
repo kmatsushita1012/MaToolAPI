@@ -1,4 +1,5 @@
 import { Coordinate, Visibility } from "../shared";
+import Performance from "./Performance";
 
 interface District {
   id: string;
@@ -10,7 +11,6 @@ interface District {
   imagePath: string | null;
   performances: Performance[];
   visibility: Visibility;
-  
 }
 
 export default District;

@@ -3,12 +3,14 @@ import District from "./District";
 import DistrictForm from "./DistrictForm";
 import { DistrictTool } from "./DistritctTool";
 import PublicDistrict from "./PublicDistrict";
+import Performance from "./Performance";
 
 export {
   District,
   PublicDistrict,
   DistrictForm,
   DistrictTool,
+  Performance,
   toPublicDistrict,
   makeDistrictId,
 };
