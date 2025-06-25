@@ -23,7 +23,9 @@ export default class GetToolsUsecase {
       (performance) => ({
         id: performance.id,
         name: performance.name,
-        description: performance.description,
+        description: `演者 ${performance.performer} ${
+          performance.description ?? ""
+        }`,
       })
     );
     const item: DistrictTool = {
