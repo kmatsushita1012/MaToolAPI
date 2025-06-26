@@ -23,5 +23,5 @@ const toPublicDistrict = (
 };
 
 const makeDistrictId = (name: string, region: Region): string => {
-  return `${region.name}_${name}`;
+  return `${region.name}-${name}`;
 };
