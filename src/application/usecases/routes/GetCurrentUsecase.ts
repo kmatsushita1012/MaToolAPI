@@ -33,9 +33,6 @@ export default class GetCurrentUsecase {
       throw Errors.Forbidden();
     }
     let route = await this.getCurrentRoute(districtId, new Date());
-    console.log(
-      `Route getCurrent ${JSON.stringify(district)} ${JSON.stringify(route)}`
-    );
     if (!route || !district) {
       throw Errors.NotFound();
     }

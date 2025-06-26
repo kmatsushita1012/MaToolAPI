@@ -19,8 +19,6 @@ export default class GetUsecase {
   ) {}
 
   execute = async (id: string, user: UserRole): Promise<PublicRoute> => {
-    console.log(id);
-
     const route = await this.routeRepository.get(id);
     if (!route) {
       throw Errors.NotFound();
@@ -34,7 +32,6 @@ export default class GetUsecase {
     ) {
       throw Errors.Forbidden();
     }
-    console.log(route);
     if (!district) {
       throw Errors.NotFound();
     }

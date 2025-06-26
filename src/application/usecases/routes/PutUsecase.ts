@@ -15,9 +15,6 @@ export default class PutRouteUsecase {
     if (!old) {
       throw Errors.NotFound();
     }
-    console.log("PutRouteUsecase");
-    console.log(route.districtId);
-    console.log(old.districtId);
     if (
       user.type === UserRoleType.Guest ||
       route.districtId !== user.id ||

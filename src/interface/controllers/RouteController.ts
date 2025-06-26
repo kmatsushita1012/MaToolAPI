@@ -56,9 +56,7 @@ export default class RouteController {
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId as string,
       }));
-      console.log(JSON.stringify(req.body));
       const data = parseBody<Route>(req);
-      console.log(JSON.stringify(data));
       const user = req.user ?? UserRole.Guest();
       const result = await this.usecases.post.execute(districtId, data, user);
       return successResponse(result);

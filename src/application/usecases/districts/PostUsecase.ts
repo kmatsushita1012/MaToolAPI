@@ -48,7 +48,7 @@ export default class PostUsecase {
       area: [],
       imagePath: null,
       performances: [] as Performance[],
-      visibility: "admin",
+      visibility: "all",
     };
     try {
       await this.distirctRepository.post(district);

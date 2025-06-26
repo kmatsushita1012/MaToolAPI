@@ -18,7 +18,6 @@ export default class PostRouteUsecase {
     ) {
       throw Errors.Unauthorized();
     }
-    console.log(JSON.stringify(route));
     const result = await this.routeRepository.post(route);
     return result;
   }
