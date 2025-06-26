@@ -66,6 +66,7 @@ export default class DynamoDBRouteRepository extends IRouteRepository {
 
   post = async (route: Route): Promise<string> => {
     const snakedItem = toSnakeCase(route);
+    console.log(JSON.stringify(snakedItem));
     try {
       await this.client.send(
         new PutCommand({
