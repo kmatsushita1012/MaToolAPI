@@ -23,5 +23,6 @@ const toPublicDistrict = (
 };
 
 const makeDistrictId = (name: string, region: Region): string => {
-  return `${region.name}_${name}`;
+  const prefix = region.id.split('_')[0]
+  return `${prefix}_${name}`;
 };
