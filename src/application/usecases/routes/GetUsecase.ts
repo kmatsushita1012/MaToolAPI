@@ -38,7 +38,7 @@ export default class GetUsecase {
     if (
       district?.visibility === Visibility.Partial &&
       (user.type === UserRoleType.Guest ||
-        (user.type === UserRoleType.District && user.id !== id) ||
+        (user.type === UserRoleType.District && user.id !== district.id) ||
         (user.type === UserRoleType.Region && user.id !== district?.regionId))
     ) {
       return removeTime(toPublicRoute(route, district));
