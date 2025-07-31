@@ -127,6 +127,12 @@ const createRouter = (controllers: Controllers): Router => {
     const result = await controllers.route.delete(req);
     res.status(result.statusCode).json(result.body);
   });
+
+  //Route Id
+  router.get("/routes", authenticate, async (req, res) => {
+    const result = await controllers.route.getIds(req);
+    res.status(result.statusCode).json(result.body);
+  });
   return router;
 };
 

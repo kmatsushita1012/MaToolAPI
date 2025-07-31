@@ -51,6 +51,16 @@ export default class RouteController {
     }
   };
 
+  getIds = async (req: Request): Promise<ApiResponse> => {
+    try {
+      const user = req.user ?? UserRole.Guest();
+      const result = await this.usecases.getIds.execute(user);
+      return successResponse(result);
+    } catch (error) {
+      return errorResponse(error);
+    }
+  };
+
   post = async (req: Request): Promise<ApiResponse> => {
     try {
       const { districtId } = parseParams(req, (params) => ({

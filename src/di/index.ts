@@ -24,6 +24,7 @@ import {
   DeleteRouteUsecase,
   GetAllRouteUsecase,
   GetCurrentRouteUsecase,
+  GetIdsRouteUsecase,
   GetRouteUsecase,
   PostRouteUsecase,
   PutRouteUsecase,
@@ -117,6 +118,7 @@ const createRouteUsecases = (repositories: Repositories): RouteUsecases => ({
     repositories.route,
     repositories.district
   ),
+  getIds: new GetIdsRouteUsecase(repositories.route, repositories.district),
   post: new PostRouteUsecase(repositories.route),
   put: new PutRouteUsecase(repositories.route),
   delete: new DeleteRouteUsecase(repositories.route),
