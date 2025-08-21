@@ -4,6 +4,16 @@ import { Controllers } from "./controllers";
 
 const createRouter = (controllers: Controllers): Router => {
   const router = express.Router();
+  //MARK: v2
+  //Route 現在
+  router.get(
+    "v2/districts/:districtId/routes/current",
+    authenticate,
+    async (req, res) => {
+      const result = await controllers.route.getCurrentV2(req);
+      res.status(result.statusCode).json(result.body);
+    }
+  );
 
   //District 全件
   router.get("/regions/:regionId/districts", async (req, res) => {
