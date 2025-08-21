@@ -65,14 +65,14 @@ const createRouter = (controllers: Controllers): Router => {
     }
   );
   //Route 追加
-  router.post(
-    "/districts/:districtId/routes",
-    authenticate,
-    async (req, res) => {
-      const result = await controllers.route.post(req);
-      res.status(result.statusCode).json(result.body);
-    }
-  );
+  // router.post(
+  //   "/districts/:districtId/routes",
+  //   authenticate,
+  //   async (req, res) => {
+  //     const result = await controllers.route.post(req);
+  //     res.status(result.statusCode).json(result.body);
+  //   }
+  // );
   //Location 単一
   router.get(
     "/districts/:districtId/locations",
@@ -118,15 +118,15 @@ const createRouter = (controllers: Controllers): Router => {
   });
 
   //Route 更新
-  router.put("/routes/:routeId", authenticate, async (req, res) => {
-    const result = await controllers.route.put(req);
-    res.status(result.statusCode).json(result.body);
-  });
+  // router.put("/routes/:routeId", authenticate, async (req, res) => {
+  //   const result = await controllers.route.put(req);
+  //   res.status(result.statusCode).json(result.body);
+  // });
   //Route 削除
-  router.delete("/routes/:routeId", authenticate, async (req, res) => {
-    const result = await controllers.route.delete(req);
-    res.status(result.statusCode).json(result.body);
-  });
+  // router.delete("/routes/:routeId", authenticate, async (req, res) => {
+  //   const result = await controllers.route.delete(req);
+  //   res.status(result.statusCode).json(result.body);
+  // });
 
   //Route Id
   router.get("/routes", authenticate, async (req, res) => {
