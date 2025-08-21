@@ -7,7 +7,7 @@ const createRouter = (controllers: Controllers): Router => {
   //MARK: v2
   //Route 現在
   router.get(
-    "v2/districts/:districtId/routes/current",
+    "/v2/districts/:districtId/routes/current",
     authenticate,
     async (req, res) => {
       const result = await controllers.route.getCurrentV2(req);
