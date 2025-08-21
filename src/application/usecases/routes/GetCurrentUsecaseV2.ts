@@ -18,6 +18,7 @@ import { compareDate, convertDate } from "../../../utils/DateTime";
 import { ILocationRepository } from "../../../domain/interface/repository";
 import { toPublicLocation } from "../../../domain/entities/locations";
 import { District } from "../../../domain/entities/districts";
+import { tryOrNull } from "../../../utils/Others";
 export default class GetCurrentUsecaseV2 {
   constructor(
     private routeRepository: IRouteRepository,
@@ -30,6 +31,7 @@ export default class GetCurrentUsecaseV2 {
     user: UserRole
   ): Promise<CurrentResponse> => {
     const district = await this.districtRepository.get(districtId);
+    console.log("usecase1", district);
     if (
       district?.visibility === Visibility.AdminOnly &&
       (user.type === UserRoleType.Guest ||
@@ -41,17 +43,19 @@ export default class GetCurrentUsecaseV2 {
     if (!district) {
       throw Errors.NotFound();
     }
-    let routes = await this.routeRepository.query(districtId);
-    let current = await this.getCurrentRoute(districtId, new Date());
-    let location = await this.locationRepository.get(districtId);
-
+    console.log("usecase2");
+    let routes = await tryOrNull(this.routeRepository.query(districtId));
+    let current = await tryOrNull(this.getCurrentRoute(districtId, new Date()));
+    let location = await tryOrNull(this.locationRepository.get(districtId));
+    console.log("usecase3", routes, current, location);
     const currentResponse: CurrentResponse = {
-      current: current != null ? this.removeTimeIfNeeded(district, toPublicRoute(current, district), user) : null,
-      routes: routes.map((r) => toRouteSummary(toPublicRoute(r, district))),
-      location: location != null ? toPublicLocation(location, district) : null,
+      current: current !== null ? this.removeTimeIfNeeded(district, toPublicRoute(current, district), user) : null,
+      routes: routes?.map((r) => toRouteSummary(toPublicRoute(r, district))) || null,
+      location: location !== null ? toPublicLocation(location, district) : null,
       districtId: district.id,
       districtName: district.name
     };
+    console.log("usecase4", currentResponse);
     return currentResponse;
   };
 
