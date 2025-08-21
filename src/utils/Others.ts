@@ -5,3 +5,11 @@ export const isEmpty = (value: any): boolean => {
     return Object.keys(value).length === 0;
   return !value;
 };
+
+export async function tryOrNull<T>(fn: Promise<T>): Promise<T | null> {
+  try {
+    return await fn;
+  } catch {
+    return null;
+  }
+}
