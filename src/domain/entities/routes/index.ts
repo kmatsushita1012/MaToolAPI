@@ -23,7 +23,7 @@ const makeRouteId = (date: SimpleDate, title: string) => {
 };
 
 const toPublicRoute = (route: Route, district: District): PublicRoute => {
-  return { ...route, districtName: district.name };
+  return { ...route, districtName: district.name, visibility: district.visibility };
 };
 
 const toRouteSummary = (route: PublicRoute): RouteSummary => {
