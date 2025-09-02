@@ -12,14 +12,14 @@ export default class GetAllUsecase {
     private locationRepository: ILocationRepository,
     private districtRepository: IDistrictRepository,
     private regionRepository: IRegionRepository
-  ) {}
+  ) { }
 
   execute = async (id: string, user: UserRole): Promise<PublicLocation[]> => {
     let locations: Location[];
-    if (user.type === UserRoleType.Guest || id !== user.id) {
-      locations = await this.getForPublic(id);
-    } else {
+    if (user.type === UserRoleType.Region && user.id === id) {
       locations = await this.getForAdmin(id);
+    } else {
+      locations = await this.getForPublic(id);
     }
     if (!locations) {
       return [];
