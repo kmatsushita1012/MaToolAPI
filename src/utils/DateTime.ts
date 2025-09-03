@@ -1,11 +1,11 @@
 import { SimpleDate, SimpleTime, Span } from "../domain/entities/shared";
 
-const compareDate = (earlier: Date, later: Date) => {
+const compareDate = (earlier: Date, later: Date): number => {
   return later.getTime() - earlier.getTime();
 };
 
 const include = (start: Date, end: Date, current: Date) => {
-  return compareDate(start, current) && compareDate(current, end);
+  return compareDate(start, current) > 0 && compareDate(current, end) > 0;
 };
 
 const convertDate = (date: SimpleDate, time: SimpleTime): Date => {
