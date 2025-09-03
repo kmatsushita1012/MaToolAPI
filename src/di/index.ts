@@ -122,7 +122,8 @@ const createRouteUsecases = (repositories: Repositories): RouteUsecases => ({
   getCurrentV2: new GetCurrentRouteV2Usecase(
     repositories.route,
     repositories.district,
-    repositories.location
+    repositories.location,
+    repositories.region
   ),
   getIds: new GetIdsRouteUsecase(repositories.route, repositories.district),
   post: new PostRouteUsecase(repositories.route),
