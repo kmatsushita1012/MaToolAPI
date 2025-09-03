@@ -14,9 +14,9 @@ import {
   toPublicRoute,
   toRouteSummary,
 } from "../../../domain/entities/routes";
-import { compareDate, convertDate } from "../../../utils/DateTime";
-import { ILocationRepository } from "../../../domain/interface/repository";
-import { toPublicLocation } from "../../../domain/entities/locations";
+import { compareDate, convertDate, include } from "../../../utils/DateTime";
+import { ILocationRepository, IRegionRepository } from "../../../domain/interface/repository";
+import { toPublicLocation, Location } from "../../../domain/entities/locations";
 import { District } from "../../../domain/entities/districts";
 import { tryOrNull } from "../../../utils/Others";
 export default class GetCurrentUsecaseV2 {
@@ -24,6 +24,7 @@ export default class GetCurrentUsecaseV2 {
     private routeRepository: IRouteRepository,
     private districtRepository: IDistrictRepository,
     private locationRepository: ILocationRepository,
+    private regionRepository: IRegionRepository
   ) { }
 
   execute = async (
@@ -31,23 +32,32 @@ export default class GetCurrentUsecaseV2 {
     user: UserRole
   ): Promise<CurrentResponse> => {
     const district = await this.districtRepository.get(districtId);
-    console.log("usecase1", district);
+    if (!district) {
+      throw Errors.NotFound();
+    }
+    let routes: Route[] | null;
+    let current: Route | null;
+    let location: Location | null;
     if (
       district?.visibility === Visibility.AdminOnly &&
       (user.type === UserRoleType.Guest ||
         (user.type === UserRoleType.District && user.id !== districtId) ||
         (user.type === UserRoleType.Region && user.id !== district?.regionId))
     ) {
-      throw Errors.Forbidden();
+      routes = null;
+      current = null;
+    } else {
+      routes = await tryOrNull(this.routeRepository.query(districtId));
+      current = await tryOrNull(this.getCurrentRoute(districtId, new Date()));
     }
-    if (!district) {
-      throw Errors.NotFound();
+    if ((user.type === UserRoleType.Region && user.id === district.regionId) ||
+      user.type === UserRoleType.District && user.id === districtId
+    ) {
+      location = await tryOrNull(this.getForAdmin(districtId));
+    } else {
+      location = await tryOrNull(this.getForPublic(districtId));
     }
-    console.log("usecase2");
-    let routes = await tryOrNull(this.routeRepository.query(districtId));
-    let current = await tryOrNull(this.getCurrentRoute(districtId, new Date()));
-    let location = await tryOrNull(this.locationRepository.get(districtId));
-    console.log("usecase3", routes, current, location);
+
     const currentResponse: CurrentResponse = {
       current: current !== null ? this.removeTimeIfNeeded(district, toPublicRoute(current, district), user) : null,
       routes: routes?.map((r) => toRouteSummary(toPublicRoute(r, district))) || null,
@@ -127,4 +137,34 @@ export default class GetCurrentUsecaseV2 {
     }
     return timeTarget ?? dateTarget ?? sortedItems[0];
   };
+
+  private getForPublic = async (id: string) => {
+    const currentTime = new Date();
+    let district = await this.districtRepository.get(id);
+    if (!district) {
+      throw Errors.NotFound();
+    }
+    let region = await this.regionRepository.get(district.regionId);
+    if (!region) {
+      throw Errors.NotFound();
+    }
+    var foundFlag = false;
+    for (let span of region.spans) {
+      const start = new Date(span.start * 1000);
+      const end = new Date(span.end * 1000);
+      if (include(start, end, currentTime)) {
+        foundFlag = true;
+        break
+      }
+    }
+    if (!foundFlag) {
+      throw Errors.Forbidden();
+    }
+    return await this.locationRepository.get(id);
+  };
+  private getForAdmin = async (id: string) => {
+    return await this.locationRepository.get(id);
+  };
+
+
 }

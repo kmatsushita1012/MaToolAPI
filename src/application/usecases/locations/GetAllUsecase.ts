@@ -53,7 +53,7 @@ export default class GetAllUsecase {
       }
     }
     if (!foundFlag) {
-      throw Errors.Forbidden();
+      return [];
     }
     return await this.locationRepository.getAll(id);
   };
