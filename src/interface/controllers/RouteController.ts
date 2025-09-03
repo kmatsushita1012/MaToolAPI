@@ -52,16 +52,12 @@ export default class RouteController {
   };
 
   getCurrentV2 = async (req: Request): Promise<ApiResponse> => {
-    console.log("Controller1", "getCurrentV2 called");
     try {
       const { districtId } = parseParams(req, (params) => ({
         districtId: params.districtId as string,
       }));
-      console.log("Controller2", "districtId:", districtId);
       const user = req.user ?? UserRole.Guest();
-      console.log("Controller3", "user:", user);
       const result = await this.usecases.getCurrentV2.execute(districtId, user);
-      console.log("Controller4", "result:", result);
       return successResponse(result);
     } catch (error) {
       return errorResponse(error);
