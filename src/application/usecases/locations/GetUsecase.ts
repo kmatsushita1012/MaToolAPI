@@ -26,8 +26,10 @@ export default class GetUsecase {
     if ((user.type === UserRoleType.Region && user.id === district.regionId) ||
       user.type === UserRoleType.District && user.id === id
     ) {
+      console.log("location admin");
       location = await this.getForAdmin(id);
     } else {
+      console.log("location public");
       location = await this.getForPublic(id);
     }
     if (!location) {
@@ -50,10 +52,13 @@ export default class GetUsecase {
     for (let span of region.spans) {
       const start = new Date(span.start * 1000);
       const end = new Date(span.end * 1000);
+      console.log(`span ${start} - ${end}, current ${currentTime} include ${include(start, end, currentTime)}`);
       if (include(start, end, currentTime)) {
         foundFlag = true;
+        break
       }
     }
+    console.log("foundFlag", foundFlag);
     if (!foundFlag) {
       return null;
     }
