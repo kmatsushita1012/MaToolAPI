@@ -65,7 +65,6 @@ export default class GetCurrentUsecaseV2 {
       districtId: district.id,
       districtName: district.name
     };
-    console.log("usecase4", currentResponse);
     return currentResponse;
   };
 
