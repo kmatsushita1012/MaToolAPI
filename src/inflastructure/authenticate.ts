@@ -4,6 +4,7 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider";
 import { Request, Response, NextFunction } from "express";
 import { UserRole, UserRoleType } from "../domain/entities/shared";
+import path from "path";
 const cognitoClient = new CognitoIdentityProviderClient({
   region: "ap-northeast-1",
 });
@@ -16,11 +17,12 @@ export const authenticate = async (
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) {
     req.user = { type: UserRoleType.Guest };
-    logUserRole(req.user);
+    logUserRole(req, req.user);
     return next();
   }
 
   try {
+
     const command = new GetUserCommand({ AccessToken: token });
     const response = await cognitoClient.send(command);
     const attributes = response.UserAttributes ?? [];
@@ -35,14 +37,19 @@ export const authenticate = async (
     } else {
       req.user = { type: UserRoleType.Guest };
     }
-    logUserRole(req.user);
+    logUserRole(req, req.user);
   } catch (error) {
     console.error("Cognito認証失敗:", error);
     req.user = { type: UserRoleType.Guest };
+    logUserRole(req, req.user);
   }
   next();
 };
 
-export const logUserRole = (role: UserRole): void => {
-  console.log("UserRole:", JSON.stringify(role, null, 2));
+export const logUserRole = (req: Request, role: UserRole): void => {
+  console.log("UserRole:", JSON.stringify({
+    path: req.path,
+    method: req.method,
+    role: role
+  }, null, 2));
 };

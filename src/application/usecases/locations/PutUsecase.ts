@@ -8,7 +8,7 @@ import { Errors } from "../../../utils/Errors";
 import { UserRole, UserRoleType } from "../../../domain/entities/shared";
 
 export default class PutUsecae {
-  constructor(private repository: ILocationRepository) {}
+  constructor(private repository: ILocationRepository) { }
 
   execute = async (
     id: string,
@@ -24,6 +24,7 @@ export default class PutUsecae {
     ) {
       throw Errors.Unauthorized();
     }
+    console.log("Put Location:", JSON.stringify(item, null, 2));
     const timestamp = new Date(item.timestamp * 1000);
     const expirationTime = add(timestamp, expirationSpan);
     const locationWithET = toExpirableLocation(item, expirationTime);
