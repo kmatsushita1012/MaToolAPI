@@ -16,6 +16,7 @@ export default class GetAllUsecase {
 
   execute = async (id: string, user: UserRole): Promise<PublicLocation[]> => {
     let locations: Location[];
+    console.log(`LocationGetAllUsecase ${user.type} ${(user as any).id ?? "unknown"} ${id}`);
     if (user.type === UserRoleType.Region && user.id === id) {
       locations = await this.getForAdmin(id);
     } else {
