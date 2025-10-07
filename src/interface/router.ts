@@ -30,10 +30,13 @@ const createRouter = (controllers: Controllers): Router => {
     }
   );
   //Location 全件
-  router.get("/regions/:regionId/locations", async (req, res) => {
-    const result = await controllers.location.getAll(req);
-    res.status(result.statusCode).json(result.body);
-  });
+  router.get(
+    "/regions/:regionId/locations",
+    authenticate,
+    async (req, res) => {
+      const result = await controllers.location.getAll(req);
+      res.status(result.statusCode).json(result.body);
+    });
   //Region 単一
   router.get("/regions/:regionId", async (req, res) => {
     const result = await controllers.region.get(req);
