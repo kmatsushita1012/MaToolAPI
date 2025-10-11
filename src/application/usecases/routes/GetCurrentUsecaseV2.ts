@@ -93,47 +93,42 @@ export default class GetCurrentUsecaseV2 {
     return route;
   };
 
-  private selectCurrentItem = (items: Route[], now: Date): Route => {
+  private selectCurrentItem = (items: Route[], now: Date): Route | null => {
+    if (!items || items.length === 0) return null;
+
+    // 1️⃣ 昇順ソート（古い → 新しい）
     const sortedItems = items.sort((a, b) => {
       if (!a.start) return -1;
-      else if (!b.start) return 1;
+      if (!b.start) return 1;
       const dateA = convertDate(a.date, a.start);
       const dateB = convertDate(b.date, b.start);
-      return compareDate(dateA, dateB);
+      return dateA.getTime() - dateB.getTime(); // 昇順
     });
 
-    let nextRoute: Route | null = null;
-    for (let i = sortedItems.length - 1; i >= 0; i--) {
-      const item = sortedItems[i];
-
+    // 2️⃣ 昇順ループ（古い→新しい）
+    for (const item of sortedItems) {
       if (item.start && item.goal) {
         const start = convertDate(item.date, item.start);
         const goal = convertDate(item.date, item.goal);
-
-        const diffOfStart = compareDate(start, now);
-        const diffOfGoal = compareDate(goal, now);
+        const diffOfStart = start.getTime() - now.getTime();
+        const diffOfGoal = goal.getTime() - now.getTime();
 
         // ✅ 進行中なら即返す
         if (diffOfStart <= 0 && diffOfGoal > 0) {
           return item;
         }
 
-        // ✅ 未来のルートなら候補に保持（より近いものを優先）
+        // ✅ 未来にあるなら最初に出たやつが一番近い未来
         if (diffOfStart > 0) {
-          nextRoute = item; // 後ろから見ているので、より近い未来を上書きしない
-        }
-      } else {
-        // start/goalが欠けている場合の日付一致チェック
-        const fullDate = convertDate(item.date, { hour: 0, minute: 0 });
-        if (compareDate(fullDate, now) === 0) {
           return item;
         }
       }
     }
 
-    // 3️⃣ 進行中がなかったら、未来の最も近いルートを返す
-    return nextRoute ?? sortedItems[0];
+    // ✅ 未来も現在もなければ null
+    return sortedItems[0];
   };
+
 
   private getForPublic = async (id: string) => {
     const currentTime = new Date();
