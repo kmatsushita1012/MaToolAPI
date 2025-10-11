@@ -26,3 +26,9 @@ const add = (date: Date, span: number) => {
 };
 
 export { compareDate, include, convertDate, add };
+
+export const nowJST = (): Date => {
+  const now = new Date();
+  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  return jst;
+};

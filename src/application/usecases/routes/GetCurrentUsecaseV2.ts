@@ -14,7 +14,7 @@ import {
   toPublicRoute,
   toRouteSummary,
 } from "../../../domain/entities/routes";
-import { compareDate, convertDate, include } from "../../../utils/DateTime";
+import { compareDate, convertDate, include, nowJST } from "../../../utils/DateTime";
 import { ILocationRepository, IRegionRepository } from "../../../domain/interface/repository";
 import { toPublicLocation, Location } from "../../../domain/entities/locations";
 import { District } from "../../../domain/entities/districts";
@@ -48,7 +48,7 @@ export default class GetCurrentUsecaseV2 {
       current = null;
     } else {
       routes = await tryOrNull(this.routeRepository.query(districtId));
-      current = await tryOrNull(this.getCurrentRoute(districtId, new Date()));
+      current = await tryOrNull(this.getCurrentRoute(districtId, nowJST()));
     }
     if ((user.type === UserRoleType.Region && user.id === district.regionId) ||
       user.type === UserRoleType.District && user.id === districtId
