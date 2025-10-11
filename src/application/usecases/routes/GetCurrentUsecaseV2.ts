@@ -84,6 +84,7 @@ export default class GetCurrentUsecaseV2 {
     districtId: string,
     date: Date
   ): Promise<Route | null> => {
+    console.log(`GetCurrentUsecaseV2: get current route for district ${districtId} at ${date.toISOString()}`);
     const items = await this.routeRepository.query(districtId);
     if (!items || items.length === 0) {
       return null;
