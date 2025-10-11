@@ -102,37 +102,37 @@ export default class GetCurrentUsecaseV2 {
       return compareDate(dateA, dateB);
     });
 
-    //期間が近いものをreturn
-    let timeTarget: Route | undefined;
-    let dateTarget: Route | undefined;
+    let nextRoute: Route | null = null;
     for (let i = sortedItems.length - 1; i >= 0; i--) {
       const item = sortedItems[i];
+
       if (item.start && item.goal) {
         const start = convertDate(item.date, item.start);
-        const diffOfStart = compareDate(start, now);
         const goal = convertDate(item.date, item.goal);
+
+        const diffOfStart = compareDate(start, now);
         const diffOfGoal = compareDate(goal, now);
-        //時間内
+
+        // ✅ 進行中なら即返す
         if (diffOfStart <= 0 && diffOfGoal > 0) {
-          return sortedItems[i];
+          return item;
         }
-        // 一候補
+
+        // ✅ 未来のルートなら候補に保持（より近いものを優先）
         if (diffOfStart > 0) {
-          timeTarget = sortedItems[i];
-          continue;
-        }
-        //候補が適切
-        if (diffOfGoal < 0 && timeTarget) {
-          return timeTarget;
+          nextRoute = item; // 後ろから見ているので、より近い未来を上書きしない
         }
       } else {
+        // start/goalが欠けている場合の日付一致チェック
         const fullDate = convertDate(item.date, { hour: 0, minute: 0 });
         if (compareDate(fullDate, now) === 0) {
-          dateTarget = item;
+          return item;
         }
       }
     }
-    return timeTarget ?? dateTarget ?? sortedItems[0];
+
+    // 3️⃣ 進行中がなかったら、未来の最も近いルートを返す
+    return nextRoute ?? sortedItems[0];
   };
 
   private getForPublic = async (id: string) => {
