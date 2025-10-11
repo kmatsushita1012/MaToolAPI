@@ -94,21 +94,18 @@ export default class GetCurrentUsecaseV2 {
   };
 
   private selectCurrentItem = (items: Route[], now: Date): Route => {
-    //ソート
     const sortedItems = items.sort((a, b) => {
-      if (!b.start) {
-        return -1;
-      } else if (!a.start) {
-        return 1;
-      }
+      if (!a.start) return -1;
+      else if (!b.start) return 1;
       const dateA = convertDate(a.date, a.start);
       const dateB = convertDate(b.date, b.start);
-      return compareDate(dateB, dateA);
+      return compareDate(dateA, dateB);
     });
+
     //期間が近いものをreturn
     let timeTarget: Route | undefined;
     let dateTarget: Route | undefined;
-    for (let i = 0; i < sortedItems.length; i++) {
+    for (let i = sortedItems.length - 1; i >= 0; i--) {
       const item = sortedItems[i];
       if (item.start && item.goal) {
         const start = convertDate(item.date, item.start);
