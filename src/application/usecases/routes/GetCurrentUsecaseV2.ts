@@ -108,7 +108,7 @@ export default class GetCurrentUsecaseV2 {
     //期間が近いものをreturn
     let timeTarget: Route | undefined;
     let dateTarget: Route | undefined;
-    for (let i = sortedItems.length - 1; i >= 0; i--) {
+    for (let i = 0; i < sortedItems.length; i++) {
       const item = sortedItems[i];
       if (item.start && item.goal) {
         const start = convertDate(item.date, item.start);
