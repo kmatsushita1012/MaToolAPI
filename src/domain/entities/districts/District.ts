@@ -4,7 +4,7 @@ import Performance from "./Performance";
 interface District {
   id: string;
   name: string;
-  regionId: string;
+  regionId: string;// renamed
   description: string | null;
   base: Coordinate | null;
   area: Coordinate[];

@@ -5,6 +5,8 @@ export default class GetAllUsecase {
   constructor(private repository: IRegionRepository) {}
   execute = async () => {
     const items: Region[] = await this.repository.scan();
-    return items;
+    return items.filter((item) => {
+      item.id === "掛川祭_年番本部"
+    });
   };
 }

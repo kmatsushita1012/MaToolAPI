@@ -8,8 +8,8 @@ interface Region {
   prefecture: string;
   city: string;
   base: Coordinate;
-  spans: Span[];
-  milestones: Information[];
+  spans: Span[]; // removed
+  milestones: Information[]; // renamed
   imagePath: string;
 }
 

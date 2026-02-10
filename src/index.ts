@@ -24,7 +24,7 @@ const dynamoDBDocumentclient = DynamoDBDocumentClient.from(dynamoDBClient);
 const repositories = createDynamoDBRepositories(dynamoDBDocumentclient, {
   region: "matool_regions",
   district: "matool_districts",
-  route: "matool_routes",
+  route: "matool_routes_legacy",
   location: "matool_locations",
 });
 const cognitoManager = createCognitoUserManager(cognitoClient, userPoolId);
